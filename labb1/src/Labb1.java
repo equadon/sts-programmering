@@ -2,8 +2,7 @@ public class Labb1 {
 
     public static void main(String[] args) {
         // Run array tests (Teknikövningar)
-        ArrayTests arrayTests = new ArrayTests();
-        arrayTests.run();
+        ArrayTests.run();
 
         testSumOfDigits();
 
@@ -14,11 +13,26 @@ public class Labb1 {
         testBubbleSortFloats();
     }
 
+    /**
+     * Calculate the sum of the digits in number.
+     */
+    public static int sumOfDigits(int number) {
+        int sum = 0;
+
+        while (number > 0) {
+            sum += number % 10;
+            number = number / 10;
+        }
+
+        return sum;
+    }
+
     public static void testSumOfDigits() {
         System.out.println("\nSum of digits:");
         System.out.printf("   1338 => %d\n", sumOfDigits(1338));
         System.out.printf("   1001 => %d\n", sumOfDigits(1001));
         System.out.printf("  12345 => %d\n", sumOfDigits(12345));
+        System.out.printf(" 999999 => %d\n", sumOfDigits(999999));
     }
 
     public static void testIsSorted() {
@@ -41,24 +55,6 @@ public class Labb1 {
 
         strings = new String[] {"a", "b", "e", "c", "d"};
         printSorted(strings);
-    }
-
-    public static String joinElements(Comparable[] elements) {
-        StringBuilder sb = new StringBuilder();
-
-        for (int i = 0; i < elements.length; i++) {
-            sb.append(elements[i]);
-
-            if (i < elements.length - 1) {
-                sb.append(", ");
-            }
-        }
-
-        return sb.toString();
-    }
-
-    public static void printSorted(Comparable[] elements) {
-        System.out.printf("  [%s]: %s\n", joinElements(elements), Sorter.isSorted(elements) ? "sorted" : "not sorted");
     }
 
     public static void testBubbleSortInts() {
@@ -94,7 +90,7 @@ public class Labb1 {
     public static void testBubbleSortFloats() {
         Double[] doubles;
 
-        System.out.println("\nDouble bubbleSort():");
+        System.out.println("\nDoubles bubbleSort():");
 
         doubles = new Double[] {1.2, 7.8, 9.5, 9.4999};
         printBubbleSorted(doubles);
@@ -106,23 +102,28 @@ public class Labb1 {
         printBubbleSorted(doubles);
     }
 
-    public static void printBubbleSorted(Comparable[] elements) {
-        Comparable[] sorted = Sorter.bubbleSort(elements.clone());
-
-        System.out.printf("   bubbleSort([%s]) = [%s]: %s\n", joinElements(elements), joinElements(sorted), Sorter.isSorted(sorted) ? "sorted" : "not sorted");
+    public static void printSorted(Comparable[] elements) {
+        System.out.printf("   [%s]: %s\n", joinElements(elements), Sorter.isSorted(elements) ? "sorted" : "not sorted");
     }
 
-    /**
-     * Calculate the sum of the digits in number.
-     */
-    public static int sumOfDigits(int number) {
-        int sum = 0;
+    public static void printBubbleSorted(Comparable[] elements) {
+        String joinedElements = joinElements(elements);
+        Comparable[] sorted = Sorter.bubbleSort(elements);
 
-        while (number > 0) {
-            sum += number % 10;
-            number = number / 10;
+        System.out.printf("   bubbleSort([%s]) = [%s]: %s\n", joinedElements, joinElements(sorted), Sorter.isSorted(sorted) ? "sorted" : "not sorted");
+    }
+
+    public static String joinElements(Comparable[] elements) {
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < elements.length; i++) {
+            sb.append(elements[i]);
+
+            if (i < elements.length - 1) {
+                sb.append(", ");
+            }
         }
 
-        return sum;
+        return sb.toString();
     }
 }

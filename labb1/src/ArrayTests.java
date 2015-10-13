@@ -1,6 +1,6 @@
 public class ArrayTests {
 
-    public void run() {
+    public static void run() {
         int[] array = buildArray();
 
         System.out.printf("Array contains '3': %s\n", containsNumber(array, 3) ? "Yes" : "No");
@@ -15,13 +15,13 @@ public class ArrayTests {
         newArray = switchElements(newArray, 3, 4);
     }
 
-    public int[] buildArray() {
+    public static int[] buildArray() {
         int[] array = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
         return array;
     }
 
-    public boolean containsNumber(int[] numbers, int checkNumber) {
+    public static boolean containsNumber(int[] numbers, int checkNumber) {
         for (int number : numbers) {
             if (number == checkNumber) {
                 return true;
@@ -31,7 +31,7 @@ public class ArrayTests {
         return false;
     }
 
-    public int indexOf(int[] numbers, int number) {
+    public static int indexOf(int[] numbers, int number) {
         for (int i = 0; i < numbers.length; i++) {
             if (numbers[i] == number) {
                 return i;
@@ -41,7 +41,7 @@ public class ArrayTests {
         return -1;
     }
 
-    public int count(int[] numbers, int checkNumber) {
+    public static int count(int[] numbers, int checkNumber) {
         int count = 0;
 
         for (int number : numbers) {
@@ -53,7 +53,7 @@ public class ArrayTests {
         return count;
     }
 
-    public boolean hasDouble(int[] numbers, int checkNumber) {
+    public static boolean hasDouble(int[] numbers, int checkNumber) {
         for (int i = 0; i < numbers.length - 1; i++) {
             if (numbers[i] == checkNumber && numbers[i+1] == checkNumber) {
                 return true;
@@ -63,7 +63,7 @@ public class ArrayTests {
         return false;
     }
 
-    public int[] addNumber(int[] array, int number) {
+    public static int[] addNumber(int[] array, int number) {
         int[] newArray = new int[array.length + 1];
 
         for (int i = 0; i < array.length; i++) {
@@ -75,7 +75,7 @@ public class ArrayTests {
         return newArray;
     }
 
-    public int[] replace(int[] array, int from, int to) {
+    public static int[] replace(int[] array, int from, int to) {
         for (int i = 0; i < array.length; i++) {
             if (array[i] == from) {
                 array[i] = to;
@@ -85,7 +85,7 @@ public class ArrayTests {
         return array;
     }
 
-    public int[] switchElements(int[] array, int from, int to) {
+    public static int[] switchElements(int[] array, int from, int to) {
         int value = array[from];
         array[from] = array[to];
         array[to] = value;
