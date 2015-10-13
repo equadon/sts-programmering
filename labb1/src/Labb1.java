@@ -103,14 +103,17 @@ public class Labb1 {
     }
 
     public static void printSorted(Comparable[] elements) {
-        System.out.printf("   [%s]: %s\n", joinElements(elements), Sorter.isSorted(elements) ? "sorted" : "not sorted");
+        boolean isSorted = Sorter.isSorted(elements);
+
+        System.out.printf("   [%s]: %s\n", joinElements(elements), isSorted ? "sorted" : "not sorted");
     }
 
     public static void printBubbleSorted(Comparable[] elements) {
         String joinedElements = joinElements(elements);
         Comparable[] sorted = Sorter.bubbleSort(elements);
+        boolean isSorted = Sorter.isSorted(sorted);
 
-        System.out.printf("   bubbleSort([%s]) = [%s]: %s\n", joinedElements, joinElements(sorted), Sorter.isSorted(sorted) ? "sorted" : "not sorted");
+        System.out.printf("   bubbleSort([%s]) = [%s]: %s\n", joinedElements, joinElements(sorted), isSorted ? "sorted" : "not sorted");
     }
 
     public static String joinElements(Comparable[] elements) {
