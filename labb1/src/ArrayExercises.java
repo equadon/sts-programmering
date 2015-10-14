@@ -1,6 +1,6 @@
 import java.util.Arrays;
 
-public class ArrayTests {
+public class ArrayExercises {
 
     public static int[] range(int end) {
         return range(0, end, 1);

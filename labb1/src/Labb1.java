@@ -45,12 +45,10 @@ public class Labb1 {
     /**
      * Bubble sort.
      */
-    public static Comparable[] bubbleSort(Comparable[] elements) {
+    public static void bubbleSort(Comparable[] elements) {
         while (bytintill(elements)) {
             // keep swapping
         }
-
-        return elements;
     }
 
     /**

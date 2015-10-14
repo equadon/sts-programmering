@@ -27,10 +27,11 @@ public class Labb1Tests {
 
     public static void printBubbleSorted(Comparable[] elements) {
         String joinedElements = Arrays.toString(elements);
-        Comparable[] sorted = Labb1.bubbleSort(elements);
-        String sortedString = Labb1.isSorted(sorted) ? "sorted" : "not sorted";
 
-        System.out.printf("   %-26s  ==>  %-26s  (%s)\n", joinedElements, Arrays.toString(sorted), sortedString);
+        Labb1.bubbleSort(elements);
+        String sortedString = Labb1.isSorted(elements) ? "sorted" : "not sorted";
+
+        System.out.printf("   %-26s  ==>  %-26s  (%s)\n", joinedElements, Arrays.toString(elements), sortedString);
     }
 
     public static void testIsSorted() {
@@ -58,7 +59,7 @@ public class Labb1Tests {
     public static void testBubbleSortInts() {
         Integer[] numbers;
 
-        System.out.println("\nIntegers bubbleSort():");
+        System.out.println("\nbubbleSort():   [integers]");
 
         numbers = new Integer[] {1, 2, 3, 4};
         printBubbleSorted(numbers);
@@ -73,7 +74,7 @@ public class Labb1Tests {
     public static void testBubbleSortStrings() {
         String[] strings;
 
-        System.out.println("Strings bubbleSort():");
+        System.out.println("bubbleSort():   [strings]");
 
         strings = new String[] {"a", "b", "c"};
         printBubbleSorted(strings);
@@ -88,7 +89,7 @@ public class Labb1Tests {
     public static void testBubbleSortDoubles() {
         Double[] doubles;
 
-        System.out.println("Doubles bubbleSort():");
+        System.out.println("bubbleSort():   [doubles]");
 
         doubles = new Double[] {1.2, 7.8, 9.5, 9.4999};
         printBubbleSorted(doubles);
@@ -101,15 +102,15 @@ public class Labb1Tests {
     }
 
     public static void printRange(int end) {
-        printRange(String.format("range(%d)", end), ArrayTests.range(end));
+        printRange(String.format("range(%d)", end), ArrayExercises.range(end));
     }
 
     public static void printRange(int start, int end) {
-        printRange(String.format("range(%d, %d)", start, end), ArrayTests.range(start, end));
+        printRange(String.format("range(%d, %d)", start, end), ArrayExercises.range(start, end));
     }
 
     public static void printRange(int start, int end, int step) {
-        printRange(String.format("range(%d, %d, %d)", start, end, step), ArrayTests.range(start, end, step));
+        printRange(String.format("range(%d, %d, %d)", start, end, step), ArrayExercises.range(start, end, step));
     }
 
     public static void printRange(String range, int[] numbers) {
@@ -123,24 +124,24 @@ public class Labb1Tests {
         printRange(2, 15, 4);
         printRange(10, 5, -1);
 
-        int[] array = ArrayTests.range(1, 11);
+        int[] array = ArrayExercises.range(1, 11);
 
         System.out.println("\n" + Arrays.toString(array) + ":");
-        System.out.printf("   contains '3': %s\n", ArrayTests.contains(array, 3) ? "yes" : "no");
-        System.out.printf("   index of '4': %d\n", ArrayTests.indexOf(array, 4));
-        System.out.printf("   count '3': %d\n", ArrayTests.count(array, 3));
+        System.out.printf("   contains '3': %s\n", ArrayExercises.contains(array, 3) ? "yes" : "no");
+        System.out.printf("   index of '4': %d\n", ArrayExercises.indexOf(array, 4));
+        System.out.printf("   count '3': %d\n", ArrayExercises.count(array, 3));
 
         int[] newArray = array.clone();
-        newArray = ArrayTests.addNumber(newArray, 9);
+        newArray = ArrayExercises.addNumber(newArray, 9);
 
-        newArray = ArrayTests.replace(newArray, 2, 3);
-
-        System.out.println(Arrays.toString(newArray) + ":");
-        System.out.printf("   found two consecutive '9': %s\n", ArrayTests.hasDouble(newArray, 9) ? "yes" : "no");
-
-        newArray = ArrayTests.switchElements(newArray, 9, 10);
+        newArray = ArrayExercises.replace(newArray, 2, 3);
 
         System.out.println(Arrays.toString(newArray) + ":");
-        System.out.printf("   found two consecutive '9': %s\n", ArrayTests.hasDouble(newArray, 9) ? "yes" : "No");
+        System.out.printf("   found two consecutive '9': %s\n", ArrayExercises.hasDouble(newArray, 9) ? "yes" : "no");
+
+        newArray = ArrayExercises.switchElements(newArray, 9, 10);
+
+        System.out.println(Arrays.toString(newArray) + ":");
+        System.out.printf("   found two consecutive '9': %s\n", ArrayExercises.hasDouble(newArray, 9) ? "yes" : "No");
     }
 }
