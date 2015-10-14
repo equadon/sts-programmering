@@ -1,16 +1,15 @@
 public class Labb1 {
 
     public static void main(String[] args) {
-        // Run array tests (Teknikövningar)
-        ArrayTests.run();
+        Labb1Tests.testArrays(); // Run array tests (Teknikövningar)
 
-        testSumOfDigits();
+        Labb1Tests.testSumOfDigits();
 
-        testIsSorted();
+        Labb1Tests.testIsSorted();
 
-        testBubbleSortInts();
-        testBubbleSortStrings();
-        testBubbleSortFloats();
+        Labb1Tests.testBubbleSortInts();
+        Labb1Tests.testBubbleSortStrings();
+        Labb1Tests.testBubbleSortDoubles();
     }
 
     /**
@@ -27,106 +26,51 @@ public class Labb1 {
         return sum;
     }
 
-    public static void testSumOfDigits() {
-        System.out.println("\nSum of digits:");
-        System.out.printf("   1338 => %d\n", sumOfDigits(1338));
-        System.out.printf("   1001 => %d\n", sumOfDigits(1001));
-        System.out.printf("  12345 => %d\n", sumOfDigits(12345));
-        System.out.printf(" 999999 => %d\n", sumOfDigits(999999));
-    }
+    /**
+     * Check if elements are sorted in ascending order.
+     */
+    public static boolean isSorted(Comparable[] elements) {
+        for (int i = 0; i < elements.length - 1; i++) {
+            Comparable value = elements[i];
+            Comparable next = elements[i+1];
 
-    public static void testIsSorted() {
-        Integer[] numbers;
-        String[] strings;
-
-        System.out.println("\nisSorted():");
-
-        numbers = new Integer[] {1, 2, 3, 4, 5};
-        printSorted(numbers);
-
-        numbers = new Integer[] {5, 4, 3, 2, 1};
-        printSorted(numbers);
-
-        numbers = new Integer[] {1, 2, 4, 3, 5, 9};
-        printSorted(numbers);
-
-        strings = new String[] {"a", "b", "c", "d"};
-        printSorted(strings);
-
-        strings = new String[] {"a", "b", "e", "c", "d"};
-        printSorted(strings);
-    }
-
-    public static void testBubbleSortInts() {
-        Integer[] numbers;
-
-        System.out.println("\nIntegers bubbleSort():");
-
-        numbers = new Integer[] {1, 2, 3, 4};
-        printBubbleSorted(numbers);
-
-        numbers = new Integer[] {1, 2, 5, 4, 3};
-        printBubbleSorted(numbers);
-
-        numbers = new Integer[] {9, 8, 7, 6, 2, 4, 1};
-        printBubbleSorted(numbers);
-    }
-
-    public static void testBubbleSortStrings() {
-        String[] strings;
-
-        System.out.println("\nStrings bubbleSort():");
-
-        strings = new String[] {"a", "b", "c"};
-        printBubbleSorted(strings);
-
-        strings = new String[] {"e", "d", "c", "b", "a"};
-        printBubbleSorted(strings);
-
-        strings = new String[] {"a", "b", "d", "c"};
-        printBubbleSorted(strings);
-    }
-
-    public static void testBubbleSortFloats() {
-        Double[] doubles;
-
-        System.out.println("\nDoubles bubbleSort():");
-
-        doubles = new Double[] {1.2, 7.8, 9.5, 9.4999};
-        printBubbleSorted(doubles);
-
-        doubles = new Double[] {10.5, 5.1, 0.115, 0.1111};
-        printBubbleSorted(doubles);
-
-        doubles = new Double[] {1.2, 100.12, 5.9};
-        printBubbleSorted(doubles);
-    }
-
-    public static void printSorted(Comparable[] elements) {
-        boolean isSorted = Sorter.isSorted(elements);
-
-        System.out.printf("   [%s]: %s\n", joinElements(elements), isSorted ? "sorted" : "not sorted");
-    }
-
-    public static void printBubbleSorted(Comparable[] elements) {
-        String joinedElements = joinElements(elements);
-        Comparable[] sorted = Sorter.bubbleSort(elements);
-        boolean isSorted = Sorter.isSorted(sorted);
-
-        System.out.printf("   bubbleSort([%s]) = [%s]: %s\n", joinedElements, joinElements(sorted), isSorted ? "sorted" : "not sorted");
-    }
-
-    public static String joinElements(Comparable[] elements) {
-        StringBuilder sb = new StringBuilder();
-
-        for (int i = 0; i < elements.length; i++) {
-            sb.append(elements[i]);
-
-            if (i < elements.length - 1) {
-                sb.append(", ");
+            if (value.compareTo(next) > 0) {
+                return false;
             }
         }
 
-        return sb.toString();
+        return true;
+    }
+
+    /**
+     * Bubble sort.
+     */
+    public static Comparable[] bubbleSort(Comparable[] elements) {
+        while (bytintill(elements)) {
+            // keep swapping
+        }
+
+        return elements;
+    }
+
+    /**
+     * Swap elements in descending order and return true if a swap occurred.
+     */
+    private static boolean bytintill(Comparable[] elements) {
+        boolean swapped = false;
+
+        for (int i = 0; i < elements.length - 1; i++) {
+            Comparable value = elements[i];
+            Comparable next = elements[i+1];
+
+            if (value.compareTo(next) > 0) {
+                elements[i] = next;
+                elements[i+1] = value;
+
+                swapped = true;
+            }
+        }
+
+        return swapped;
     }
 }

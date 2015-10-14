@@ -1,29 +1,31 @@
+import java.util.Arrays;
+
 public class ArrayTests {
 
-    public static void run() {
-        int[] array = buildArray();
-
-        System.out.printf("Array contains '3': %s\n", containsNumber(array, 3) ? "Yes" : "No");
-        System.out.printf("Index of '4': %d\n", indexOf(array, 4));
-        System.out.printf("Count '3': %d\n", count(array, 3));
-        System.out.printf("Found double '6': %s\n", hasDouble(array, 5) ? "Yes" : "No");
-
-        int[] newArray = array.clone();
-        newArray = addNumber(newArray, 3);
-
-        newArray = replace(newArray, 3, 4);
-        newArray = switchElements(newArray, 3, 4);
+    public static int[] range(int end) {
+        return range(0, end, 1);
     }
 
-    public static int[] buildArray() {
-        int[] array = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    public static int[] range(int start, int end) {
+        return range(start, end, 1);
+    }
+
+    public static int[] range(int start, int end, int step) {
+        int length = (int) Math.ceil((end - start) / ((double) step));
+        int[] array = new int[length];
+
+        int n = start;
+        for (int i = 0; i < length; i++) {
+            array[i] = n;
+            n += step;
+        }
 
         return array;
     }
 
-    public static boolean containsNumber(int[] numbers, int checkNumber) {
-        for (int number : numbers) {
-            if (number == checkNumber) {
+    public static boolean contains(int[] elements, int check) {
+        for (int element : elements) {
+            if (element == check) {
                 return true;
             }
         }
@@ -64,11 +66,7 @@ public class ArrayTests {
     }
 
     public static int[] addNumber(int[] array, int number) {
-        int[] newArray = new int[array.length + 1];
-
-        for (int i = 0; i < array.length; i++) {
-            newArray[i] = array[i];
-        }
+        int[] newArray = Arrays.copyOf(array, array.length + 1);
 
         newArray[array.length] = number;
 
@@ -85,10 +83,10 @@ public class ArrayTests {
         return array;
     }
 
-    public static int[] switchElements(int[] array, int from, int to) {
-        int value = array[from];
-        array[from] = array[to];
-        array[to] = value;
+    public static int[] switchElements(int[] array, int index_from, int index_to) {
+        int value = array[index_from];
+        array[index_from] = array[index_to];
+        array[index_to] = value;
 
         return array;
     }
