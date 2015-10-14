@@ -1,8 +1,5 @@
 import java.util.Arrays;
 
-/**
- * Created by Equadon on 2015-10-13.
- */
 public class Labb1Tests {
 
     public static void testSumOfDigits() {
@@ -13,25 +10,6 @@ public class Labb1Tests {
         printSum(1001);
         printSum(12345);
         printSum(999999);
-    }
-
-    public static void printSum(int number) {
-        System.out.printf("   %-6d  ==>  %d\n", number, Labb1.sumOfDigits(number));
-    }
-
-    public static void printSorted(Comparable[] elements) {
-        String sortedString = Labb1.isSorted(elements) ? "sorted" : "not sorted";
-
-        System.out.printf("   %-19s (%s)\n", Arrays.toString(elements), sortedString);
-    }
-
-    public static void printBubbleSorted(Comparable[] elements) {
-        String joinedElements = Arrays.toString(elements);
-
-        Labb1.bubbleSort(elements);
-        String sortedString = Labb1.isSorted(elements) ? "sorted" : "not sorted";
-
-        System.out.printf("   %-26s  ==>  %-26s  (%s)\n", joinedElements, Arrays.toString(elements), sortedString);
     }
 
     public static void testIsSorted() {
@@ -115,6 +93,25 @@ public class Labb1Tests {
 
     public static void printRange(String range, int[] numbers) {
         System.out.printf("%-16s -> %s\n", range, Arrays.toString(numbers));
+    }
+
+    public static void printSum(int number) {
+        System.out.printf("   %-6d  ==>  %d\n", number, Labb1.sumOfDigits(number));
+    }
+
+    public static void printSorted(Comparable[] elements) {
+        String sortedString = Labb1.isSorted(elements) ? "sorted" : "not sorted";
+
+        System.out.printf("   %-19s (%s)\n", Arrays.toString(elements), sortedString);
+    }
+
+    public static void printBubbleSorted(Comparable[] elements) {
+        String joinedElements = Arrays.toString(elements);
+
+        Labb1.bubbleSort(elements);
+        String sortedString = Labb1.isSorted(elements) ? "sorted" : "not sorted";
+
+        System.out.printf("   %-26s  ==>  %-26s  (%s)\n", joinedElements, Arrays.toString(elements), sortedString);
     }
 
     public static void testArrays() {
