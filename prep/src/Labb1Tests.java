@@ -41,7 +41,7 @@ public class Labb1Tests {
 
         numbers = new Integer[] {1, 2, 3, 4};
         printBubbleSorted(numbers);
-
+        
         numbers = new Integer[] {1, 2, 5, 4, 3};
         printBubbleSorted(numbers);
 

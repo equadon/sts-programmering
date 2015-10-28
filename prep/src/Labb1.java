@@ -46,9 +46,7 @@ public class Labb1 {
      * Bubble sort.
      */
     public static void bubbleSort(Comparable[] elements) {
-        while (bytintill(elements)) {
-            // keep swapping
-        }
+        while (bytintill(elements));
     }
 
     /**
