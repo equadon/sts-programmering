@@ -6,13 +6,15 @@ public class Village {
     public final int width;
     public final int height;
 
-    public Village(int peopleCount, int width, int height, boolean vaccinated) {
+    public Village(int peopleCount, int width, int height, boolean vaccinated,
+            double initSickProb, double getWellProb, double deadProb, double infectProb,
+            int infectRange, int daysImmune) {
         this.width = width;
         this.height = height;
 
         population = new Person[peopleCount];
         for (int i = 0; i < population.length; i++)
-            population[i] = new Person(this, vaccinated);
+            population[i] = new Person(this, vaccinated, initSickProb, getWellProb, deadProb, infectProb, infectRange, daysImmune);
     }
 
     public Person[] getPopulation() {
@@ -31,6 +33,14 @@ public class Village {
         int count = 0;
         for (Person person : population)
             if (person.isDead())
+                count++;
+        return count;
+    }
+
+    public int countImmune() {
+        int count = 0;
+        for (Person person : population)
+            if (person.isImmune())
                 count++;
         return count;
     }

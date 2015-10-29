@@ -1,13 +1,12 @@
 package lab2;
 
 public class Person {
-    private static final double INIT_SICK_PROB = 0.5;
-    private static final double GET_WELL_PROB = 0.5;
-    private static final double DEAD_PROB = 0.5;
-    private static final double INFECT_RANGE = 50;
-    private static final int DAYS_IMMUNE = 5;
-
-    private double INFECT_PROB = 0.3;
+    public static final double INIT_SICK_PROB = 0.5;
+    public static final double GET_WELL_PROB = 0.5;
+    public static final double DEAD_PROB = 0.5;
+    public static final double INFECT_PROB = 0.3;
+    public static final int INFECT_RANGE = 50;
+    public static final int DAYS_IMMUNE = 5;
 
     private final Village village;
 
@@ -18,17 +17,41 @@ public class Person {
     private double y;
 
     private int daysLeftImmune;
+    
+    private final double initSickProb;
+    private final double getWellProb;
+    private final double deadProb;
+    private double infectProb;
+    private final int infectRange;
+    private final int daysImmune;
 
-    public Person(Village village, boolean vaccinated) {
+    public Person(Village village, boolean vaccinated,
+            double initSickProb, double getWellProb, double deadProb, double infectProb,
+            int infectRange, int daysImmune) {
         this.village = village;
+        
+        this.initSickProb = initSickProb;
+        this.getWellProb = getWellProb;
+        this.deadProb = deadProb;
+        this.infectProb = infectProb;
+        this.infectRange = infectRange;
+        this.daysImmune = daysImmune;
 
-        sick = Math.random() < INIT_SICK_PROB;
+        sick = Math.random() < this.initSickProb;
 
         x = Math.random() * village.width;
         y = Math.random() * village.height;
 
         if (vaccinated && Math.random() < 0.5)
-            INFECT_PROB = 0.5 * INFECT_PROB;
+            infectProb = 0.5 * infectProb;
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
     }
 
     public boolean isSick() {
@@ -53,16 +76,16 @@ public class Person {
 
         double distance = Math.sqrt((xDiff * xDiff) + (yDiff * yDiff));
 
-        if (distance < INFECT_RANGE)
+        if (distance < infectRange)
             victim.becomeInfected();
     }
 
     public void nextDay() {
-        if (Math.random() < GET_WELL_PROB)
+        if (Math.random() < getWellProb)
             sick = false;
 
         if (isSick()) {
-            dead = Math.random() < DEAD_PROB;
+            dead = Math.random() < deadProb;
 
             if (!isDead())
                 for (Person person : village.getPopulation())
@@ -75,9 +98,9 @@ public class Person {
     }
 
     private void becomeInfected() {
-        if (canBeInfected() && Math.random() < INFECT_PROB) {
+        if (canBeInfected() && Math.random() < infectProb) {
             sick = true;
-            daysLeftImmune = DAYS_IMMUNE;
+            daysLeftImmune = daysImmune;
         }
     }
 }

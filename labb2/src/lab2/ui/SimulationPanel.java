@@ -4,19 +4,43 @@ import lab2.Village;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import lab2.Person;
 
-public class SimulationPanel extends JPanel {
+public class SimulationPanel extends JPanel implements ActionListener {
     public static final int BORDER = 20;
+    
+    private SimulationUI ui;
 
+    private int day;
+    private Timer timer;
     private Village village;
 
-    public SimulationPanel() {
+    public SimulationPanel(SimulationUI ui) {
+        this.ui = ui;
+
         setPreferredSize(new Dimension(600, 600));
-        newSimulation();
     }
 
-    private void newSimulation() {
-        //village = new Village();
+    public void initialize(int population, int width, int height, boolean vaccinated, double initSickProb, double getWellProb, double deadProb, double infectProb, int infectRange, int daysImmune) {
+        day = 1;
+        timer = new Timer(200, this);
+        village = new Village(population, width, height, vaccinated, initSickProb, getWellProb, deadProb, infectProb, infectRange, daysImmune);
+        
+        ui.outputText.setText("");
+        
+        repaint();
+    }
+    
+    public void start() {
+        timer.start();
+    }
+    
+    public void stop() {
+        timer.stop();
+        
+        ui.simulateButton.setText("Initialize village!");
     }
 
     @Override
@@ -33,9 +57,49 @@ public class SimulationPanel extends JPanel {
     private void drawVillage(Graphics2D g) {
         g.setColor(new Color(96, 96, 96));
         g.fillRect(0, 0, getWidth(), getHeight());
+        
+        if (village == null)
+            return;
+
     }
 
     private void drawPeople(Graphics2D g) {
+        if (village == null)
+            return;
 
+        for (Person person : village.getPopulation())
+            drawPerson(g, person);
+    }
+
+    private void drawPerson(Graphics2D g, Person person) {
+        if (person.isSick())
+            g.setColor(new Color(214, 198, 191));
+        else if (person.isImmune())
+            g.setColor(new Color(65, 109, 204));
+        else if (person.isDead())
+            g.setColor(new Color(204, 68, 44));
+        else
+            g.setColor(new Color(85, 204, 91));
+        
+        int x = getBounds().x + (int) (getWidth() * (person.getX() / village.width));
+        int y = getBounds().y + (int) (getHeight() * (person.getY() / village.height));
+        
+        int width = (int) (0.01 * getWidth());
+        int height = (int) (0.01 * getHeight());
+        
+        g.fillOval(x, y, width, height);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        ui.outputText.append(String.format("Day %3d: sick=%4d, dead=%4d, immune=%4d\n", day, village.countSick(), village.countDead(), village.countImmune()));
+
+        if (village.countSick() > 0 || village.countImmune() > 0) {
+            village.nextDay();
+            day++;
+            repaint();
+        } else {
+            stop();
+        }
     }
 }

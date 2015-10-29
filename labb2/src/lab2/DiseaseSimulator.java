@@ -1,7 +1,5 @@
 package lab2;
 
-import lab2.ui.SimulationUIOld;
-
 import javax.swing.*;
 import lab2.ui.SimulationUI;
 
@@ -12,7 +10,7 @@ public class DiseaseSimulator {
         double dead = 0;
 
         for (int i = 0; i < n; i++) {
-            Village village = new Village(1000, width, height, vaccinated);
+            Village village = new Village(1000, width, height, vaccinated, Person.INIT_SICK_PROB, Person.GET_WELL_PROB, Person.DEAD_PROB, Person.INFECT_PROB, Person.INFECT_RANGE, Person.DAYS_IMMUNE);
 
             while (village.countSick() > 0)
                 village.nextDay();
