@@ -31,9 +31,6 @@ public class SimulationUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        simulationPanel = new SimulationPanel((SimulationUI) this);
-        infoPanel = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
         controlPanel = new javax.swing.JPanel();
         populationLabel = new javax.swing.JLabel();
         populationText = new javax.swing.JTextField();
@@ -83,42 +80,12 @@ public class SimulationUI extends javax.swing.JFrame {
         labelTable.put(new Integer(100), new JLabel("Fast") );
         simulationSpeedSlider.setLabelTable(labelTable);
         simulationSpeedSlider.setPaintLabels(true);
+        leftPanel = new javax.swing.JPanel();
+        simulationPanel = new SimulationPanel((SimulationUI) this);
+        infoPanel = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        simulationPanel.setPreferredSize(new java.awt.Dimension(600, 600));
-
-        javax.swing.GroupLayout simulationPanelLayout = new javax.swing.GroupLayout(simulationPanel);
-        simulationPanel.setLayout(simulationPanelLayout);
-        simulationPanelLayout.setHorizontalGroup(
-            simulationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        simulationPanelLayout.setVerticalGroup(
-            simulationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        getContentPane().add(simulationPanel, java.awt.BorderLayout.CENTER);
-
-        infoPanel.setPreferredSize(new java.awt.Dimension(495, 200));
-
-        outputText.setColumns(20);
-        outputText.setRows(5);
-        jScrollPane1.setViewportView(outputText);
-
-        javax.swing.GroupLayout infoPanelLayout = new javax.swing.GroupLayout(infoPanel);
-        infoPanel.setLayout(infoPanelLayout);
-        infoPanelLayout.setHorizontalGroup(
-            infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE)
-        );
-        infoPanelLayout.setVerticalGroup(
-            infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
-        );
-
-        getContentPane().add(infoPanel, java.awt.BorderLayout.SOUTH);
 
         controlPanel.setPreferredSize(new java.awt.Dimension(170, 650));
 
@@ -288,10 +255,48 @@ public class SimulationUI extends javax.swing.JFrame {
                 .addComponent(simulationSpeedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(simulateButton)
-                .addContainerGap(78, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         getContentPane().add(controlPanel, java.awt.BorderLayout.EAST);
+
+        leftPanel.setLayout(new java.awt.BorderLayout());
+
+        simulationPanel.setPreferredSize(new java.awt.Dimension(600, 600));
+
+        javax.swing.GroupLayout simulationPanelLayout = new javax.swing.GroupLayout(simulationPanel);
+        simulationPanel.setLayout(simulationPanelLayout);
+        simulationPanelLayout.setHorizontalGroup(
+            simulationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 583, Short.MAX_VALUE)
+        );
+        simulationPanelLayout.setVerticalGroup(
+            simulationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 556, Short.MAX_VALUE)
+        );
+
+        leftPanel.add(simulationPanel, java.awt.BorderLayout.CENTER);
+
+        infoPanel.setPreferredSize(new java.awt.Dimension(395, 200));
+
+        outputText.setColumns(20);
+        outputText.setRows(5);
+        jScrollPane1.setViewportView(outputText);
+
+        javax.swing.GroupLayout infoPanelLayout = new javax.swing.GroupLayout(infoPanel);
+        infoPanel.setLayout(infoPanelLayout);
+        infoPanelLayout.setHorizontalGroup(
+            infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE)
+        );
+        infoPanelLayout.setVerticalGroup(
+            infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+        );
+
+        leftPanel.add(infoPanel, java.awt.BorderLayout.SOUTH);
+
+        getContentPane().add(leftPanel, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -393,6 +398,7 @@ public class SimulationUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JPanel leftPanel;
     public final javax.swing.JTextArea outputText = new javax.swing.JTextArea();
     private javax.swing.JLabel populationLabel;
     private javax.swing.JTextField populationText;
