@@ -1,3 +1,5 @@
+package lab2;
+
 public class Person {
     private static final double INIT_SICK_PROB = 0.5;
     private static final double GET_WELL_PROB = 0.5;

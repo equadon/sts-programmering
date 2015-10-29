@@ -1,3 +1,10 @@
+package lab2;
+
+import lab2.ui.SimulationUIOld;
+
+import javax.swing.*;
+import lab2.ui.SimulationUI;
+
 public class DiseaseSimulator {
     private static int SIMULATIONS = 100;
 
@@ -16,11 +23,15 @@ public class DiseaseSimulator {
         return dead / n;
     }
 
-    public static void main(String[] args) {
+    public static void simulateAvarage() {
         double avarageDead = avarage(SIMULATIONS, false, 1000, 1000);
-        System.out.println("Medelvärdet av antal döda (ej vaccinerade): " + avarageDead);
+        System.out.println("MedelvÃ¤rdet av antal dÃ¶da (ej vaccinerade): " + avarageDead);
 
         avarageDead = avarage(SIMULATIONS, true, 1000, 1000);
-        System.out.println("Medelvärdet av antal döda (vaccinerade): " + avarageDead);
+        System.out.println("MedelvÃ¤rdet av antal dÃ¶da (vaccinerade): " + avarageDead);
+    }
+
+    public static void main(String[] args) {
+        SimulationUI.init();
     }
 }
