@@ -23,9 +23,9 @@ public class SimulationPanel extends JPanel implements ActionListener {
         setPreferredSize(new Dimension(600, 600));
     }
 
-    public void initialize(int population, int width, int height, boolean vaccinated, double initSickProb, double getWellProb, double deadProb, double infectProb, int infectRange, int daysImmune) {
+    public void initialize(int simulationSpeed, int population, int width, int height, boolean vaccinated, double initSickProb, double getWellProb, double deadProb, double infectProb, int infectRange, int daysImmune) {
         day = 1;
-        timer = new Timer(200, this);
+        timer = new Timer(simulationSpeed, this);
         village = new Village(population, width, height, vaccinated, initSickProb, getWellProb, deadProb, infectProb, infectRange, daysImmune);
         
         ui.outputText.setText("");
@@ -84,10 +84,20 @@ public class SimulationPanel extends JPanel implements ActionListener {
         int x = getBounds().x + (int) (getWidth() * (person.getX() / village.width));
         int y = getBounds().y + (int) (getHeight() * (person.getY() / village.height));
         
-        int width = (int) (0.01 * getWidth());
-        int height = (int) (0.01 * getHeight());
+        int diameter = getDiameter();
         
-        g.fillOval(x, y, width, height);
+        g.fillOval(x, y, diameter, diameter);
+    }
+    
+    private int getDiameter() {
+        if (village.width <= 500)
+            return 8;
+        else if (village.width <= 1000)
+            return 6;
+        else if (village.width < 5000)
+            return 4;
+        else
+            return 3;
     }
 
     @Override

@@ -76,6 +76,13 @@ public class SimulationUI extends javax.swing.JFrame {
         deadProbSlider.setLabelTable(labelTable);
         deadProbSlider.setPaintLabels(true);
         jLabel3 = new javax.swing.JLabel();
+        simulationSpeedSlider = new javax.swing.JSlider();
+        labelTable = new Hashtable();
+        labelTable.put(new Integer(0), new JLabel("Slow") );
+        labelTable.put(new Integer(50), new JLabel("") );
+        labelTable.put(new Integer(100), new JLabel("Fast") );
+        simulationSpeedSlider.setLabelTable(labelTable);
+        simulationSpeedSlider.setPaintLabels(true);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -113,7 +120,7 @@ public class SimulationUI extends javax.swing.JFrame {
 
         getContentPane().add(infoPanel, java.awt.BorderLayout.SOUTH);
 
-        controlPanel.setPreferredSize(new java.awt.Dimension(170, 100));
+        controlPanel.setPreferredSize(new java.awt.Dimension(170, 650));
 
         populationLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         populationLabel.setText("Population:");
@@ -199,6 +206,13 @@ public class SimulationUI extends javax.swing.JFrame {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Simulation");
 
+        simulationSpeedSlider.setMajorTickSpacing(50);
+        simulationSpeedSlider.setMinorTickSpacing(25);
+        simulationSpeedSlider.setPaintLabels(true);
+        simulationSpeedSlider.setPaintTicks(true);
+        simulationSpeedSlider.setToolTipText("INIT_SICK_PROB");
+        simulationSpeedSlider.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1), "Simulation speed:"));
+
         javax.swing.GroupLayout controlPanelLayout = new javax.swing.GroupLayout(controlPanel);
         controlPanel.setLayout(controlPanelLayout);
         controlPanelLayout.setHorizontalGroup(
@@ -208,30 +222,29 @@ public class SimulationUI extends javax.swing.JFrame {
                 .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(simulateButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(simulateButton, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
                     .addComponent(initSickProbSlider, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(getWellProbSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(infectProbSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(deadProbSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, controlPanelLayout.createSequentialGroup()
-                        .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(controlPanelLayout.createSequentialGroup()
                                 .addGap(9, 9, 9)
-                                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(populationLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(populationLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(controlPanelLayout.createSequentialGroup()
-                                .addGap(23, 23, 23)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(daysImmuneText)
+                        .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(infectedRangeText)
                             .addComponent(populationText)
                             .addComponent(widthText)
-                            .addComponent(heightText)))
-                    .addComponent(vaccinatedCheck, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(heightText)
+                            .addComponent(daysImmuneText, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addComponent(vaccinatedCheck, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(simulationSpeedSlider, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
         controlPanelLayout.setVerticalGroup(
@@ -271,9 +284,11 @@ public class SimulationUI extends javax.swing.JFrame {
                 .addComponent(deadProbSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(infectProbSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(simulationSpeedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(simulateButton)
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addContainerGap(78, Short.MAX_VALUE))
         );
 
         getContentPane().add(controlPanel, java.awt.BorderLayout.EAST);
@@ -289,6 +304,7 @@ public class SimulationUI extends javax.swing.JFrame {
         try {
             SimulationPanel simulation = (SimulationPanel) simulationPanel;
             if (simulateButton.getText().equals("Initialize village!")) {
+                int simulationSpeed = (int) (-4.5 * simulationSpeedSlider.getValue() + 200);
                 int population = Integer.parseInt(populationText.getText());
                 int width = Integer.parseInt(widthText.getText());
                 int height = Integer.parseInt(heightText.getText());
@@ -302,9 +318,11 @@ public class SimulationUI extends javax.swing.JFrame {
                 int infectRnage = Integer.parseInt(infectedRangeText.getText());
                 int daysImmune = Integer.parseInt(daysImmuneText.getText());
                 
-                simulation.initialize(population, width, height, vaccinated, initSickProb, getWellProb, deadProb, infectProb, infectRnage, daysImmune);
+                simulation.initialize(simulationSpeed, population, width, height, vaccinated, initSickProb, getWellProb, deadProb, infectProb, infectRnage, daysImmune);
                 
                 simulateButton.setText("Start simulation!");
+            } else if (simulateButton.getText().equals("Simulation is running...")) {
+                simulation.stop();
             } else {
                 simulateButton.setText("Simulation is running...");
                 
@@ -380,6 +398,7 @@ public class SimulationUI extends javax.swing.JFrame {
     private javax.swing.JTextField populationText;
     public final javax.swing.JButton simulateButton = new javax.swing.JButton();
     private javax.swing.JPanel simulationPanel;
+    private javax.swing.JSlider simulationSpeedSlider;
     private javax.swing.JCheckBox vaccinatedCheck;
     private javax.swing.JTextField widthText;
     // End of variables declaration//GEN-END:variables

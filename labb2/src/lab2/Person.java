@@ -43,7 +43,7 @@ public class Person {
         y = Math.random() * village.height;
 
         if (vaccinated && Math.random() < 0.5)
-            infectProb = 0.5 * infectProb;
+            this.infectProb = 0.5 * infectProb;
     }
 
     public double getX() {
@@ -81,9 +81,16 @@ public class Person {
     }
 
     public void nextDay() {
-        if (Math.random() < getWellProb)
+        if (isImmune()) {
+            daysLeftImmune--;
+            return;
+        }
+        
+        if (isSick() && Math.random() < getWellProb) {
             sick = false;
-
+            daysLeftImmune = daysImmune;
+        }
+            
         if (isSick()) {
             dead = Math.random() < deadProb;
 
@@ -92,15 +99,11 @@ public class Person {
                     if (person != this)
                         infect(person);
         }
-
-        if (daysLeftImmune > 0)
-            daysLeftImmune--;
     }
 
     private void becomeInfected() {
         if (canBeInfected() && Math.random() < infectProb) {
             sick = true;
-            daysLeftImmune = daysImmune;
         }
     }
 }
