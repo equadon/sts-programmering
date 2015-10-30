@@ -31,5 +31,7 @@ public class DiseaseSimulator {
 
     public static void main(String[] args) {
         SimulationUI.init();
+        
+        simulateAvarage();
     }
 }

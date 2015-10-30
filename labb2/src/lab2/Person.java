@@ -80,19 +80,20 @@ public class Person {
             victim.becomeInfected();
     }
 
-    public void nextDay() {
+    public void nextDay() {        
         if (isImmune()) {
             daysLeftImmune--;
             return;
         }
         
-        if (isSick() && Math.random() < getWellProb) {
+        if (!isImmune() && isSick() && Math.random() < getWellProb) {
             sick = false;
             daysLeftImmune = daysImmune;
         }
             
         if (isSick()) {
-            dead = Math.random() < deadProb;
+            if (Math.random() < deadProb)
+                dead = true;
 
             if (!isDead())
                 for (Person person : village.getPopulation())
