@@ -25,6 +25,10 @@ public class DefaultClockPainter implements ClockPainter {
 
     protected double hourLineLength = 0.18;
 
+    protected boolean enableHourHand = true;
+    protected boolean enableMinuteHand = true;
+    protected boolean enableSecondHand = true;
+
     @Override
     public void draw(Graphics2D g, AnalogClock clock) {
         // Background
@@ -43,13 +47,16 @@ public class DefaultClockPainter implements ClockPainter {
             drawHourLine(g, clock, Math.toRadians(angle));
 
         // Hour hand
-        drawHand(g, clock, hourHandStroke, hourHandColor, hourHandLength, clock.getHourHandAngle());
+        if (enableHourHand)
+            drawHand(g, clock, hourHandStroke, hourHandColor, hourHandLength, clock.getHourHandAngle());
 
         // Minute hand
-        drawHand(g, clock, minuteHandStroke, minuteHandColor, minuteHandLength, clock.getMinuteHandAngle());
+        if (enableMinuteHand)
+            drawHand(g, clock, minuteHandStroke, minuteHandColor, minuteHandLength, clock.getMinuteHandAngle());
 
         // Second hand
-        drawHand(g, clock, secondHandStroke, secondHandColor, secondHandLength, clock.getSecondHandAngle());
+        if (enableSecondHand)
+            drawHand(g, clock, secondHandStroke, secondHandColor, secondHandLength, clock.getSecondHandAngle());
     }
 
     protected void drawHourLine(Graphics2D g, AnalogClock clock, double angle) {
