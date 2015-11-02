@@ -1,8 +1,7 @@
 package clock;
 
-import clock.painters.DefaultClockPainter;
-import clock.painters.GreenSecondClockPainter;
 import clock.painters.ClockPainter;
+import clock.painters.DefaultClockPainter;
 
 import java.awt.*;
 import java.util.Calendar;
@@ -16,7 +15,7 @@ public class DualClock {
             {{90,90}, {270,180}, {90,90}, {270,180}, {90,90}, {270,0}},
             {{180,180}, {180,180}, {90,0}, {180,0}, {-1,-1}, {0,0}},
             {{90,180}, {270,270}, {90,0}, {270,180}, {90,90}, {270,0}},
-            {{90,180}, {270,270}, {0,180}, {270,180}, {90,0}, {270,0}},
+            {{90,180}, {270,270}, {180,0}, {270,180}, {90,0}, {270,0}},
             {{90,90}, {270,180}, {-1,-1}, {180,0}, {-1,-1}, {0,0}},
             {{90,180}, {270,180}, {90,180}, {270,180}, {90,0}, {270,0}},
             {{90,180}, {270,180}, {90,0}, {180,0}, {-1,-1}, {0,0}},
@@ -42,8 +41,7 @@ public class DualClock {
         minuteClocks = new AnalogClock[2 * COLS * ROWS];
         secondClocks = new AnalogClock[2 * COLS * ROWS];
 
-        ClockPainter defaultPainter = new DefaultClockPainter();
-        ClockPainter greenPainter = new GreenSecondClockPainter();
+        ClockPainter painter = new DefaultClockPainter();
 
         int r = AnalogClock.RADIUS;
 
@@ -54,8 +52,6 @@ public class DualClock {
 
             int minutesOffset = 9 * r;
             int secondsOffset = 18 * r;
-
-            ClockPainter painter = (Math.random() < 0.5) ? defaultPainter : greenPainter;
 
             hourClocks[i] = new AnalogClock(r + col * r * 2, r + row * r * 2, r, painter);
             minuteClocks[i] = new AnalogClock(minutesOffset + r + col * r * 2, r + row * r * 2, r, painter);
@@ -68,8 +64,6 @@ public class DualClock {
 
             int minutesOffset = 9 * r;
             int secondsOffset = 18 * r;
-
-            ClockPainter painter = (Math.random() < 0.5) ? defaultPainter : greenPainter;
 
             hourClocks[i] = new AnalogClock(4* r + r + col * r * 2, r + row * r * 2, r, painter);
             minuteClocks[i] = new AnalogClock(4* r + minutesOffset + r + col * r * 2, r + row * r * 2, r, painter);

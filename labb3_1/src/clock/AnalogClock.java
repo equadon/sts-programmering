@@ -1,11 +1,12 @@
 package clock;
 
 import clock.painters.ClockPainter;
+import clock.painters.DisabledClockPainter;
 
 import java.awt.*;
 
 public class AnalogClock {
-    public static final int RADIUS = 40;
+    public static final int RADIUS = 50;
 
     public static final double DEG_PER_HOUR = 360 / 12.0;
     public static final double DEG_PER_MINUTE = 360 / 60.0;
@@ -13,12 +14,14 @@ public class AnalogClock {
 
     public static final boolean PERFECT_DIGITAL_ANGLES = false;
 
+    public static final ClockPainter DISABLED_PAINTER = new DisabledClockPainter();
+
     public final int x;
     public final int y;
     public final int radius;
     public final Rectangle bounds;
 
-    private ClockPainter painter;
+    private final ClockPainter painter;
 
     private int hour;
     private int minute;
@@ -63,7 +66,10 @@ public class AnalogClock {
     }
 
     public void draw(Graphics2D g) {
-        painter.draw(g, this);
+        if (isEnabled())
+            painter.draw(g, this);
+        else
+            DISABLED_PAINTER.draw(g, this);
     }
 
     public void updateDigital(Integer hourDegree, Integer minuteDegree, int second) {
