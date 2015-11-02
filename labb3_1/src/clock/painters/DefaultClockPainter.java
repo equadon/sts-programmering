@@ -18,6 +18,7 @@ public class DefaultClockPainter implements ClockPainter {
     protected double secondHandLength = 0.9;
 
     protected int borderStroke = 1;
+    protected int hourLineStroke = 1;
     protected int hourHandStroke = 4;
     protected int minuteHandStroke = 4;
     protected int secondHandStroke = 1;
@@ -36,6 +37,7 @@ public class DefaultClockPainter implements ClockPainter {
         g.drawOval(clock.bounds.x, clock.bounds.y, clock.bounds.width, clock.bounds.height);
 
         // Hour lines
+        g.setStroke(new BasicStroke(hourLineStroke));
         g.setColor(hourLinesColor);
         for (int angle = 0; angle < 360; angle += 30)
             drawHourLine(g, clock, Math.toRadians(angle));
