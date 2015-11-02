@@ -52,7 +52,7 @@ public class DefaultClockPainter implements ClockPainter {
         drawHand(g, clock, secondHandStroke, secondHandColor, secondHandLength, clock.getSecondHandAngle());
     }
 
-    private void drawHourLine(Graphics2D g, AnalogClock clock, double angle) {
+    protected void drawHourLine(Graphics2D g, AnalogClock clock, double angle) {
         double x1 = clock.x + (0.99 - hourLineLength) * clock.radius * Math.cos(angle - Math.PI/2);
         double y1 = clock.y + (0.99 - hourLineLength) * clock.radius * Math.sin(angle - Math.PI/2);
 
@@ -64,7 +64,7 @@ public class DefaultClockPainter implements ClockPainter {
         g.drawLine((int) x1, (int) y1, (int) x2, (int) y2);
     }
 
-    private void drawHand(Graphics2D g, AnalogClock clock, int strokeWidth, Color color, double length, double angle) {
+    protected void drawHand(Graphics2D g, AnalogClock clock, int strokeWidth, Color color, double length, double angle) {
         double x2 = clock.x + length * clock.radius * Math.cos(angle - Math.PI/2);
         double y2 = clock.y + length * clock.radius * Math.sin(angle - Math.PI/2);
 
