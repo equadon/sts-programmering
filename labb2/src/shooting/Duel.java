@@ -1,87 +1,75 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package shooting;
 
-public class Duel {
-   private Person[] players;
-   private Person sofie;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
 
-    public Duel(Person[] players, Person sofie) {
-        this.players = players;
-        this.sofie = sofie;
+public class Duel {
+    private static final Logger LOG = Logger.getLogger(Duel.class.getName());
+
+    private List<Player> players;
+    private List<Player> deadPlayers;
+
+    public Duel() {
+        players = new ArrayList<>();
+        deadPlayers = new ArrayList<>();
     }
-    
-    public void duel() {
-        while (!endDuel()) {
-            if (countDead() > 0) {
-                sofie.setAccuracy(0.3);
-            }
-            
-            for (Person person : players) {
-                //System.out.printf("%s: hits=%d, accuracy=%.3f\n", person.name, person.hitCount(), person.accuracy);
-                if (person.isAlive()) {
-                    Person victim = chooseVictim(person);
-                    person.shoot(victim);
-                }    
-            }
+
+    public Player[] getPlayers() {
+        return players.toArray(new Player[players.size()]);
+    }
+
+    public Player[] getDeadPlayers() {
+        return deadPlayers.toArray(new Player[deadPlayers.size()]);
+    }
+
+    public void registerPlayers(Player[] players) {
+        for (Player player : players) {
+            LOG.fine("Added player: " + player.name);
+            this.players.add(player);
         }
     }
-    
-    public Person chooseVictim(Person ignore) {
-        Person highest = null;
-        
-        for (Person person : players) {
-            if (person != ignore) {
-                if (highest == null) {
-                    highest = person;
-                } else if (person.isAlive() && person.accuracy > highest.accuracy) {
-                    highest = person;
+
+    private void killPlayer(Player player) {
+        if (player.isDead() && !deadPlayers.contains(player)) {
+            players.remove(player);
+            deadPlayers.add(player);
+        }
+    }
+
+    public void simulate() {
+        boolean running = true;
+
+        while (running) {
+            for (int i = 0; i < players.size(); i++) {
+                Player killed = players.get(i).shoot();
+                if (killed != null)
+                    killPlayer(killed);
+
+                if (players.size() <= 1) {
+                    running = false;
+                    break;
                 }
             }
         }
-        
-        return highest;
     }
-    
-    public int countDead() {
-        int count = 0;
-        for (Person person : players)
-            if (!person.isAlive())
-                count++;
-        return count;
+
+    public Player getWinner() {
+        if (countAlive() == 1)
+            for (Player player : players)
+                if (player.isAlive())
+                    return player;
+
+        return null;
     }
-    
-    public Person getWinner() {
-        Person winner = null;
-        int losers = 0;
-        
-        for (Person person : players) {
-            if (person.hitCount() < 3)
-                winner = person;
-        }
-        
-        return winner;
-    }
-    
-    private boolean endDuel() {
-        int playerCount = 0;
-        for (Person person : players) {
-            if (person.hitCount() > 2) {
-                playerCount++;
-            }
-        }
-        return playerCount > 1;
-    }
-    
+
     private int countAlive() {
         int count = 0;
-        for(Person person: players) 
-            if (!person.isHit())
+
+        for (Player player : players)
+            if (player.isAlive())
                 count++;
+
         return count;
     }
-   
 }
