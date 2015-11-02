@@ -36,10 +36,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ClockPanel.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ClockPanel.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ClockPanel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6375618">
+            <state vertical-scroll-proportion="0.0">
               <caret line="52" column="13" selection-start-line="52" selection-start-column="13" selection-end-line="52" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -54,7 +54,7 @@
         <entry file="file://$PROJECT_DIR$/src/ClockPainter.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="35" column="8" selection-start-line="35" selection-start-column="8" selection-end-line="35" selection-end-column="8" />
+              <caret line="52" column="78" selection-start-line="52" selection-start-column="78" selection-end-line="52" selection-end-column="78" />
               <folding />
             </state>
           </provider>
@@ -64,7 +64,7 @@
         <entry file="file://$PROJECT_DIR$/src/DualClock.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="32" column="26" selection-start-line="32" selection-start-column="26" selection-end-line="32" selection-end-column="26" />
+              <caret line="120" column="32" selection-start-line="120" selection-start-column="32" selection-end-line="120" selection-end-column="32" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#2825#2826#0" expanded="true" />
@@ -75,16 +75,21 @@
                 <element signature="e#3046#3047#0" expanded="true" />
                 <element signature="e#3078#3079#0" expanded="true" />
                 <element signature="e#3151#3152#0" expanded="true" />
+                <element signature="e#4188#4189#0" expanded="true" />
+                <element signature="e#4224#4225#0" expanded="true" />
+                <element signature="e#4303#4304#0" expanded="true" />
+                <element signature="e#4339#4340#0" expanded="true" />
+                <element signature="e#4418#4419#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AnalogClock.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="AnalogClock.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/AnalogClock.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="60" column="50" selection-start-line="60" selection-start-column="50" selection-end-line="60" selection-end-column="50" />
+            <state vertical-scroll-proportion="0.19477694">
+              <caret line="49" column="53" selection-start-line="49" selection-start-column="53" selection-end-line="49" selection-end-column="53" />
               <folding>
                 <element signature="e#836#837#0" expanded="true" />
                 <element signature="e#866#867#0" expanded="true" />
@@ -116,10 +121,10 @@
       <list>
         <option value="$PROJECT_DIR$/src/ClockDrawer.java" />
         <option value="$PROJECT_DIR$/src/AnalogClock.java" />
-        <option value="$PROJECT_DIR$/src/ClockPainter.java" />
         <option value="$PROJECT_DIR$/src/ClockUI.java" />
-        <option value="$PROJECT_DIR$/src/DualClock.java" />
         <option value="$PROJECT_DIR$/src/ClockPanel.java" />
+        <option value="$PROJECT_DIR$/src/DualClock.java" />
+        <option value="$PROJECT_DIR$/src/ClockPainter.java" />
       </list>
     </option>
   </component>
@@ -534,12 +539,12 @@
       <created>1446483394616</created>
       <option name="number" value="Default" />
       <updated>1446483394616</updated>
-      <workItem from="1446483397421" duration="13372000" />
+      <workItem from="1446483397421" duration="14177000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13372000" />
+    <option name="totallyTimeSpent" value="14177000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -553,10 +558,10 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32946146" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27243927" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17760417" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32946146" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -585,26 +590,15 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/AnalogClock.java">
+    <entry file="file://$PROJECT_DIR$/src/ClockPanel.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="60" column="50" selection-start-line="60" selection-start-column="50" selection-end-line="60" selection-end-column="50" />
+          <caret line="52" column="13" selection-start-line="52" selection-start-column="13" selection-end-line="52" selection-end-column="13" />
           <folding>
-            <element signature="e#836#837#0" expanded="true" />
-            <element signature="e#866#867#0" expanded="true" />
-            <element signature="e#1372#1373#0" expanded="true" />
-            <element signature="e#1434#1435#0" expanded="true" />
-            <element signature="e#1472#1473#0" expanded="true" />
-            <element signature="e#1509#1510#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#1258#1259#0" expanded="true" />
+            <element signature="e#1296#1297#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ClockPainter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="35" column="8" selection-start-line="35" selection-start-column="8" selection-end-line="35" selection-end-column="8" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -619,10 +613,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/ClockPainter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="52" column="78" selection-start-line="52" selection-start-column="78" selection-end-line="52" selection-end-column="78" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/DualClock.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="32" column="26" selection-start-line="32" selection-start-column="26" selection-end-line="32" selection-end-column="26" />
+          <caret line="120" column="32" selection-start-line="120" selection-start-column="32" selection-end-line="120" selection-end-column="32" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#2825#2826#0" expanded="true" />
@@ -633,18 +635,26 @@
             <element signature="e#3046#3047#0" expanded="true" />
             <element signature="e#3078#3079#0" expanded="true" />
             <element signature="e#3151#3152#0" expanded="true" />
+            <element signature="e#4188#4189#0" expanded="true" />
+            <element signature="e#4224#4225#0" expanded="true" />
+            <element signature="e#4303#4304#0" expanded="true" />
+            <element signature="e#4339#4340#0" expanded="true" />
+            <element signature="e#4418#4419#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ClockPanel.java">
+    <entry file="file://$PROJECT_DIR$/src/AnalogClock.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6375618">
-          <caret line="52" column="13" selection-start-line="52" selection-start-column="13" selection-end-line="52" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.19477694">
+          <caret line="49" column="53" selection-start-line="49" selection-start-column="53" selection-end-line="49" selection-end-column="53" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1258#1259#0" expanded="true" />
-            <element signature="e#1296#1297#0" expanded="true" />
+            <element signature="e#836#837#0" expanded="true" />
+            <element signature="e#866#867#0" expanded="true" />
+            <element signature="e#1372#1373#0" expanded="true" />
+            <element signature="e#1434#1435#0" expanded="true" />
+            <element signature="e#1472#1473#0" expanded="true" />
+            <element signature="e#1509#1510#0" expanded="true" />
           </folding>
         </state>
       </provider>

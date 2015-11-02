@@ -119,38 +119,23 @@ public class DualClock {
     }
 
     private void updateHours() {
-        String hour = String.format("%02d", getHour());
-
-        for (int i = 0; i < 12; i++) {
-            int hourPart = Integer.parseInt(hour.substring(i / 6, (i / 6) + 1));
-
-            int[] degrees = NUMBERS[hourPart][i % 6];
-
-            hourClocks[i].updateDigital(degrees[0], degrees[1], getSecond());
-        }
+        updateDigital(String.format("%02d", getHour()), hourClocks);
     }
 
     private void updateMinutes() {
-        String minute = String.format("%02d", getMinute());
-
-        for (int i = 0; i < 12; i++) {
-            int minutePart = Integer.parseInt(minute.substring(i / 6, (i / 6) + 1));
-
-            int[] degrees = NUMBERS[minutePart][i % 6];
-
-            minuteClocks[i].updateDigital(degrees[0], degrees[1], getSecond());
-        }
+        updateDigital(String.format("%02d", getMinute()), minuteClocks);
     }
 
     private void updateSeconds() {
-        String second = String.format("%02d", getSecond());
+        updateDigital(String.format("%02d", getSecond()), secondClocks);
+    }
 
+    private void updateDigital(String string, AnalogClock[] clocks) {
         for (int i = 0; i < 12; i++) {
-            int secondPart = Integer.parseInt(second.substring(i / 6, (i / 6) + 1));
+            int part = Integer.parseInt(string.substring(i / 6, (i / 6) + 1));
+            int[] degrees = NUMBERS[part][i % 6];
 
-            int[] degrees = NUMBERS[secondPart][i % 6];
-
-            secondClocks[i].updateDigital(degrees[0], degrees[1], getSecond());
+            clocks[i].updateDigital(degrees[0], degrees[1], getSecond());
         }
     }
 }

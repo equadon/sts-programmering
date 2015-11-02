@@ -50,7 +50,7 @@ public class ClockPainter {
 
     private void drawHand(Graphics2D g, AnalogClock clock, int strokeWidth, Color color, double length, double angle) {
         double x2 = clock.x + length * clock.radius * Math.cos(angle - Math.PI/2);
-        double y2 = clock.y + length * clock.radius * Math.sin(angle - Math.PI / 2);
+        double y2 = clock.y + length * clock.radius * Math.sin(angle - Math.PI/2);
 
         g.setColor(color);
         g.setStroke(new BasicStroke(strokeWidth));
