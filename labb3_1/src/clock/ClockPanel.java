@@ -1,3 +1,5 @@
+package clock;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,8 +17,8 @@ public class ClockPanel extends JPanel implements ActionListener, KeyListener {
 
         dualClock = new DualClock();
 
-        int width = 13 * 2 * DualClock.RADIUS;
-        int height = DualClock.ROWS * 2 * DualClock.RADIUS;
+        int width = 13 * 2 * AnalogClock.RADIUS;
+        int height = DualClock.ROWS * 2 * AnalogClock.RADIUS;
 
         setPreferredSize(new Dimension(width, height));
 

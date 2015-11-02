@@ -1,3 +1,5 @@
+package clock;
+
 import javax.swing.*;
 
 public class ClockUI extends JFrame {

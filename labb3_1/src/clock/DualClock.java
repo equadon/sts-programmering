@@ -1,3 +1,9 @@
+package clock;
+
+import clock.painters.DefaultClockPainter;
+import clock.painters.GreenSecondClockPainter;
+import clock.painters.ClockPainter;
+
 import java.awt.*;
 import java.util.Calendar;
 import java.util.Date;
@@ -16,11 +22,10 @@ public class DualClock {
             {{90,180}, {270,180}, {90,0}, {180,0}, {-1,-1}, {0,0}},
     };
 
-    public enum Mode { ANALOG, DIGITAL }
-
-    public static final int RADIUS = 40;
     public static final int COLS = 2;
     public static final int ROWS = 3;
+
+    public enum Mode { ANALOG, DIGITAL }
 
     private Mode mode;
     private Calendar calendar;
@@ -37,31 +42,38 @@ public class DualClock {
         minuteClocks = new AnalogClock[2 * COLS * ROWS];
         secondClocks = new AnalogClock[2 * COLS * ROWS];
 
-        ClockPainter painter = new ClockPainter();
+        ClockPainter defaultPainter = new DefaultClockPainter();
+        ClockPainter greenPainter = new GreenSecondClockPainter();
+
+        int r = AnalogClock.RADIUS;
 
         // Initiate clocks
         for (int i = 0; i < COLS*ROWS; i++) {
             int row = i / COLS;
             int col = i % COLS;
 
-            int minutesOffset = 9 * RADIUS;
-            int secondsOffset = 18 * RADIUS;
+            int minutesOffset = 9 * r;
+            int secondsOffset = 18 * r;
 
-            hourClocks[i] = new AnalogClock(RADIUS + col * RADIUS * 2, RADIUS + row * RADIUS * 2, RADIUS, painter);
-            minuteClocks[i] = new AnalogClock(minutesOffset + RADIUS + col * RADIUS * 2, RADIUS + row * RADIUS * 2, RADIUS, painter);
-            secondClocks[i] = new AnalogClock(secondsOffset + RADIUS + col * RADIUS * 2, RADIUS + row * RADIUS * 2, RADIUS, painter);
+            ClockPainter painter = (Math.random() < 0.5) ? defaultPainter : greenPainter;
+
+            hourClocks[i] = new AnalogClock(r + col * r * 2, r + row * r * 2, r, painter);
+            minuteClocks[i] = new AnalogClock(minutesOffset + r + col * r * 2, r + row * r * 2, r, painter);
+            secondClocks[i] = new AnalogClock(secondsOffset + r + col * r * 2, r + row * r * 2, r, painter);
         }
 
         for (int i = COLS*ROWS; i < 2*COLS*ROWS; i++) {
             int row = (i / COLS) % ROWS;
             int col = (i % COLS) % ROWS;
 
-            int minutesOffset = 9 * RADIUS;
-            int secondsOffset = 18 * RADIUS;
+            int minutesOffset = 9 * r;
+            int secondsOffset = 18 * r;
 
-            hourClocks[i] = new AnalogClock(4*RADIUS + RADIUS + col * RADIUS * 2, RADIUS + row * RADIUS * 2, RADIUS, painter);
-            minuteClocks[i] = new AnalogClock(4*RADIUS + minutesOffset + RADIUS + col * RADIUS * 2, RADIUS + row * RADIUS * 2, RADIUS, painter);
-            secondClocks[i] = new AnalogClock(4*RADIUS + secondsOffset + RADIUS + col * RADIUS * 2, RADIUS + row * RADIUS * 2, RADIUS, painter);
+            ClockPainter painter = (Math.random() < 0.5) ? defaultPainter : greenPainter;
+
+            hourClocks[i] = new AnalogClock(4* r + r + col * r * 2, r + row * r * 2, r, painter);
+            minuteClocks[i] = new AnalogClock(4* r + minutesOffset + r + col * r * 2, r + row * r * 2, r, painter);
+            secondClocks[i] = new AnalogClock(4* r + secondsOffset + r + col * r * 2, r + row * r * 2, r, painter);
         }
     }
 

@@ -1,6 +1,12 @@
+package clock;
+
+import clock.painters.ClockPainter;
+
 import java.awt.*;
 
 public class AnalogClock {
+    public static final int RADIUS = 40;
+
     public static final double DEG_PER_HOUR = 360 / 12.0;
     public static final double DEG_PER_MINUTE = 360 / 60.0;
     public static final double DEG_PER_SECOND = 360 / 60.0;
