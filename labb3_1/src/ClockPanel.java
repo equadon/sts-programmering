@@ -10,7 +10,7 @@ public class ClockPanel extends JPanel implements ActionListener, KeyListener {
     private DualClock dualClock;
 
     public ClockPanel() {
-        timer = new Timer(50, this);
+        timer = new Timer(200, this);
         timer.start();
 
         dualClock = new DualClock();
@@ -53,5 +53,7 @@ public class ClockPanel extends JPanel implements ActionListener, KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         dualClock.switchMode();
+        dualClock.update();
+        repaint();
     }
 }

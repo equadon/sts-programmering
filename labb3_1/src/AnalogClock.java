@@ -5,6 +5,8 @@ public class AnalogClock {
     public static final double DEG_PER_MINUTE = 360 / 60.0;
     public static final double DEG_PER_SECOND = 360 / 60.0;
 
+    public static final boolean PERFECT_DIGITAL_ANGLES = false;
+
     public final int x;
     public final int y;
     public final int radius;
@@ -63,8 +65,13 @@ public class AnalogClock {
 
         enabled = !(hourDegree == -1 || minuteDegree == -1);
 
-        this.hourDegree = hourDegree;
-        this.minuteDegree = minuteDegree;
+        if (PERFECT_DIGITAL_ANGLES) {
+            this.hourDegree = hourDegree;
+            this.minuteDegree = minuteDegree;
+        } else {
+            this.hour = hourDegree / 30;
+            this.minute = minuteDegree / 6;
+        }
     }
 
     public void update(int hour, int minute, int second) {
