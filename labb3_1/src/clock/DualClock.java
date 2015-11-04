@@ -43,31 +43,31 @@ public class DualClock {
 
         ClockPainter painter = new DefaultClockPainter();
 
-        int r = AnalogClock.RADIUS;
+        int radius = AnalogClock.RADIUS;
 
         // Initiate clocks
         for (int i = 0; i < COLS*ROWS; i++) {
             int row = i / COLS;
             int col = i % COLS;
 
-            int minutesOffset = 9 * r;
-            int secondsOffset = 18 * r;
+            int minutesOffset = 9 * radius;
+            int secondsOffset = 18 * radius;
 
-            hourClocks[i] = new AnalogClock(r + col * r * 2, r + row * r * 2, r, painter);
-            minuteClocks[i] = new AnalogClock(minutesOffset + r + col * r * 2, r + row * r * 2, r, painter);
-            secondClocks[i] = new AnalogClock(secondsOffset + r + col * r * 2, r + row * r * 2, r, painter);
+            hourClocks[i] = new AnalogClock(row, col, radius, 0, painter);
+            minuteClocks[i] = new AnalogClock(row, col, radius, minutesOffset, painter);
+            secondClocks[i] = new AnalogClock(row, col, radius, secondsOffset, painter);
         }
 
         for (int i = COLS*ROWS; i < 2*COLS*ROWS; i++) {
             int row = (i / COLS) % ROWS;
             int col = (i % COLS) % ROWS;
 
-            int minutesOffset = 9 * r;
-            int secondsOffset = 18 * r;
+            int minutesOffset = 9 * radius;
+            int secondsOffset = 18 * radius;
 
-            hourClocks[i] = new AnalogClock(4* r + r + col * r * 2, r + row * r * 2, r, painter);
-            minuteClocks[i] = new AnalogClock(4* r + minutesOffset + r + col * r * 2, r + row * r * 2, r, painter);
-            secondClocks[i] = new AnalogClock(4* r + secondsOffset + r + col * r * 2, r + row * r * 2, r, painter);
+            hourClocks[i] = new AnalogClock(row, 2+col, radius, 0, painter);
+            minuteClocks[i] = new AnalogClock(row, 2+col, radius, minutesOffset, painter);
+            secondClocks[i] = new AnalogClock(row, 2+col, radius, secondsOffset, painter);
         }
     }
 

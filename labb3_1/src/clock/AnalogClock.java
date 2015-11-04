@@ -12,7 +12,7 @@ public class AnalogClock {
     public static final double DEG_PER_MINUTE = 360 / 60.0;
     public static final double DEG_PER_SECOND = 360 / 60.0;
 
-    public static final boolean PERFECT_DIGITAL_ANGLES = false;
+    public static final boolean PERFECT_DIGITAL_ANGLES = true;
 
     public static final ClockPainter DISABLED_PAINTER = new DisabledClockPainter();
 
@@ -32,9 +32,9 @@ public class AnalogClock {
 
     private boolean enabled;
 
-    public AnalogClock(int x, int y, int radius, ClockPainter painter) {
-        this.x = x;
-        this.y = y;
+    public AnalogClock(int row, int col, int radius, int xOffset, ClockPainter painter) {
+        this.x = xOffset + radius + col * radius * 2;
+        this.y = radius + row * radius * 2;
         this.radius = radius;
         this.painter = painter;
 

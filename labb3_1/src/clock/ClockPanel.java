@@ -12,7 +12,7 @@ public class ClockPanel extends JPanel implements ActionListener, KeyListener {
     private DualClock dualClock;
 
     public ClockPanel() {
-        timer = new Timer(200, this);
+        timer = new Timer(50, this);
         timer.start();
 
         dualClock = new DualClock();
