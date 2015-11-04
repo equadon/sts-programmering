@@ -45,7 +45,7 @@ public class DualClock {
 
         int radius = AnalogClock.RADIUS;
 
-        // Initiate clocks
+        // Initiate first digit clocks for hours, minutes, seconds
         for (int i = 0; i < COLS*ROWS; i++) {
             int row = i / COLS;
             int col = i % COLS;
@@ -58,6 +58,7 @@ public class DualClock {
             secondClocks[i] = new AnalogClock(row, col, radius, secondsOffset, painter);
         }
 
+        // Initiate second digit clocks for hours, minutes, seconds
         for (int i = COLS*ROWS; i < 2*COLS*ROWS; i++) {
             int row = (i / COLS) % ROWS;
             int col = (i % COLS) % ROWS;
@@ -125,18 +126,18 @@ public class DualClock {
     }
 
     private void updateHours() {
-        updateDigital(String.format("%02d", getHour()), hourClocks);
+        updateClocks(String.format("%02d", getHour()), hourClocks);
     }
 
     private void updateMinutes() {
-        updateDigital(String.format("%02d", getMinute()), minuteClocks);
+        updateClocks(String.format("%02d", getMinute()), minuteClocks);
     }
 
     private void updateSeconds() {
-        updateDigital(String.format("%02d", getSecond()), secondClocks);
+        updateClocks(String.format("%02d", getSecond()), secondClocks);
     }
 
-    private void updateDigital(String string, AnalogClock[] clocks) {
+    private void updateClocks(String string, AnalogClock[] clocks) {
         for (int i = 0; i < 12; i++) {
             int part = Integer.parseInt(string.substring(i / 6, (i / 6) + 1));
             int[] degrees = NUMBERS[part][i % 6];
