@@ -16,8 +16,4 @@ public class ClockUI extends JFrame {
 
         pack();
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new ClockUI().setVisible(true));
-    }
 }
