@@ -25,6 +25,8 @@ public class DefaultClockPainter implements ClockPainter {
 
     protected double hourLineLength = 0.18;
 
+    protected boolean enableBackground = true;
+
     protected boolean enableHourHand = true;
     protected boolean enableMinuteHand = true;
     protected boolean enableSecondHand = true;
@@ -32,8 +34,10 @@ public class DefaultClockPainter implements ClockPainter {
     @Override
     public void draw(Graphics2D g, AnalogClock clock) {
         // Background
-        g.setColor(backgroundColor);
-        g.fillOval(clock.bounds.x, clock.bounds.y, clock.bounds.width, clock.bounds.height);
+        if (enableBackground) {
+            g.setColor(backgroundColor);
+            g.fillOval(clock.bounds.x, clock.bounds.y, clock.bounds.width, clock.bounds.height);
+        }
 
         // Border
         g.setStroke(new BasicStroke(borderStroke));
