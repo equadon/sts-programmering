@@ -1,7 +1,6 @@
 package clock;
 
-import clock.painters.ClockPainter;
-import clock.painters.DefaultClockPainter;
+import clock.painters.*;
 
 import java.awt.*;
 import java.util.Calendar;
@@ -33,6 +32,11 @@ public class DualClock {
     private AnalogClock[] minuteClocks;
     private AnalogClock[] secondClocks;
 
+    private ClockPainter defaultPainter;
+    private ClockPainter romaPainter;
+    private ClockPainter orangePainter;
+    private ClockPainter redPainter;
+
     public DualClock() {
         mode = Mode.ANALOG;
         calendar = Calendar.getInstance();
@@ -41,7 +45,10 @@ public class DualClock {
         minuteClocks = new AnalogClock[2 * COLS * ROWS];
         secondClocks = new AnalogClock[2 * COLS * ROWS];
 
-        ClockPainter painter = new DefaultClockPainter();
+        defaultPainter = new DefaultClockPainter();
+        romaPainter = new RomaClockPainter();
+        orangePainter = new OrangeClockPainter();
+        redPainter = new RedClockPainter();
 
         int radius = AnalogClock.RADIUS;
 
@@ -53,9 +60,9 @@ public class DualClock {
             int minutesOffset = 9 * radius;
             int secondsOffset = 18 * radius;
 
-            hourClocks[i] = new AnalogClock(row, col, radius, 0, painter);
-            minuteClocks[i] = new AnalogClock(row, col, radius, minutesOffset, painter);
-            secondClocks[i] = new AnalogClock(row, col, radius, secondsOffset, painter);
+            hourClocks[i] = new AnalogClock(row, col, radius, 0, getRandomPainter());
+            minuteClocks[i] = new AnalogClock(row, col, radius, minutesOffset, getRandomPainter());
+            secondClocks[i] = new AnalogClock(row, col, radius, secondsOffset, getRandomPainter());
         }
 
         // Initiate second digit clocks for hours, minutes, seconds
@@ -66,10 +73,25 @@ public class DualClock {
             int minutesOffset = 9 * radius;
             int secondsOffset = 18 * radius;
 
-            hourClocks[i] = new AnalogClock(row, 2+col, radius, 0, painter);
-            minuteClocks[i] = new AnalogClock(row, 2+col, radius, minutesOffset, painter);
-            secondClocks[i] = new AnalogClock(row, 2+col, radius, secondsOffset, painter);
+            hourClocks[i] = new AnalogClock(row, 2+col, radius, 0, getRandomPainter());
+            minuteClocks[i] = new AnalogClock(row, 2+col, radius, minutesOffset, getRandomPainter());
+            secondClocks[i] = new AnalogClock(row, 2+col, radius, secondsOffset, getRandomPainter());
         }
+    }
+
+    private ClockPainter getRandomPainter() {
+        ClockPainter painter;
+
+        if (Math.random() < 0.1)
+            painter = romaPainter;
+        else if (Math.random() < 0.4)
+            painter = orangePainter;
+        else if (Math.random() < 0.7)
+            painter = redPainter;
+        else
+            painter = defaultPainter;
+
+        return painter;
     }
 
     public int getHour() {
