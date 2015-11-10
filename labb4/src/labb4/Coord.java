@@ -46,6 +46,10 @@ class Coord {
         y -= c.y;
     }
 
+    public Coord clone() {
+        return new Coord(x, y);
+    }
+
     static double scal(Coord a, Coord b) {      // scalar product
         return a.x * b.x + a.y * b.y;
     }

@@ -22,12 +22,14 @@ class Ball {
                     100.0 / Pool.UPDATE_FREQUENCY);
     private final Table table;
     private Coord position;
+    private Coord lastPosition;
     private Coord velocity;
     private Coord aimPosition;              // if aiming for a shot, ow null
 
     Ball(Table table, Coord initialPosition) {
         this.table = table;
         position = initialPosition;
+        lastPosition = initialPosition.clone();
         velocity = new Coord(0, 0);
     }
 
@@ -66,24 +68,36 @@ class Ball {
 
     void move() {
         if (isMoving()) {
-            position.increase(velocity);
+            Coord prevPosition = lastPosition;
 
-            if (noCollision()) {
+            nextPosition();
+
+            if (noCollision(prevPosition)) {
                 velocity.decrease(Coord.mul(FRICTION_PER_UPDATE, velocity.norm()));
             }
         }
     }
 
-    private boolean noCollision() {
-        Rectangle bounds = getBounds();
-
-        return !checkCollisionWithWalls(bounds) && !checkCollisionWithBalls();
+    private void nextPosition() {
+        lastPosition = position.clone();
+        position.increase(velocity);
     }
 
-    private boolean checkCollisionWithBalls() {
+    private void resetPosition(Coord prevPosition) {
+        lastPosition = prevPosition;
+        position.decrease(velocity);
+    }
+
+    private boolean noCollision(Coord prevPosition) {
+        Rectangle bounds = getBounds();
+
+        return !checkCollisionWithWalls(bounds, prevPosition) && !checkCollisionWithBalls(prevPosition);
+    }
+
+    private boolean checkCollisionWithBalls(Coord prevPosition) {
         for (Ball ball : table.balls) {
             if (ball != this) {
-                if (collidedWith(ball)) {
+                if (collidedWith(ball, prevPosition)) {
                     return true;
                 }
             }
@@ -92,14 +106,22 @@ class Ball {
         return false;
     }
 
-    private boolean collidedWith(Ball ballB) {
-        if (Coord.distance(position, ballB.position) >= 2 * RADIUS)
+    private boolean collidedWith(Ball ballB, Coord prevPosition) {
+        double prevDistance = Coord.distance(lastPosition, ballB.lastPosition);
+        double distance = Coord.distance(position, ballB.position);
+
+        /*if (prevDistance > distance) {
+            System.out.println("Distance: " + distance);
+        }*/
+
+        if (prevDistance < distance || distance >= 2 * RADIUS) {
             return false;
+        }
 
         Coord impulseDirection = calcImpulseDirection(ballB);
         double impulse = Coord.scal(ballB.velocity, impulseDirection) - Coord.scal(velocity, impulseDirection);
 
-        resetPosition();
+        resetPosition(prevPosition);
 
         Coord impulseVector = Coord.mul(impulse, impulseDirection);
 
@@ -116,28 +138,24 @@ class Ball {
         );
     }
 
-    private boolean checkCollisionWithWalls(Rectangle bounds) {
+    private boolean checkCollisionWithWalls(Rectangle bounds, Coord prevPosition) {
         Coord newVelocity = velocity;
 
         // Left/right wall
         if (bounds.getMaxX() > table.innerBounds.getMaxX() ||
                 bounds.x < table.innerBounds.x) {
-            resetPosition();
+            resetPosition(prevPosition);
             newVelocity.x = -newVelocity.x;
         }
 
         // Top/bottom wall
         if (bounds.getMaxY() > table.innerBounds.getMaxY() ||
                 bounds.y < table.innerBounds.y) {
-            resetPosition();
+            resetPosition(prevPosition);
             newVelocity.y = -newVelocity.y;
         }
 
         return newVelocity.x != velocity.x || newVelocity.y != velocity.y;
-    }
-
-    private void resetPosition() {
-        position.decrease(velocity);
     }
 
     // paint: to draw the ball, first draw a black ball
