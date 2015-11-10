@@ -28,7 +28,7 @@ class Ball {
     Ball(Table table, Coord initialPosition) {
         this.table = table;
         position = initialPosition;
-        velocity = Coord.ZERO;       // WARNING! Are initial velocities clones or aliases??
+        velocity = new Coord(0, 0);
     }
 
     public Rectangle getBounds() {
