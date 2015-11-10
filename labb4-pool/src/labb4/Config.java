@@ -7,7 +7,7 @@ public class Config {
 
     public static final double RESIZE_FACTOR = 3.0;
 
-    public static final int HOLE_RADIUS = 7; // in cm
+    public static final int HOLE_RADIUS = 6; // in cm
     public static final int BORDER_SIZE = 10; // in cm
     public static final int INNER_BORDER_SIZE = 3; // in cm
 
