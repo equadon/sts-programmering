@@ -141,16 +141,16 @@ class Ball {
     private boolean checkCollisionWithWalls(Rectangle bounds, Coord prevPosition) {
         Coord newVelocity = velocity;
 
-        // Left/right wall
+        // Right/left wall
         if (bounds.getMaxX() > table.innerBounds.getMaxX() ||
-                bounds.x < table.innerBounds.x) {
+            bounds.x < table.innerBounds.x) {
             resetPosition(prevPosition);
             newVelocity.x = -newVelocity.x;
         }
 
-        // Top/bottom wall
+        // Bottom/top wall
         if (bounds.getMaxY() > table.innerBounds.getMaxY() ||
-                bounds.y < table.innerBounds.y) {
+            bounds.y < table.innerBounds.y) {
             resetPosition(prevPosition);
             newVelocity.y = -newVelocity.y;
         }

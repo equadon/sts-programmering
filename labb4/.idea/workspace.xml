@@ -64,8 +64,8 @@
       <file leaf-file-name="Ball.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/labb4/Ball.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.62222224">
-              <caret line="114" column="11" selection-start-line="114" selection-start-column="11" selection-end-line="114" selection-end-column="11" />
+            <state vertical-scroll-proportion="1.1111112">
+              <caret line="152" column="12" selection-start-line="152" selection-start-column="12" selection-end-line="152" selection-end-column="12" />
               <folding />
             </state>
           </provider>
@@ -488,12 +488,12 @@
       <option name="number" value="Default" />
       <updated>1447157641361</updated>
       <workItem from="1447157644364" duration="1691000" />
-      <workItem from="1447159351980" duration="10731000" />
+      <workItem from="1447159351980" duration="11514000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12422000" />
+    <option name="totallyTimeSpent" value="13205000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="55" y="24" width="1311" height="744" extended-state="6" />
@@ -621,8 +621,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/labb4/Ball.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.62222224">
-          <caret line="114" column="11" selection-start-line="114" selection-start-column="11" selection-end-line="114" selection-end-column="11" />
+        <state vertical-scroll-proportion="1.1111112">
+          <caret line="152" column="12" selection-start-line="152" selection-start-column="12" selection-end-line="152" selection-end-column="12" />
           <folding />
         </state>
       </provider>
