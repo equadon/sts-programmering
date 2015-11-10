@@ -77,7 +77,43 @@ class Ball {
     private boolean noCollision() {
         Rectangle bounds = getBounds();
 
-        return !checkCollisionWithWalls(bounds);
+        return !checkCollisionWithWalls(bounds) && !checkCollisionWithBalls();
+    }
+
+    private boolean checkCollisionWithBalls() {
+        for (Ball ball : table.balls) {
+            if (ball != this) {
+                if (collidedWith(ball)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private boolean collidedWith(Ball ballB) {
+        if (Coord.distance(position, ballB.position) >= 2 * RADIUS)
+            return false;
+
+        Coord impulseDirection = calcImpulseDirection(ballB);
+        double impulse = Coord.scal(ballB.velocity, impulseDirection) - Coord.scal(velocity, impulseDirection);
+
+        resetPosition();
+
+        Coord impulseVector = Coord.mul(impulse, impulseDirection);
+
+        velocity.increase(impulseVector);
+        ballB.velocity.decrease(impulseVector);
+
+        return true;
+    }
+
+    private Coord calcImpulseDirection(Ball b) {
+        return new Coord(
+                (position.x - b.position.x) / Coord.distance(position, b.position), // Dx
+                (position.y - b.position.y) / Coord.distance(position, b.position)  // Dy
+        );
     }
 
     private boolean checkCollisionWithWalls(Rectangle bounds) {

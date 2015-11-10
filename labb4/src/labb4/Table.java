@@ -26,6 +26,7 @@ class Table extends JPanel implements MouseListener, MouseMotionListener, Action
     private final Timer simulationTimer;
 
     public final Rectangle innerBounds;
+    public final Ball[] balls;
 
     Table() {
 
@@ -44,6 +45,8 @@ class Table extends JPanel implements MouseListener, MouseMotionListener, Action
                 WIDTH,
                 HEIGHT
         );
+
+        balls = new Ball[] {ball1, ball2};
     }
 
     private void createInitialBalls(){
