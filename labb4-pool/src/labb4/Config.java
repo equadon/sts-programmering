@@ -5,11 +5,10 @@ import java.awt.*;
 public class Config {
     public static final int FPS = 100;
 
-    public static final double RESIZE_FACTOR = 3.0;
-
-    public static final int HOLE_RADIUS = 6; // in cm
-    public static final int BORDER_SIZE = 10; // in cm
-    public static final int INNER_BORDER_SIZE = 3; // in cm
+    public static final int BALL_RADIUS = 13; // in cm
+    public static final int HOLE_RADIUS = 18; // in cm
+    public static final int BORDER_SIZE = 30; // in cm
+    public static final int INNER_BORDER_SIZE = 9; // in cm
 
     public static final Color HOLE_COLOR = new Color(40, 40, 40);
     public static final Color INNER_BORDER_COLOR = new Color(59, 122, 57);

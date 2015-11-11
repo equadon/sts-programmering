@@ -21,10 +21,10 @@ public class PoolTableFactory {
     }
 
     public static PoolTable createStandardTable(BallsInitializer ballsInitializer) {
-        return new PoolTable(140, 270, ballsInitializer, new TablePainter());
+        return new PoolTable(420, 810, ballsInitializer, new TablePainter());
     }
 
     public static PoolTable createSnookerTable(BallsInitializer ballsInitializer) {
-        return new PoolTable(178, 357, ballsInitializer, new TablePainter());
+        return new PoolTable(534, 1071, ballsInitializer, new TablePainter());
     }
 }

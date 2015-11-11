@@ -16,57 +16,13 @@ public class TablePanel extends JPanel implements ActionListener {
         setupTable();
 
         setPreferredSize(new Dimension(
-                getTableWidth(),
-                getTableHeight()
+                table.width,
+                table.height
         ));
     }
 
     public PoolTable getTable() {
         return table;
-    }
-
-    public int getTableWidth() {
-        return (int) (Config.RESIZE_FACTOR * table.width);
-    }
-
-    public int getTableHeight() {
-        return (int) (Config.RESIZE_FACTOR * table.height);
-    }
-
-    public Rectangle getTableBounds() {
-        double factor = Config.RESIZE_FACTOR;
-        Rectangle bounds = table.getBounds();
-
-        return new Rectangle(
-                (int) (factor * bounds.x),
-                (int) (factor * bounds.y),
-                (int) (factor * bounds.width),
-                (int) (factor * bounds.height)
-        );
-    }
-
-    public Rectangle getTableInnerBounds() {
-        double factor = Config.RESIZE_FACTOR;
-        Rectangle bounds = table.getInnerBounds();
-
-        return new Rectangle(
-                (int) (factor * bounds.x),
-                (int) (factor * bounds.y),
-                (int) (factor * bounds.width),
-                (int) (factor * bounds.height)
-        );
-    }
-
-    public Rectangle getTablePlayableBounds() {
-        double factor = Config.RESIZE_FACTOR;
-        Rectangle bounds = table.getPlayableBounds();
-
-        return new Rectangle(
-                (int) (factor * bounds.x),
-                (int) (factor * bounds.y),
-                (int) (factor * bounds.width),
-                (int) (factor * bounds.height)
-        );
     }
 
     @Override
