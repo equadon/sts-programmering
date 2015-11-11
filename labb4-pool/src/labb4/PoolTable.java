@@ -46,6 +46,10 @@ public class PoolTable {
         }
     }
 
+    public Ball[] getBalls() {
+        return balls;
+    }
+
     public Hole[] getHoles() {
         return holes;
     }
