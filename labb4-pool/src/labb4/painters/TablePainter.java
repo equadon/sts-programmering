@@ -2,18 +2,15 @@ package labb4.painters;
 
 import labb4.Config;
 import labb4.Hole;
-import labb4.PoolTable;
 import labb4.TablePanel;
 
 import java.awt.*;
 
 public class TablePainter {
     public void draw(Graphics2D g, TablePanel panel) {
-        PoolTable table = panel.getTable();
-
-        Rectangle bounds = table.getBounds();
-        Rectangle inner = table.getInnerBounds();
-        Rectangle playable = table.getPlayableBounds();
+        Rectangle bounds = panel.getTableBounds();
+        Rectangle inner = panel.getTableInnerBounds();
+        Rectangle playable = panel.getTablePlayableBounds();
 
         g.setColor(Config.BORDER_COLOR);
         g.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
@@ -31,7 +28,7 @@ public class TablePainter {
     }
 
     private void drawInnerBorder(Graphics2D g, Rectangle inner, int innerBorderWidth) {
-        int holeRadius = Config.HOLE_RADIUS;
+        int holeRadius = (int) (Config.RESIZE_FACTOR * Config.HOLE_RADIUS);
         int x = (int) inner.getX() + holeRadius;
         int maxX = (int) inner.getMaxX() - holeRadius;
         int y = (int) inner.getY();
@@ -75,20 +72,21 @@ public class TablePainter {
     }
 
     private void drawHoles(Graphics2D g, TablePanel panel) {
-        PoolTable table = panel.getTable();
+        Rectangle bounds = panel.getTablePlayableBounds();
 
-        Rectangle bounds = table.getPlayableBounds();
-        Hole[] holes = table.getHoles();
+        Hole[] holes = panel.getTable().getHoles();
 
         g.setColor(Config.HOLE_COLOR);
 
         int border = panel.getTable().borderSize;
 
         for (Hole hole : holes) {
-            double x = (1 - hole.col) * bounds.getX() + bounds.getMaxX() * hole.col - hole.radius;
-            double y = hole.radius + hole.row * (bounds.height / 2.0);
+            int radius = (int) (Config.RESIZE_FACTOR * hole.radius);
 
-            g.fillOval((int) x, (int) y, 2 * hole.radius, 2 * hole.radius);
+            double x = (1 - hole.col) * bounds.getX() + bounds.getMaxX() * hole.col - radius;
+            double y = radius + hole.row * (bounds.height / 2.0);
+
+            g.fillOval((int) x, (int) y, 2 * radius, 2 * radius);
         }
     }
 }

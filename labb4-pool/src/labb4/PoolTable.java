@@ -76,10 +76,6 @@ public class PoolTable {
 
     public void draw(Graphics2D g, TablePanel panel) {
         painter.draw(g, panel);
-
-        for (Ball ball : balls) {
-            ball.draw(g);
-        }
     }
 
     public void update() {
