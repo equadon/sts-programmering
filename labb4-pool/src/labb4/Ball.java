@@ -5,35 +5,33 @@ import labb4.painters.BallPainter;
 import java.awt.*;
 
 public class Ball {
-    protected final BallPainter painter;
+    private int x;
+    private int y;
+    private final BallPainter painter;
 
     public final int radius;
     public final Color color;
 
-    private Vector2D position;
-    private Vector2D velocity;
-
     private boolean visible;
 
     public Ball(int x, int y, int radius, Color color, BallPainter painter) {
-        position = new Vector2D(x, y);
-        velocity = new Vector2D(0, 0);
-
+        this.x = x;
+        this.y = y;
         this.radius = radius;
         this.color = color;
         this.painter = painter;
     }
 
-    public Vector2D getPosition() {
-        return position;
+    public int getX() {
+        return x;
     }
 
-    public Vector2D getVelocity() {
-        return velocity;
+    public int getY() {
+        return y;
     }
 
     public Rectangle getBounds() {
-        return new Rectangle((int) position.getX() - radius, (int) position.getY() - radius, 2 * radius, 2 * radius);
+        return new Rectangle(x, y, 2 * radius, 2 * radius);
     }
 
     public boolean isVisible() {
