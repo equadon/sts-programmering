@@ -7,7 +7,7 @@ public class Pool {
 
     public static void main(String[] args) {
 
-        JFrame frame = new JFrame("No collisions!");
+        JFrame frame = new JFrame("Collisions!");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         Table table = new Table();

@@ -50,12 +50,12 @@ class Table extends JPanel implements MouseListener, MouseMotionListener, Action
     }
 
     private void createInitialBalls(){
-        final Coord firstInitialPosition = new Coord(100, 100);
-        final Coord secondInitialPosition = new Coord(130, 100);
+        final Coord firstInitialPosition = new Coord(100, 60);
+        final Coord secondInitialPosition = new Coord(100, 90);
         ball1 = new Ball(this, firstInitialPosition);
         ball2 = new Ball(this, secondInitialPosition);
-        ball3 = new Ball(this, new Coord(160, 100));
-        ball4 = new Ball(this, new Coord(300, 100));
+        ball3 = new Ball(this, new Coord(100, 120));
+        ball4 = new Ball(this, new Coord(100, 150));
     }
 
     public void actionPerformed(ActionEvent e) {          // Timer event
@@ -63,6 +63,12 @@ class Table extends JPanel implements MouseListener, MouseMotionListener, Action
         ball2.move();
         ball3.move();
         ball4.move();
+
+        ball1.checkCollisions();
+        ball2.checkCollisions();
+        ball3.checkCollisions();
+        ball4.checkCollisions();
+
         repaint();
         if (!ball1.isMoving() && !ball2.isMoving() && !ball3.isMoving() && !ball4.isMoving()) {
             simulationTimer.stop();
