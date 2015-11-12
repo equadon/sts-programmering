@@ -10,21 +10,17 @@ public class TablePainter {
     public void draw(Graphics2D g, TablePanel panel) {
         Rectangle bounds = panel.getTableBounds();
         Rectangle inner = panel.getTableInnerBounds();
-        Rectangle playable = panel.getTablePlayableBounds();
 
         g.setColor(Config.BORDER_COLOR);
         g.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
 
-        g.setColor(Config.INNER_BORDER_COLOR);
+        g.setColor(Config.TABLE_COLOR);
         g.fillRect(inner.x, inner.y, inner.width, inner.height);
 
-        g.setColor(Config.TABLE_COLOR);
-        g.fillRect(playable.x, playable.y, playable.width, playable.height);
+        //drawHoles(g, panel);
 
-        drawHoles(g, panel);
-
-        //g.setColor(Config.INNER_BORDER_COLOR);
-        //drawInnerBorder(g, inner, (int) Config.RESIZE_FACTOR * panel.getTable().innerBorderSize);
+        g.setColor(Config.INNER_BORDER_COLOR);
+        drawInnerBorder(g, inner, (int) Config.RESIZE_FACTOR * panel.getTable().innerBorderSize);
     }
 
     private void drawInnerBorder(Graphics2D g, Rectangle inner, int innerBorderWidth) {
@@ -72,19 +68,25 @@ public class TablePainter {
     }
 
     private void drawHoles(Graphics2D g, TablePanel panel) {
-        Rectangle bounds = panel.getTablePlayableBounds();
+        Rectangle tableBounds = panel.getTableBounds();
 
         Hole[] holes = panel.getTable().getHoles();
 
         g.setColor(Config.HOLE_COLOR);
 
-        int border = panel.getTable().borderSize;
-
         for (Hole hole : holes) {
             int radius = (int) (Config.RESIZE_FACTOR * hole.radius);
 
-            double x = (1 - hole.col) * bounds.getX() + bounds.getMaxX() * hole.col - radius;
-            double y = radius + hole.row * (bounds.height / 2.0);
+            double x = -radius;
+            double y = -radius - Config.INNER_BORDER_SIZE;
+
+            if (hole.col == 0) {
+                x += tableBounds.getX() - Config.INNER_BORDER_SIZE;
+                y += tableBounds.getY();
+            } else {
+                x += tableBounds.getMaxX() + Config.INNER_BORDER_SIZE;
+                y += tableBounds.getMaxY();
+            }
 
             g.fillOval((int) x, (int) y, 2 * radius, 2 * radius);
         }
