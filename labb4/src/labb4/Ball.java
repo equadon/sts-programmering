@@ -1,6 +1,7 @@
 package labb4;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 
 /**
  * ****************************************************************************************
@@ -25,16 +26,15 @@ class Ball {
     private Coord lastPosition;
     private Coord velocity;
     private Coord aimPosition;              // if aiming for a shot, ow null
+    private Rectangle.Double bounds;
 
     Ball(Table table, Coord initialPosition) {
         this.table = table;
         position = initialPosition;
         lastPosition = initialPosition.clone();
         velocity = new Coord(0, 0);
-    }
 
-    public Rectangle getBounds() {
-        return new Rectangle((int) (position.x - RADIUS), (int) (position.y - RADIUS), (int) (2 * RADIUS), (int) (2 * RADIUS));
+        bounds = new Rectangle.Double(position.x - RADIUS, position.y - RADIUS, 2 * RADIUS, 2 * RADIUS);
     }
 
     private boolean isAiming() {
@@ -43,6 +43,11 @@ class Ball {
 
     boolean isMoving() {                                // if moving too slow I am deemed to have stopped
         return velocity.magnitude() > FRICTION_PER_UPDATE;
+    }
+
+    private void updateBounds() {
+        bounds.x = position.x - RADIUS;
+        bounds.y = position.y - RADIUS;
     }
 
     void shoot() {
@@ -68,94 +73,91 @@ class Ball {
 
     void move() {
         if (isMoving()) {
-            Coord prevPosition = lastPosition;
-
             nextPosition();
 
-            if (noCollision(prevPosition)) {
+            if (!foundBallCollision() && !foundWallCollision()) {
                 velocity.decrease(Coord.mul(FRICTION_PER_UPDATE, velocity.norm()));
             }
         }
     }
 
     private void nextPosition() {
-        lastPosition = position.clone();
+        lastPosition.x = position.x;
+        lastPosition.y = position.y;
+
         position.increase(velocity);
+
+        updateBounds();
     }
 
-    private void resetPosition(Coord prevPosition) {
-        lastPosition = prevPosition;
-        position.decrease(velocity);
-    }
-
-    private boolean noCollision(Coord prevPosition) {
-        Rectangle bounds = getBounds();
-
-        return !checkCollisionWithWalls(bounds, prevPosition) && !checkCollisionWithBalls(prevPosition);
-    }
-
-    private boolean checkCollisionWithBalls(Coord prevPosition) {
-        for (Ball ball : table.balls) {
-            if (ball != this) {
-                if (collidedWith(ball, prevPosition)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    private boolean collidedWith(Ball ballB, Coord prevPosition) {
-        double prevDistance = Coord.distance(lastPosition, ballB.lastPosition);
-        double distance = Coord.distance(position, ballB.position);
-
-        /*if (prevDistance > distance) {
-            System.out.println("Distance: " + distance);
-        }*/
-
-        if (prevDistance < distance || distance >= 2 * RADIUS) {
-            return false;
-        }
-
-        Coord impulseDirection = calcImpulseDirection(ballB);
-        double impulse = Coord.scal(ballB.velocity, impulseDirection) - Coord.scal(velocity, impulseDirection);
-
-        resetPosition(prevPosition);
-
-        Coord impulseVector = Coord.mul(impulse, impulseDirection);
-
-        velocity.increase(impulseVector);
-        ballB.velocity.decrease(impulseVector);
-
-        return true;
-    }
-
-    private Coord calcImpulseDirection(Ball b) {
-        return new Coord(
-                (position.x - b.position.x) / Coord.distance(position, b.position), // Dx
-                (position.y - b.position.y) / Coord.distance(position, b.position)  // Dy
-        );
-    }
-
-    private boolean checkCollisionWithWalls(Rectangle bounds, Coord prevPosition) {
-        Coord newVelocity = velocity;
+    private boolean foundWallCollision() {
+        boolean collision = false;
 
         // Right/left wall
         if (bounds.getMaxX() > table.innerBounds.getMaxX() ||
-            bounds.x < table.innerBounds.x) {
-            resetPosition(prevPosition);
-            newVelocity.x = -newVelocity.x;
+                bounds.x < table.innerBounds.x) {
+            velocity.x = -velocity.x;
+            collision = true;
         }
 
         // Bottom/top wall
         if (bounds.getMaxY() > table.innerBounds.getMaxY() ||
-            bounds.y < table.innerBounds.y) {
-            resetPosition(prevPosition);
-            newVelocity.y = -newVelocity.y;
+                bounds.y < table.innerBounds.y) {
+            velocity.y = -velocity.y;
+            collision = true;
         }
 
-        return newVelocity.x != velocity.x || newVelocity.y != velocity.y;
+        return collision;
+    }
+
+    private boolean foundBallCollision() {
+        boolean foundCollision = false;
+
+        for (Ball ball : table.balls) {
+            if (ball != this) {
+                if (collidedWith(ball)) {
+                    foundCollision = true;
+                }
+            }
+        }
+
+        return foundCollision;
+    }
+
+    private boolean collidedWith(Ball ballB) {
+        double prevDistance = Coord.distance(lastPosition, ballB.lastPosition);
+        double distance = Coord.distance(position, ballB.position);
+
+        if (prevDistance > distance && distance < 2 * RADIUS) {
+            Coord impulseDirection = calcImpulseDirection(ballB);
+            Coord impulseVector = calcImpulseVector(ballB, impulseDirection);
+
+            Coord delta = Coord.sub(position, ballB.position);
+            Coord mtd = Coord.mul(0.5 * (RADIUS + RADIUS - delta.magnitude()) / delta.magnitude(), delta);
+
+            position.increase(mtd);
+            ballB.position.decrease(mtd);
+
+            velocity.increase(impulseVector);
+            ballB.velocity.decrease(impulseVector);
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private Coord calcImpulseDirection(Ball ballB) {
+        return new Coord(
+                (position.x - ballB.position.x) / Coord.distance(position, ballB.position), // Dx
+                (position.y - ballB.position.y) / Coord.distance(position, ballB.position)  // Dy
+        );
+    }
+
+    private Coord calcImpulseVector(Ball ballB, Coord impulseDirection) {
+        double impulse = Coord.scal(ballB.velocity, impulseDirection) - Coord.scal(velocity, impulseDirection);
+
+        return Coord.mul(impulse, impulseDirection);
     }
 
     // paint: to draw the ball, first draw a black ball

@@ -22,7 +22,7 @@ class Table extends JPanel implements MouseListener, MouseMotionListener, Action
     private final int   WALL_THICKNESS = 20;
     private final Color COLOR          = Color.green;
     private final Color WALL_COLOR     = Color.black;
-    private       Ball  ball1, ball2, ball3;
+    private       Ball  ball1, ball2, ball3, ball4;
     private final Timer simulationTimer;
 
     public final Rectangle innerBounds;
@@ -46,23 +46,25 @@ class Table extends JPanel implements MouseListener, MouseMotionListener, Action
                 HEIGHT
         );
 
-        balls = new Ball[] {ball1, ball2, ball3};
+        balls = new Ball[] {ball1, ball2, ball3, ball4};
     }
 
     private void createInitialBalls(){
         final Coord firstInitialPosition = new Coord(100, 100);
-        final Coord secondInitialPosition = new Coord(200, 200);
+        final Coord secondInitialPosition = new Coord(130, 100);
         ball1 = new Ball(this, firstInitialPosition);
         ball2 = new Ball(this, secondInitialPosition);
-        ball3 = new Ball(this, new Coord(300, 150));
+        ball3 = new Ball(this, new Coord(160, 100));
+        ball4 = new Ball(this, new Coord(300, 100));
     }
 
     public void actionPerformed(ActionEvent e) {          // Timer event
         ball1.move();
         ball2.move();
         ball3.move();
+        ball4.move();
         repaint();
-        if (!ball1.isMoving() && !ball2.isMoving() && !ball3.isMoving()) {
+        if (!ball1.isMoving() && !ball2.isMoving() && !ball3.isMoving() && !ball4.isMoving()) {
             simulationTimer.stop();
         }
     }
@@ -72,6 +74,7 @@ class Table extends JPanel implements MouseListener, MouseMotionListener, Action
         ball1.setAimPosition(mousePosition);
         ball2.setAimPosition(mousePosition);
         ball3.setAimPosition(mousePosition);
+        ball4.setAimPosition(mousePosition);
         repaint();                          //  To show aiming line
     }
 
@@ -79,6 +82,7 @@ class Table extends JPanel implements MouseListener, MouseMotionListener, Action
         ball1.shoot();
         ball2.shoot();
         ball3.shoot();
+        ball4.shoot();
         if (!simulationTimer.isRunning()) {
             simulationTimer.start();
         }
@@ -89,6 +93,7 @@ class Table extends JPanel implements MouseListener, MouseMotionListener, Action
         ball1.updateAimPosition(mousePosition);
         ball2.updateAimPosition(mousePosition);
         ball3.updateAimPosition(mousePosition);
+        ball4.updateAimPosition(mousePosition);
         repaint();
     }
 
@@ -114,5 +119,6 @@ class Table extends JPanel implements MouseListener, MouseMotionListener, Action
         ball1.paint(g2D);
         ball2.paint(g2D);
         ball3.paint(g2D);
+        ball4.paint(g2D);
     }
 }  // end class Table
