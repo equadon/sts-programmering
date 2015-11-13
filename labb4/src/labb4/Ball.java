@@ -1,6 +1,7 @@
 package labb4;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 
 /**
  * ****************************************************************************************
@@ -20,15 +21,16 @@ class Ball {
     private final double FRICTION_PER_UPDATE =          // friction applied each simulation step
             1.0 - Math.pow(1.0 - FRICTION,       // don't ask - I no longer remember how I got to this
                     100.0 / Pool.UPDATE_FREQUENCY);
-    private final Table table;
+
+    private Rectangle2D tableBounds;
     private Coord position;
     private Coord lastPosition;
     private Coord velocity;
     private Coord aimPosition;              // if aiming for a shot, ow null
     private Rectangle.Double bounds;
 
-    Ball(Table table, Coord initialPosition) {
-        this.table = table;
+    Ball(Rectangle tableBounds, Coord initialPosition) {
+        this.tableBounds = tableBounds;
         position = initialPosition;
         lastPosition = initialPosition.clone();
         velocity = new Coord(0, 0);
@@ -83,30 +85,30 @@ class Ball {
         }
     }
 
-    public boolean checkCollisions() {
-        return ballsCollided() || checkWallCollision();
+    public boolean checkCollisions(Ball[] balls) {
+        return ballsCollided(balls) || checkWallCollision();
     }
 
     private boolean checkWallCollision() {
         boolean collision = false;
 
-        if (bounds.x < table.innerBounds.x) { // Left wall
-            position.x += table.innerBounds.x - bounds.x;
+        if (bounds.x < tableBounds.getX()) { // Left wall
+            position.x += tableBounds.getX() - bounds.x;
             velocity.x = -velocity.x;
             collision = true;
-        } else if (bounds.getMaxX() > table.innerBounds.getMaxX()) { // right wall
-            position.x -= bounds.getMaxX() - table.innerBounds.getMaxX();
+        } else if (bounds.getMaxX() > tableBounds.getMaxX()) { // right wall
+            position.x -= bounds.getMaxX() - tableBounds.getMaxX();
             velocity.x = -velocity.x;
             collision = true;
         }
 
         // Bottom/top wall
-        if (bounds.y < table.innerBounds.y) { // top wall
-            position.y += table.innerBounds.y - bounds.y;
+        if (bounds.y < tableBounds.getY()) { // top wall
+            position.y += tableBounds.getY() - bounds.y;
             velocity.y = -velocity.y;
             collision = true;
-        } else if (bounds.getMaxY() > table.innerBounds.getMaxY()) { // bottom wall
-            position.y -= bounds.getMaxY() - table.innerBounds.getMaxY();
+        } else if (bounds.getMaxY() > tableBounds.getMaxY()) { // bottom wall
+            position.y -= bounds.getMaxY() - tableBounds.getMaxY();
             velocity.y = -velocity.y;
             collision = true;
         }
@@ -118,10 +120,10 @@ class Ball {
         return collision;
     }
 
-    private boolean ballsCollided() {
+    private boolean ballsCollided(Ball[] balls) {
         boolean foundCollision = false;
 
-        for (Ball ball : table.balls) {
+        for (Ball ball : balls) {
             if (ball != this) {
                 if (collidedWith(ball)) {
                     foundCollision = true;

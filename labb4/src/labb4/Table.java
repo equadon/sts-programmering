@@ -32,12 +32,6 @@ class Table extends JPanel implements MouseListener, MouseMotionListener, Action
 
         setPreferredSize(new Dimension(WIDTH + 2 * WALL_THICKNESS,
                 HEIGHT + 2 * WALL_THICKNESS));
-        createInitialBalls();
-
-        addMouseListener(this);
-        addMouseMotionListener(this);
-
-        simulationTimer = new Timer((int) (1000.0 / Pool.UPDATE_FREQUENCY), this);
 
         innerBounds = new Rectangle(
                 getBounds().x + WALL_THICKNESS,
@@ -46,16 +40,23 @@ class Table extends JPanel implements MouseListener, MouseMotionListener, Action
                 HEIGHT
         );
 
+        createInitialBalls();
+
+        addMouseListener(this);
+        addMouseMotionListener(this);
+
+        simulationTimer = new Timer((int) (1000.0 / Pool.UPDATE_FREQUENCY), this);
+
         balls = new Ball[] {ball1, ball2, ball3, ball4};
     }
 
     private void createInitialBalls(){
         final Coord firstInitialPosition = new Coord(100, 60);
         final Coord secondInitialPosition = new Coord(100, 90);
-        ball1 = new Ball(this, firstInitialPosition);
-        ball2 = new Ball(this, secondInitialPosition);
-        ball3 = new Ball(this, new Coord(100, 120));
-        ball4 = new Ball(this, new Coord(100, 150));
+        ball1 = new Ball(innerBounds, firstInitialPosition);
+        ball2 = new Ball(innerBounds, secondInitialPosition);
+        ball3 = new Ball(innerBounds, new Coord(100, 120));
+        ball4 = new Ball(innerBounds, new Coord(100, 150));
     }
 
     public void actionPerformed(ActionEvent e) {          // Timer event
@@ -64,10 +65,10 @@ class Table extends JPanel implements MouseListener, MouseMotionListener, Action
         ball3.move();
         ball4.move();
 
-        ball1.checkCollisions();
-        ball2.checkCollisions();
-        ball3.checkCollisions();
-        ball4.checkCollisions();
+        ball1.checkCollisions(balls);
+        ball2.checkCollisions(balls);
+        ball3.checkCollisions(balls);
+        ball4.checkCollisions(balls);
 
         repaint();
         if (!ball1.isMoving() && !ball2.isMoving() && !ball3.isMoving() && !ball4.isMoving()) {
