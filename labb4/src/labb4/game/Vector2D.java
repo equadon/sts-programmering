@@ -84,7 +84,7 @@ public class Vector2D {
         return "Vector2D[" + "x=" + x + ", y=" + y + ']';
     }
 
-    public static Vector2D createZero() {
+    public static Vector2D zero() {
         return new Vector2D(0, 0);
     }
 

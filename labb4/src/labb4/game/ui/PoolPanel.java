@@ -6,8 +6,11 @@ import labb4.game.objects.CueBall;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.logging.Logger;
 
 public class PoolPanel extends JPanel implements ActionListener, MouseListener, MouseMotionListener {
+    private static final Logger LOG = Logger.getLogger(PoolPanel.class.getName());
+
     private final Timer timer;
 
     private Table table;
@@ -51,7 +54,9 @@ public class PoolPanel extends JPanel implements ActionListener, MouseListener, 
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (SwingUtilities.isLeftMouseButton(e)) {
+        if (timer.isRunning()) {
+            LOG.warning("Timer is running, can't click.");
+        } else if (SwingUtilities.isLeftMouseButton(e)) {
             Vector2D position = Vector2D.fromMouseEvent(e);
 
             CueBall cueBall = table.getCueBall();

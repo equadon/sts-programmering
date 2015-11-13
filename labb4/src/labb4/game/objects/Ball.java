@@ -42,8 +42,8 @@ public class Ball extends GameObject implements Collidable {
     }
 
     @Override
-    public void handleCollisions() {
-        collisionWithWalls();
+    public boolean handleCollisions() {
+        return collisionWithWalls() || collisionWithBalls();
     }
 
     /**
@@ -81,6 +81,61 @@ public class Ball extends GameObject implements Collidable {
     }
 
     private boolean collisionWithBalls() {
+        boolean foundCollision = false;
+
+        for (Ball ball : table.getBalls()) {
+            if (ball != this) {
+                if (ball.isVisible() && checkCollisionWith(ball)) {
+                    foundCollision = true;
+                }
+            }
+        }
+
+        return foundCollision;
+    }
+
+    private boolean checkCollisionWith(Ball other) {
+        if (bounds.intersects(other.bounds)) {
+            double distance = position.distanceTo(other.position);
+
+            if (distance < radius + other.radius) {
+                handleBallCollision(other);
+                return true;
+            }
+        }
+
         return false;
+    }
+
+    private void handleBallCollision(Ball other) {
+        Vector2D impulseDirection = calcImpulseDirection(other);
+        Vector2D impulseVector = calcImpulseVector(other, impulseDirection);
+
+        Vector2D diff = position.clone().subtract(other.position);
+
+        double moveDistance = diff.length();
+        Vector2D moveVector = diff.normalize().multiply((radius + other.radius - moveDistance) / 2.0);
+
+        // Adjust ball position
+        position.add(moveVector);
+        other.position.subtract(moveVector);
+
+        updateBounds();
+
+        velocity.add(impulseVector);
+        other.velocity.subtract(impulseVector);
+    }
+
+    private Vector2D calcImpulseDirection(Ball ballB) {
+        return new Vector2D(
+                (position.x - ballB.position.x) / position.distanceTo(ballB.position), // Dx
+                (position.y - ballB.position.y) / position.distanceTo(ballB.position)  // Dy
+        );
+    }
+
+    private Vector2D calcImpulseVector(Ball ballB, Vector2D impulseDirection) {
+        double impulse = ballB.velocity.dot(impulseDirection) - velocity.dot(impulseDirection);
+
+        return impulseDirection.multiply(impulse);
     }
 }

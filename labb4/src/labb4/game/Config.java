@@ -12,10 +12,6 @@ public class Config {
     public static final Color TABLE_INNER_BORDER_COLOR = new Color(7, 116, 0);
     public static final Color TABLE_COLOR = new Color(9, 226, 0);
 
-    public static final int BALL_RADIUS = 20;
-    public static final int BALL_BORDER_SIZE = 2;
-    public static final Color BALL_BORDER_COLOR = new Color(34, 34, 34);
-
     public static final Color DEFAULT_HOLE_COLOR = new Color(34, 34, 34);
     public static final int DEFAULT_HOLE_RADIUS = 23;
 
@@ -24,4 +20,10 @@ public class Config {
 
     public static final int SNOOKER_TABLE_WIDTH = 142;
     public static final int SNOOKER_TABLE_HEIGHT = 284;
+
+    public static final int BALL_RADIUS = 20;
+    public static final int BALL_BORDER_SIZE = 2;
+
+    public static final Color BALL_BORDER_COLOR = new Color(34, 34, 34);
+    public static final Color BALL_BLUE_COLOR = new Color(0, 88, 215);
 }
