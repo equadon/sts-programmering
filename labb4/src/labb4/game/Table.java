@@ -4,6 +4,7 @@ import labb4.game.initializers.BallInitializer;
 import labb4.game.objects.Ball;
 import labb4.game.objects.CueBall;
 import labb4.game.objects.Hole;
+import labb4.game.objects.PoolBall;
 import labb4.game.painters.TablePainter;
 
 import java.awt.*;
@@ -15,7 +16,7 @@ public class Table {
     private final Rectangle playableBounds;
 
     private final CueBall cueBall;
-    private final Ball[] balls;
+    private final PoolBall[] balls;
     private final Hole[] holes;
 
     public final int width;

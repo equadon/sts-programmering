@@ -5,6 +5,8 @@ import java.awt.*;
 public class Config {
     public static int FRAMES_PER_SECOND = 100;
 
+    public static final double RESIZE_FACTOR = 3; // resize table/ball/hole size
+
     public static final double DEFAULT_FRICTION = 0.015;
     public static final double DEFAULT_MASS = 1.0;
 
@@ -13,17 +15,26 @@ public class Config {
     public static final Color TABLE_COLOR = new Color(9, 226, 0);
 
     public static final Color DEFAULT_HOLE_COLOR = new Color(34, 34, 34);
-    public static final int DEFAULT_HOLE_RADIUS = 23;
+    public static final int DEFAULT_HOLE_RADIUS = (int) (10 * RESIZE_FACTOR);
 
-    public static final int DEFAULT_TABLE_WIDTH = 127;
-    public static final int DEFAULT_TABLE_HEIGHT = 254;
+    public static final int DEFAULT_TABLE_WIDTH = (int) (127 * RESIZE_FACTOR);
+    public static final int DEFAULT_TABLE_HEIGHT = (int) (254 * RESIZE_FACTOR);
 
-    public static final int SNOOKER_TABLE_WIDTH = 142;
-    public static final int SNOOKER_TABLE_HEIGHT = 284;
+    public static final int SNOOKER_TABLE_WIDTH = (int) (142 * RESIZE_FACTOR);
+    public static final int SNOOKER_TABLE_HEIGHT = (int) (284 * RESIZE_FACTOR);
 
-    public static final int BALL_RADIUS = 20;
-    public static final int BALL_BORDER_SIZE = 2;
+    public static final int BALL_RADIUS = (int) (6 * RESIZE_FACTOR);
+    public static final int BALL_BORDER_SIZE = 3;
 
     public static final Color BALL_BORDER_COLOR = new Color(34, 34, 34);
-    public static final Color BALL_BLUE_COLOR = new Color(0, 88, 215);
+
+    public static final Color BALL_WHITE_COLOR = new Color(255, 253, 241);
+    public static final Color BALL_BLACK_COLOR = new Color(21, 21, 21);
+    public static final Color BALL_YELLOW_COLOR = new Color(211, 195, 0);
+    public static final Color BALL_BLUE_COLOR = new Color(0, 105, 215);
+    public static final Color BALL_RED_COLOR = new Color(198, 8, 0);
+    public static final Color BALL_PURPLE_COLOR = new Color(105, 31, 171);
+    public static final Color BALL_ORANGE_COLOR = new Color(207, 115, 48);
+    public static final Color BALL_GREEN_COLOR = new Color(48, 162, 42);
+    public static final Color BALL_BROWN_COLOR = new Color(126, 85, 54);
 }

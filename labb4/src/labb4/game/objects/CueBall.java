@@ -17,8 +17,9 @@ public class CueBall extends Ball implements Aimable {
         this(table, position, velocity, Color.WHITE, Config.DEFAULT_MASS, Config.DEFAULT_FRICTION, radius);
     }
 
-    public CueBall(Table table, Vector2D position, Vector2D velocity, Color color, double mass, double friction, double radius) {
-        super(table, position, velocity, color, mass, friction, radius);
+    public CueBall(Table table, Vector2D position, Vector2D velocity, Color color, double mass, double friction,
+                   double radius) {
+        super(table, position, velocity, color, mass, friction, radius, false);
 
         aimPosition = null;
     }
@@ -38,7 +39,7 @@ public class CueBall extends Ball implements Aimable {
             Vector2D aimingVector = aimPosition.subtract(position);
             double length = aimingVector.length();
 
-            velocity = aimingVector.normalize().multiply(-Math.sqrt(10.0 * length / Config.FRAMES_PER_SECOND));
+            velocity = aimingVector.normalize().multiply(-Math.sqrt(30.0 * length / Config.FRAMES_PER_SECOND));
 
             aimPosition = null;
         }

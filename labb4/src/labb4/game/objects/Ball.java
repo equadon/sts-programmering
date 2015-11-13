@@ -10,16 +10,19 @@ import java.awt.*;
 
 public class Ball extends GameObject implements Collidable {
     private final Table table;
+    private final boolean striped;
     private double radius;
 
-    public Ball(Table table, Vector2D position, Vector2D velocity, Color color, double radius) {
-        this(table, position, velocity, color, Config.DEFAULT_MASS, Config.DEFAULT_FRICTION, radius);
+    public Ball(Table table, Vector2D position, Vector2D velocity, Color color, double radius, boolean striped) {
+        this(table, position, velocity, color, Config.DEFAULT_MASS, Config.DEFAULT_FRICTION, radius, striped);
     }
 
-    public Ball(Table table, Vector2D position, Vector2D velocity, Color color, double mass, double friction, double radius) {
+    public Ball(Table table, Vector2D position, Vector2D velocity, Color color, double mass, double friction,
+                double radius, boolean striped) {
         super(new BallPainter(), position, velocity, color, mass, friction);
 
         this.table = table;
+        this.striped = striped;
         this.radius = radius;
 
         updateBounds();
