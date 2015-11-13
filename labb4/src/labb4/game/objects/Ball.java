@@ -42,20 +42,42 @@ public class Ball extends GameObject implements Collidable {
     }
 
     @Override
-    public boolean foundCollisions() {
-        return collisionWithWalls() || collisionWithBalls();
-    }
-
-    @Override
     public void handleCollisions() {
-
+        collisionWithWalls();
     }
 
     /**
      * Collision detection.
      */
     private boolean collisionWithWalls() {
-        return false;
+        Rectangle tableBounds = table.getPlayableBounds();
+        boolean collision = false;
+
+        if (bounds.x < tableBounds.getX()) { // Left wall
+            position.x += tableBounds.getX() - bounds.x;
+            velocity.x = -velocity.x;
+            collision = true;
+        } else if (bounds.getMaxX() > tableBounds.getMaxX()) { // right wall
+            position.x -= bounds.getMaxX() - tableBounds.getMaxX();
+            velocity.x = -velocity.x;
+            collision = true;
+        }
+
+        if (bounds.y < tableBounds.getY()) { // top wall
+            position.y += tableBounds.getY() - bounds.y;
+            velocity.y = -velocity.y;
+            collision = true;
+        } else if (bounds.getMaxY() > tableBounds.getMaxY()) { // bottom wall
+            position.y -= bounds.getMaxY() - tableBounds.getMaxY();
+            velocity.y = -velocity.y;
+            collision = true;
+        }
+
+        if (collision) {
+            updateBounds();
+        }
+
+        return collision;
     }
 
     private boolean collisionWithBalls() {

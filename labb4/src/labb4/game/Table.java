@@ -108,5 +108,10 @@ public class Table {
         for (Ball ball : balls) {
             ball.update();
         }
+
+        cueBall.handleCollisions();
+        for (Ball ball : balls) {
+            ball.handleCollisions();
+        }
     }
 }

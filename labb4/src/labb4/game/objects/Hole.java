@@ -21,11 +21,6 @@ public class Hole extends GameObject implements Collidable {
     }
 
     @Override
-    public boolean foundCollisions() {
-        return false;
-    }
-
-    @Override
     public void handleCollisions() {}
 
     @Override

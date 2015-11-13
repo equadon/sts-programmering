@@ -40,8 +40,6 @@ public class CueBall extends Ball implements Aimable {
 
             velocity = aimingVector.normalize().multiply(-Math.sqrt(10.0 * length / Config.FRAMES_PER_SECOND));
 
-            LOG.info("Shot fired! New velocity: " + velocity);
-
             aimPosition = null;
         }
     }
