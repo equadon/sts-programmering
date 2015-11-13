@@ -18,7 +18,8 @@ import java.awt.font.FontRenderContext;
  */
 class MoleculesPanel extends JPanel implements MouseListener, MouseMotionListener, ActionListener {
     public static int BALL_COUNT = 400;
-    public static double FRICTION = 0;
+    private static double FRICTION = 0;
+    private static double RADIUS = 7;
 
     private final int   WIDTH          = 1200;
     private final int   HEIGHT         = 600;
@@ -79,7 +80,7 @@ class MoleculesPanel extends JPanel implements MouseListener, MouseMotionListene
             Coord position = new Coord(x, y);
             Coord velocity = new Coord(interval * Math.random() - interval/2, interval * Math.random() - interval/2);
 
-            ball = new Ball(innerBounds, position, velocity, FRICTION);
+            ball = new Ball(innerBounds, position, velocity, FRICTION, RADIUS);
 
             for (int i = 0; i < index; i++) {
                 if (ball.getBounds().intersects(balls[i].getBounds())) {

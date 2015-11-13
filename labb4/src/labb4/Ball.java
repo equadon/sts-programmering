@@ -13,11 +13,12 @@ import java.awt.geom.Rectangle2D;
  */
 class Ball {
     public static final double FRICTION = 0.015;
+    public static final double RADIUS = 15;
 
     private final Color COLOR               = Color.white;
     private final int    BORDER_THICKNESS    = 2;
-    private final double RADIUS              = 7;//15;
-    private final double DIAMETER            = 2 * RADIUS;
+
+    private final double diameter;
 
     private final double FRICTION_PER_UPDATE;
 
@@ -29,19 +30,24 @@ class Ball {
     private Coord aimPosition;              // if aiming for a shot, ow null
     private Rectangle.Double bounds;
     private final double friction;
+    private final double radius;
+
 
     Ball(Rectangle tableBounds, Coord initialPosition, double friction) {
-        this(tableBounds, initialPosition, new Coord(0, 0), friction);
+        this(tableBounds, initialPosition, new Coord(0, 0), friction, RADIUS);
     }
 
-    Ball(Rectangle tableBounds, Coord initialPosition, Coord velocity, double friction) {
+    Ball(Rectangle tableBounds, Coord initialPosition, Coord velocity, double friction, double radius) {
         this.tableBounds = tableBounds;
         position = initialPosition;
         this.friction = friction;
         lastPosition = initialPosition.clone();
         this.velocity = velocity;
 
-        bounds = new Rectangle.Double(position.x - RADIUS, position.y - RADIUS, DIAMETER, DIAMETER);
+        this.radius = radius;
+        diameter = 2 * radius;
+
+        bounds = new Rectangle.Double(position.x - radius, position.y - radius, diameter, diameter);
 
         FRICTION_PER_UPDATE = 1.0 - Math.pow(1.0 - friction, 100.0 / Pool.UPDATE_FREQUENCY);
     }
@@ -55,8 +61,8 @@ class Ball {
     }
 
     private void updateBounds() {
-        bounds.x = position.x - RADIUS;
-        bounds.y = position.y - RADIUS;
+        bounds.x = position.x - radius;
+        bounds.y = position.y - radius;
     }
 
     public Rectangle.Double getBounds() {
@@ -73,7 +79,7 @@ class Ball {
     }
 
     void setAimPosition(Coord grabPosition) {
-        if (Coord.distance(position, grabPosition) <= RADIUS) {
+        if (Coord.distance(position, grabPosition) <= radius) {
             aimPosition = grabPosition;
         }
     }
@@ -114,7 +120,6 @@ class Ball {
             collision = true;
         }
 
-        // Bottom/top wall
         if (bounds.y < tableBounds.getY()) { // top wall
             position.y += tableBounds.getY() - bounds.y;
             velocity.y = -velocity.y;
@@ -150,12 +155,12 @@ class Ball {
         double prevDistance = Coord.distance(lastPosition, ballB.lastPosition);
         double distance = Coord.distance(position, ballB.position);
 
-        if (prevDistance > distance && distance < 2 * RADIUS) {
+        if (prevDistance > distance && distance < 2 * radius) {
             handleBallCollision(ballB);
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     private void handleBallCollision(Ball ballB) {
@@ -165,7 +170,7 @@ class Ball {
         Coord diff = Coord.sub(position, ballB.position);
 
         double moveDistance = diff.magnitude();
-        Coord moveVector = Coord.mul((DIAMETER - moveDistance) / 2.0, diff.norm()); // divide by two to distribute movement evenly among the two balls
+        Coord moveVector = Coord.mul((radius + ballB.radius - moveDistance) / 2.0, diff.norm()); // divide by two to distribute movement evenly among the two balls
 
         // Adjust ball position
         position.increase(moveVector);
@@ -196,16 +201,16 @@ class Ball {
     void paint(Graphics2D g2D) {
         g2D.setColor(Color.black);
         g2D.fillOval(
-                (int) (position.x - RADIUS + 0.5),
-                (int) (position.y - RADIUS + 0.5),
-                (int) DIAMETER,
-                (int) DIAMETER);
+                (int) (position.x - radius + 0.5),
+                (int) (position.y - radius + 0.5),
+                (int) diameter,
+                (int) diameter);
         g2D.setColor(COLOR);
         g2D.fillOval(
-                (int) (position.x - RADIUS + 0.5 + BORDER_THICKNESS),
-                (int) (position.y - RADIUS + 0.5 + BORDER_THICKNESS),
-                (int) (DIAMETER - 2 * BORDER_THICKNESS),
-                (int) (DIAMETER - 2 * BORDER_THICKNESS));
+                (int) (position.x - radius + 0.5 + BORDER_THICKNESS),
+                (int) (position.y - radius + 0.5 + BORDER_THICKNESS),
+                (int) (diameter - 2 * BORDER_THICKNESS),
+                (int) (diameter - 2 * BORDER_THICKNESS));
         if (isAiming()) {
             paintAimingLine(g2D);
         }

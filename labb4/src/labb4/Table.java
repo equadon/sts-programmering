@@ -55,7 +55,7 @@ class Table extends JPanel implements MouseListener, MouseMotionListener, Action
         final Coord secondInitialPosition = new Coord(100, 90);
         ball1 = new Ball(innerBounds, firstInitialPosition, Ball.FRICTION);
         ball2 = new Ball(innerBounds, secondInitialPosition, Ball.FRICTION);
-        ball3 = new Ball(innerBounds, new Coord(100, 120), Ball.FRICTION);
+        ball3 = new Ball(innerBounds, new Coord(100, 450), new Coord(0, 0), Ball.FRICTION, 25);
         ball4 = new Ball(innerBounds, new Coord(100, 150), Ball.FRICTION);
     }
 
