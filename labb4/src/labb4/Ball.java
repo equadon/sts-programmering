@@ -15,10 +15,7 @@ class Ball {
     public static final double FRICTION = 0.015;
     public static final double RADIUS = 15;
 
-    private final Color COLOR               = Color.white;
     private final int    BORDER_THICKNESS    = 2;
-
-    private final double diameter;
 
     private final double FRICTION_PER_UPDATE;
 
@@ -30,7 +27,13 @@ class Ball {
     private Coord aimPosition;              // if aiming for a shot, ow null
     private Rectangle.Double bounds;
     private final double friction;
-    private final double radius;
+
+    public final double radius;
+    public final double diameter;
+
+    protected Color color = Color.WHITE;
+
+    private boolean visible;
 
 
     Ball(Rectangle tableBounds, Coord initialPosition, double friction) {
@@ -50,6 +53,8 @@ class Ball {
         bounds = new Rectangle.Double(position.x - radius, position.y - radius, diameter, diameter);
 
         FRICTION_PER_UPDATE = 1.0 - Math.pow(1.0 - friction, 100.0 / Pool.UPDATE_FREQUENCY);
+
+        visible = true;
     }
 
     private boolean isAiming() {
@@ -58,6 +63,18 @@ class Ball {
 
     boolean isMoving() {                                // if moving too slow I am deemed to have stopped
         return velocity.magnitude() > FRICTION_PER_UPDATE;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void show() {
+        visible = true;
+    }
+
+    public void hide() {
+        visible = false;
     }
 
     private void updateBounds() {
@@ -142,7 +159,7 @@ class Ball {
 
         for (Ball ball : balls) {
             if (ball != this) {
-                if (collidedWith(ball)) {
+                if (ball.isVisible() && checkBallCollision(ball)) {
                     foundCollision = true;
                 }
             }
@@ -151,17 +168,21 @@ class Ball {
         return foundCollision;
     }
 
-    private boolean collidedWith(Ball ballB) {
+    private boolean checkBallCollision(Ball ballB) {
         double prevDistance = Coord.distance(lastPosition, ballB.lastPosition);
         double distance = Coord.distance(position, ballB.position);
 
-        if (prevDistance > distance && distance < 2 * radius) {
+        if (prevDistance > distance && distance < radius + ballB.radius) {
             handleBallCollision(ballB);
+
+            collidedWith(ballB);
             return true;
         }
 
         return false;
     }
+
+    protected void collidedWith(Ball ballB) {}
 
     private void handleBallCollision(Ball ballB) {
         Coord impulseDirection = calcImpulseDirection(ballB);
@@ -205,7 +226,7 @@ class Ball {
                 (int) (position.y - radius + 0.5),
                 (int) diameter,
                 (int) diameter);
-        g2D.setColor(COLOR);
+        g2D.setColor(color);
         g2D.fillOval(
                 (int) (position.x - radius + 0.5 + BORDER_THICKNESS),
                 (int) (position.y - radius + 0.5 + BORDER_THICKNESS),

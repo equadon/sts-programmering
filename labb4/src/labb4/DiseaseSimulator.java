@@ -2,7 +2,7 @@ package labb4;
 
 import javax.swing.*;
 
-public class Molecules {
+public class DiseaseSimulator {
     final static int UPDATE_FREQUENCY = 100;    // Global constant: fps, ie times per second to simulate
 
     public static void main(String[] args) {

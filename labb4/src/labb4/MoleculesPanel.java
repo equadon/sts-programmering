@@ -21,6 +21,8 @@ class MoleculesPanel extends JPanel implements MouseListener, MouseMotionListene
     private static double FRICTION = 0;
     private static double RADIUS = 7;
 
+    private static double INIT_INFECTED_PROB = 0.5;
+
     private final int   WIDTH          = 1200;
     private final int   HEIGHT         = 600;
     private final int   WALL_THICKNESS = 20;
@@ -65,7 +67,7 @@ class MoleculesPanel extends JPanel implements MouseListener, MouseMotionListene
         double width = WIDTH - 2 * radius;
         double height = HEIGHT - 2 * radius;
 
-        Ball ball = null;
+        Molecule molecule = null;
 
         boolean foundCollision = true;
 
@@ -80,33 +82,37 @@ class MoleculesPanel extends JPanel implements MouseListener, MouseMotionListene
             Coord position = new Coord(x, y);
             Coord velocity = new Coord(interval * Math.random() - interval/2, interval * Math.random() - interval/2);
 
-            ball = new Ball(innerBounds, position, velocity, FRICTION, RADIUS);
+            molecule = new Molecule(innerBounds, position, velocity, FRICTION, RADIUS, Math.random() < INIT_INFECTED_PROB);
 
             for (int i = 0; i < index; i++) {
-                if (ball.getBounds().intersects(balls[i].getBounds())) {
+                if (molecule.getBounds().intersects(balls[i].getBounds())) {
                     foundCollision = true;
                     break;
                 }
             }
         }
 
-        return ball;
+        return molecule;
     }
 
     public void actionPerformed(ActionEvent e) {          // Timer event
         for (Ball ball : balls) {
-            ball.move();
+            if (ball.isVisible()) {
+                ball.move();
+            }
         }
 
         for (Ball ball : balls) {
-            ball.checkCollisions(balls);
+            if (ball.isVisible()) {
+                ball.checkCollisions(balls);
+            }
         }
 
         repaint();
 
         boolean hasMovingBalls = false;
         for (Ball ball : balls) {
-            if (ball.isMoving()) {
+            if (ball.isVisible() && ball.isMoving()) {
                 hasMovingBalls = true;
             }
         }
@@ -120,7 +126,9 @@ class MoleculesPanel extends JPanel implements MouseListener, MouseMotionListene
         Coord mousePosition = new Coord(event);
 
         for (Ball ball : balls) {
-            ball.setAimPosition(mousePosition);
+            if (ball.isVisible()) {
+                ball.setAimPosition(mousePosition);
+            }
         }
 
         repaint();                          //  To show aiming line
@@ -128,7 +136,9 @@ class MoleculesPanel extends JPanel implements MouseListener, MouseMotionListene
 
     public void mouseReleased(MouseEvent e) {
         for (Ball ball : balls) {
-            ball.shoot();
+            if (ball.isVisible()) {
+                ball.shoot();
+            }
         }
 
         if (!simulationTimer.isRunning()) {
@@ -140,7 +150,9 @@ class MoleculesPanel extends JPanel implements MouseListener, MouseMotionListene
         Coord mousePosition = new Coord(event);
 
         for (Ball ball : balls) {
-            ball.updateAimPosition(mousePosition);
+            if (ball.isVisible()) {
+                ball.updateAimPosition(mousePosition);
+            }
         }
 
         repaint();
@@ -166,7 +178,9 @@ class MoleculesPanel extends JPanel implements MouseListener, MouseMotionListene
         g2D.fillRect(WALL_THICKNESS, WALL_THICKNESS, WIDTH, HEIGHT);
 
         for (Ball ball : balls) {
-            ball.paint(g2D);
+            if (ball.isVisible()) {
+                ball.paint(g2D);
+            }
         }
     }
 }  // end class Table
