@@ -1,6 +1,6 @@
 package labb4.game.painters;
 
-import labb4.game.GameObject;
+import labb4.game.objects.GameObject;
 
 import java.awt.*;
 

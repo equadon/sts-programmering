@@ -1,5 +1,8 @@
-package labb4.game;
+package labb4.game.objects;
 
+import labb4.game.Config;
+import labb4.game.Table;
+import labb4.game.Vector2D;
 import labb4.game.interfaces.Collidable;
 import labb4.game.painters.BallPainter;
 
@@ -9,8 +12,8 @@ public class Ball extends GameObject implements Collidable {
     private final Table table;
     private double radius;
 
-    public Ball(Table table, Vector2D position, Vector2D velocity, double radius) {
-        this(table, position, velocity, Config.DEFAULT_COLOR, Config.DEFAULT_MASS, Config.DEFAULT_FRICTION, radius);
+    public Ball(Table table, Vector2D position, Vector2D velocity, Color color, double radius) {
+        this(table, position, velocity, color, Config.DEFAULT_MASS, Config.DEFAULT_FRICTION, radius);
     }
 
     public Ball(Table table, Vector2D position, Vector2D velocity, Color color, double mass, double friction, double radius) {
@@ -18,6 +21,8 @@ public class Ball extends GameObject implements Collidable {
 
         this.table = table;
         this.radius = radius;
+
+        updateBounds();
     }
 
     public double getRadius() {

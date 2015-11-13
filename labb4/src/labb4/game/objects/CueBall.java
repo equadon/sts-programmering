@@ -1,17 +1,20 @@
-package labb4.game;
+package labb4.game.objects;
 
+import labb4.game.Config;
+import labb4.game.Table;
+import labb4.game.Vector2D;
 import labb4.game.interfaces.Aimable;
 
 import java.awt.*;
 
-public class AimableBall extends Ball implements Aimable {
+public class CueBall extends Ball implements Aimable {
     private Vector2D aimPosition;
 
-    public AimableBall(Table table, Vector2D position, Vector2D velocity, double radius) {
-        this(table, position, velocity, Config.DEFAULT_COLOR, Config.DEFAULT_MASS, Config.DEFAULT_FRICTION, radius);
+    public CueBall(Table table, Vector2D position, Vector2D velocity, double radius) {
+        this(table, position, velocity, Color.WHITE, Config.DEFAULT_MASS, Config.DEFAULT_FRICTION, radius);
     }
 
-    public AimableBall(Table table, Vector2D position, Vector2D velocity, Color color, double mass, double friction, double radius) {
+    public CueBall(Table table, Vector2D position, Vector2D velocity, Color color, double mass, double friction, double radius) {
         super(table, position, velocity, color, mass, friction, radius);
 
         aimPosition = null;
@@ -19,6 +22,11 @@ public class AimableBall extends Ball implements Aimable {
 
     public boolean isAiming() {
         return aimPosition != null;
+    }
+
+    @Override
+    public Vector2D getAimPosition() {
+        return aimPosition;
     }
 
     @Override

@@ -1,8 +1,10 @@
 package labb4.game.initializers;
 
-import labb4.game.Ball;
+import labb4.game.objects.Ball;
 import labb4.game.Table;
+import labb4.game.objects.CueBall;
 
 public interface BallInitializer {
-    Ball[] init(Table table);
+    Ball[] createBalls(Table table);
+    CueBall createCueBall(Table table);
 }

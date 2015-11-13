@@ -76,4 +76,8 @@ public class Vector2D {
     public String toString() {
         return "Vector2D[" + "x=" + x + ", y=" + y + ']';
     }
+
+    public static Vector2D createZero() {
+        return new Vector2D(0, 0);
+    }
 }

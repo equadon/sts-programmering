@@ -1,5 +1,7 @@
-package labb4.game;
+package labb4.game.objects;
 
+import labb4.game.Config;
+import labb4.game.Vector2D;
 import labb4.game.interfaces.Movable;
 import labb4.game.painters.ObjectPainter;
 
@@ -35,8 +37,6 @@ public abstract class GameObject implements Movable {
         lastPosition = position;
         bounds = new Rectangle2D.Double(position.x, position.y, 0, 0);
         visible = true;
-
-        updateBounds();
     }
 
     public Rectangle.Double getBounds() {

@@ -18,10 +18,10 @@ public class TableFactory {
                 break;
         }
 
-        return new Table(127, 254, initializer);
+        return new Table(3 * Config.DEFAULT_TABLE_WIDTH, 3 * Config.DEFAULT_TABLE_HEIGHT, 20, 15, initializer);
     }
 
     public static Table createSnookerTable() {
-        return new Table(142, 284, new SnookerInitializer());
+        return new Table(3 * Config.SNOOKER_TABLE_WIDTH, 3 * Config.SNOOKER_TABLE_HEIGHT, 20, 15, new SnookerInitializer());
     }
 }

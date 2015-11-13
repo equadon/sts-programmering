@@ -12,10 +12,10 @@ public class PoolPanel extends JPanel {
     private GameType gameType;
 
     public PoolPanel() {
-        setPreferredSize(new Dimension(600, 400));
-
         gameType = GameType.EightBall;
         table = TableFactory.createStandardPoolTable(gameType);
+
+        setPreferredSize(new Dimension(table.width, table.height));
     }
 
     @Override
