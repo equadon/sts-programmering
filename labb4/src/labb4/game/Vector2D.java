@@ -73,17 +73,6 @@ public class Vector2D {
     }
 
     @Override
-    public int hashCode() {
-        int result;
-        long temp;
-        temp = Double.doubleToLongBits(x);
-        result = (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(y);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        return result;
-    }
-
-    @Override
     public String toString() {
         return "Vector2D[" + "x=" + x + ", y=" + y + ']';
     }

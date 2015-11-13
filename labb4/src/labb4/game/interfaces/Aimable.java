@@ -1,4 +1,6 @@
-package labb4.game;
+package labb4.game.interfaces;
+
+import labb4.game.Vector2D;
 
 public interface Aimable {
     void shoot();

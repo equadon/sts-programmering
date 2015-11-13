@@ -1,4 +1,4 @@
-package labb4.game;
+package labb4.game.interfaces;
 
 public interface Movable {
     boolean isMoving();

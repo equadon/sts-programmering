@@ -1,17 +1,22 @@
 package labb4.game;
 
+import labb4.game.interfaces.Collidable;
+import labb4.game.painters.BallPainter;
+
 import java.awt.*;
 
 public class Ball extends GameObject implements Collidable {
+    private final Table table;
     private double radius;
 
-    public Ball(Vector2D position, Vector2D velocity, double radius) {
-        this(position, velocity, Config.DEFAULT_COLOR, Config.DEFAULT_MASS, Config.DEFAULT_FRICTION, radius);
+    public Ball(Table table, Vector2D position, Vector2D velocity, double radius) {
+        this(table, position, velocity, Config.DEFAULT_COLOR, Config.DEFAULT_MASS, Config.DEFAULT_FRICTION, radius);
     }
 
-    public Ball(Vector2D position, Vector2D velocity, Color color, double mass, double friction, double radius) {
-        super(position, velocity, color, mass, friction);
+    public Ball(Table table, Vector2D position, Vector2D velocity, Color color, double mass, double friction, double radius) {
+        super(new BallPainter(), position, velocity, color, mass, friction);
 
+        this.table = table;
         this.radius = radius;
     }
 
@@ -33,7 +38,7 @@ public class Ball extends GameObject implements Collidable {
 
     @Override
     public boolean foundCollisions() {
-        return collisionsWithWalls() || collisionWithBalls();
+        return collisionWithWalls() || collisionWithBalls();
     }
 
     @Override
@@ -44,7 +49,7 @@ public class Ball extends GameObject implements Collidable {
     /**
      * Collision detection.
      */
-    private boolean collisionsWithWalls() {
+    private boolean collisionWithWalls() {
         return false;
     }
 

@@ -1,5 +1,8 @@
 package labb4.game;
 
+import labb4.game.interfaces.Movable;
+import labb4.game.painters.ObjectPainter;
+
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
@@ -7,6 +10,7 @@ public abstract class GameObject implements Movable {
     private boolean visible;
 
     protected final Rectangle.Double bounds;
+    private final ObjectPainter painter;
 
     protected Vector2D lastPosition;
     protected Vector2D position;
@@ -18,7 +22,8 @@ public abstract class GameObject implements Movable {
 
     private double frictionPerUpdate;
 
-    public GameObject(Vector2D position, Vector2D velocity, Color color, double mass, double friction) {
+    public GameObject(ObjectPainter painter, Vector2D position, Vector2D velocity, Color color, double mass, double friction) {
+        this.painter = painter;
         this.position = position;
         this.velocity = velocity;
         this.color = color;
@@ -34,6 +39,34 @@ public abstract class GameObject implements Movable {
         updateBounds();
     }
 
+    public Rectangle.Double getBounds() {
+        return bounds;
+    }
+
+    public Vector2D getPosition() {
+        return position;
+    }
+
+    public Vector2D getVelocity() {
+        return velocity;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public double getMass() {
+        return mass;
+    }
+
+    public double getFriction() {
+        return friction;
+    }
+
+    public Vector2D getLastPosition() {
+        return lastPosition;
+    }
+
     protected abstract void updateBounds();
 
     public boolean isVisible() {
@@ -46,6 +79,10 @@ public abstract class GameObject implements Movable {
 
     public void update() {
         move();
+    }
+
+    public void draw(Graphics2D g) {
+        painter.draw(g, this);
     }
 
     public void move() {
