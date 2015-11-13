@@ -3,6 +3,7 @@ package labb4;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.font.FontRenderContext;
 
 /**
  * ****************************************************************************************
@@ -15,20 +16,21 @@ import java.awt.event.*;
  * events to accomplish repaints and to stop or start the timer.
  *
  */
-class Table extends JPanel implements MouseListener, MouseMotionListener, ActionListener {
+class MoleculesPanel extends JPanel implements MouseListener, MouseMotionListener, ActionListener {
+    public static int BALL_COUNT = 400;
+    public static double FRICTION = 0;
 
-    private final int   WIDTH          = 300;
-    private final int   HEIGHT         = 500;
+    private final int   WIDTH          = 1200;
+    private final int   HEIGHT         = 600;
     private final int   WALL_THICKNESS = 20;
     private final Color COLOR          = Color.green;
     private final Color WALL_COLOR     = Color.black;
-    private       Ball  ball1, ball2, ball3, ball4;
     private final Timer simulationTimer;
 
     public final Rectangle innerBounds;
-    public final Ball[] balls;
+    private final Ball[] balls;
 
-    Table() {
+    MoleculesPanel() {
 
         setPreferredSize(new Dimension(WIDTH + 2 * WALL_THICKNESS,
                 HEIGHT + 2 * WALL_THICKNESS));
@@ -40,56 +42,94 @@ class Table extends JPanel implements MouseListener, MouseMotionListener, Action
                 HEIGHT
         );
 
+        balls = new Ball[BALL_COUNT];
         createInitialBalls();
 
         addMouseListener(this);
         addMouseMotionListener(this);
 
         simulationTimer = new Timer((int) (1000.0 / Pool.UPDATE_FREQUENCY), this);
-
-        balls = new Ball[] {ball1, ball2, ball3, ball4};
+        simulationTimer.start();
     }
 
     private void createInitialBalls(){
-        final Coord firstInitialPosition = new Coord(100, 60);
-        final Coord secondInitialPosition = new Coord(100, 90);
-        ball1 = new Ball(innerBounds, firstInitialPosition, Ball.FRICTION);
-        ball2 = new Ball(innerBounds, secondInitialPosition, Ball.FRICTION);
-        ball3 = new Ball(innerBounds, new Coord(100, 120), Ball.FRICTION);
-        ball4 = new Ball(innerBounds, new Coord(100, 150), Ball.FRICTION);
+        for (int i = 0; i < balls.length; i++) {
+            balls[i] = createRandomBall(i);
+        }
+    }
+
+    private Ball createRandomBall(int index) {
+        int radius = 15;
+
+        double width = WIDTH - 2 * radius;
+        double height = HEIGHT - 2 * radius;
+
+        Ball ball = null;
+
+        boolean foundCollision = true;
+
+        double interval = 3.5;
+
+        while (foundCollision) {
+            foundCollision = false;
+
+            double x = innerBounds.x + radius + Math.random() * (width / 2.0);
+            double y = innerBounds.x + radius + Math.random() * height;
+
+            Coord position = new Coord(x, y);
+            Coord velocity = new Coord(interval * Math.random() - interval/2, interval * Math.random() - interval/2);
+
+            ball = new Ball(innerBounds, position, velocity, FRICTION);
+
+            for (int i = 0; i < index; i++) {
+                if (ball.getBounds().intersects(balls[i].getBounds())) {
+                    foundCollision = true;
+                    break;
+                }
+            }
+        }
+
+        return ball;
     }
 
     public void actionPerformed(ActionEvent e) {          // Timer event
-        ball1.move();
-        ball2.move();
-        ball3.move();
-        ball4.move();
+        for (Ball ball : balls) {
+            ball.move();
+        }
 
-        ball1.checkCollisions(balls);
-        ball2.checkCollisions(balls);
-        ball3.checkCollisions(balls);
-        ball4.checkCollisions(balls);
+        for (Ball ball : balls) {
+            ball.checkCollisions(balls);
+        }
 
         repaint();
-        if (!ball1.isMoving() && !ball2.isMoving() && !ball3.isMoving() && !ball4.isMoving()) {
+
+        boolean hasMovingBalls = false;
+        for (Ball ball : balls) {
+            if (ball.isMoving()) {
+                hasMovingBalls = true;
+            }
+        }
+
+        if (!hasMovingBalls) {
             simulationTimer.stop();
         }
     }
 
     public void mousePressed(MouseEvent event) {
         Coord mousePosition = new Coord(event);
-        ball1.setAimPosition(mousePosition);
-        ball2.setAimPosition(mousePosition);
-        ball3.setAimPosition(mousePosition);
-        ball4.setAimPosition(mousePosition);
+
+        for (Ball ball : balls) {
+            ball.setAimPosition(mousePosition);
+        }
+
         repaint();                          //  To show aiming line
     }
 
     public void mouseReleased(MouseEvent e) {
-        ball1.shoot();
-        ball2.shoot();
-        ball3.shoot();
-        ball4.shoot();
+        for (Ball ball : balls) {
+            ball.shoot();
+        }
+
         if (!simulationTimer.isRunning()) {
             simulationTimer.start();
         }
@@ -97,10 +137,11 @@ class Table extends JPanel implements MouseListener, MouseMotionListener, Action
 
     public void mouseDragged(MouseEvent event) {
         Coord mousePosition = new Coord(event);
-        ball1.updateAimPosition(mousePosition);
-        ball2.updateAimPosition(mousePosition);
-        ball3.updateAimPosition(mousePosition);
-        ball4.updateAimPosition(mousePosition);
+
+        for (Ball ball : balls) {
+            ball.updateAimPosition(mousePosition);
+        }
+
         repaint();
     }
 
@@ -123,9 +164,8 @@ class Table extends JPanel implements MouseListener, MouseMotionListener, Action
         g2D.setColor(COLOR);
         g2D.fillRect(WALL_THICKNESS, WALL_THICKNESS, WIDTH, HEIGHT);
 
-        ball1.paint(g2D);
-        ball2.paint(g2D);
-        ball3.paint(g2D);
-        ball4.paint(g2D);
+        for (Ball ball : balls) {
+            ball.paint(g2D);
+        }
     }
 }  // end class Table

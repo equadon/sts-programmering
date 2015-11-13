@@ -12,30 +12,38 @@ import java.awt.geom.Rectangle2D;
  *
  */
 class Ball {
+    public static final double FRICTION = 0.015;
 
     private final Color COLOR               = Color.white;
     private final int    BORDER_THICKNESS    = 2;
-    private final double RADIUS              = 15;
+    private final double RADIUS              = 7;//15;
     private final double DIAMETER            = 2 * RADIUS;
-    private final double FRICTION            = 0.015;   // its friction constant (normed for 100 updates/second)
-    private final double FRICTION_PER_UPDATE =          // friction applied each simulation step
-            1.0 - Math.pow(1.0 - FRICTION,       // don't ask - I no longer remember how I got to this
-                    100.0 / Pool.UPDATE_FREQUENCY);
+
+    private final double FRICTION_PER_UPDATE;
 
     private Rectangle2D tableBounds;
     private Coord position;
+
     private Coord lastPosition;
     private Coord velocity;
     private Coord aimPosition;              // if aiming for a shot, ow null
     private Rectangle.Double bounds;
+    private final double friction;
 
-    Ball(Rectangle tableBounds, Coord initialPosition) {
+    Ball(Rectangle tableBounds, Coord initialPosition, double friction) {
+        this(tableBounds, initialPosition, new Coord(0, 0), friction);
+    }
+
+    Ball(Rectangle tableBounds, Coord initialPosition, Coord velocity, double friction) {
         this.tableBounds = tableBounds;
         position = initialPosition;
+        this.friction = friction;
         lastPosition = initialPosition.clone();
-        velocity = new Coord(0, 0);
+        this.velocity = velocity;
 
         bounds = new Rectangle.Double(position.x - RADIUS, position.y - RADIUS, DIAMETER, DIAMETER);
+
+        FRICTION_PER_UPDATE = 1.0 - Math.pow(1.0 - friction, 100.0 / Pool.UPDATE_FREQUENCY);
     }
 
     private boolean isAiming() {
@@ -49,6 +57,10 @@ class Ball {
     private void updateBounds() {
         bounds.x = position.x - RADIUS;
         bounds.y = position.y - RADIUS;
+    }
+
+    public Rectangle.Double getBounds() {
+        return bounds;
     }
 
     void shoot() {
