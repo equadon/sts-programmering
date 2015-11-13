@@ -1,5 +1,7 @@
 package labb4.game;
 
+import java.awt.event.MouseEvent;
+
 public class Vector2D {
     public double x;
     public double y;
@@ -79,5 +81,9 @@ public class Vector2D {
 
     public static Vector2D createZero() {
         return new Vector2D(0, 0);
+    }
+
+    public static Vector2D fromMouseEvent(MouseEvent event) {
+        return new Vector2D(event.getX(), event.getY());
     }
 }

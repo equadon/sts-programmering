@@ -68,6 +68,10 @@ public class Table {
         return playableBounds;
     }
 
+    public CueBall getCueBall() {
+        return cueBall;
+    }
+
     public Ball[] getBalls() {
         return balls;
     }

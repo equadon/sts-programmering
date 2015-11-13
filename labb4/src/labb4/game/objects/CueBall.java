@@ -6,8 +6,11 @@ import labb4.game.Vector2D;
 import labb4.game.interfaces.Aimable;
 
 import java.awt.*;
+import java.util.logging.Logger;
 
 public class CueBall extends Ball implements Aimable {
+    private static final Logger LOG = Logger.getLogger(CueBall.class.getName());
+
     private Vector2D aimPosition;
 
     public CueBall(Table table, Vector2D position, Vector2D velocity, double radius) {
@@ -31,12 +34,14 @@ public class CueBall extends Ball implements Aimable {
 
     @Override
     public void shoot() {
+        LOG.info("Shot fired!");
 
+        aimPosition = null;
     }
 
     @Override
     public void setAim(Vector2D startPosition) {
-        if (position.distanceTo(aimPosition) < getRadius()) {
+        if (position.distanceTo(startPosition) < getRadius()) {
             aimPosition = startPosition;
         }
     }
