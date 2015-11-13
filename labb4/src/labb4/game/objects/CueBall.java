@@ -34,9 +34,16 @@ public class CueBall extends Ball implements Aimable {
 
     @Override
     public void shoot() {
-        LOG.info("Shot fired!");
+        if (isAiming()) {
+            Vector2D aimingVector = aimPosition.subtract(position);
+            double length = aimingVector.length();
 
-        aimPosition = null;
+            velocity = aimingVector.normalize().multiply(-Math.sqrt(10.0 * length / Config.FRAMES_PER_SECOND));
+
+            LOG.info("Shot fired! New velocity: " + velocity);
+
+            aimPosition = null;
+        }
     }
 
     @Override

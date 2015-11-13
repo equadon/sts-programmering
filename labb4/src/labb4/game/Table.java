@@ -60,6 +60,18 @@ public class Table {
         }
     }
 
+    public boolean isUpdating() {
+        if (cueBall.isMoving()) return true;
+
+        for (Ball ball : balls) {
+            if (ball.isMoving()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public Rectangle getBounds() {
         return bounds;
     }
@@ -87,6 +99,14 @@ public class Table {
 
         for (Ball ball : balls) {
             ball.draw(g);
+        }
+    }
+
+    public void update() {
+        cueBall.update();
+
+        for (Ball ball : balls) {
+            ball.update();
         }
     }
 }

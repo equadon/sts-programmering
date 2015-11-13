@@ -55,7 +55,12 @@ public class Vector2D {
     }
 
     public Vector2D normalize() {
-        return divide(length());
+        double length = length();
+
+        x = x / length;
+        y = y / length;
+
+        return this;
     }
 
     public Vector2D clone() {

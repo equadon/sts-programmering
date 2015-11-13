@@ -36,7 +36,15 @@ public class PoolPanel extends JPanel implements ActionListener, MouseListener, 
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {}
+    public void actionPerformed(ActionEvent e) {
+        if (table.isUpdating()) {
+            table.update();
+
+            repaint();
+        } else {
+            timer.stop();
+        }
+    }
 
     @Override
     public void mouseClicked(MouseEvent e) {}
@@ -66,6 +74,8 @@ public class PoolPanel extends JPanel implements ActionListener, MouseListener, 
             cueBall.shoot();
 
             repaint();
+
+            timer.start();
         }
     }
 
