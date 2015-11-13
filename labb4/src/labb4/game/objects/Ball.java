@@ -9,8 +9,9 @@ import labb4.game.painters.BallPainter;
 import java.awt.*;
 
 public class Ball extends GameObject implements Collidable {
+    public final boolean striped;
+
     private final Table table;
-    private final boolean striped;
     private double radius;
 
     public Ball(Table table, Vector2D position, Vector2D velocity, Color color, double radius, boolean striped) {

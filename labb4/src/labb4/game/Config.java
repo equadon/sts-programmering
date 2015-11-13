@@ -24,11 +24,12 @@ public class Config {
     public static final int SNOOKER_TABLE_HEIGHT = (int) (284 * RESIZE_FACTOR);
 
     public static final int BALL_RADIUS = (int) (6 * RESIZE_FACTOR);
-    public static final int BALL_BORDER_SIZE = 3;
+    public static final int BALL_BORDER_SIZE = 2;
 
     public static final Color BALL_BORDER_COLOR = new Color(34, 34, 34);
 
     public static final Color BALL_WHITE_COLOR = new Color(255, 253, 241);
+    public static final Color BALL_LIGHT_GRAY_COLOR = new Color(197, 195, 184);
     public static final Color BALL_BLACK_COLOR = new Color(21, 21, 21);
     public static final Color BALL_YELLOW_COLOR = new Color(211, 195, 0);
     public static final Color BALL_BLUE_COLOR = new Color(0, 105, 215);

@@ -9,8 +9,8 @@ import java.awt.*;
 public class PoolBall extends Ball {
     public final int number;
 
-    public PoolBall(Table table, Vector2D position, Color color, boolean striped, int number) {
-        this(table, position, Vector2D.zero(), color, Config.DEFAULT_MASS, Config.DEFAULT_FRICTION, Config.BALL_RADIUS,
+    public PoolBall(Table table, Vector2D position, Color color, double radius, boolean striped, int number) {
+        this(table, position, Vector2D.zero(), color, Config.DEFAULT_MASS, Config.DEFAULT_FRICTION, radius,
                 striped, number);
     }
 

@@ -28,6 +28,6 @@ public class PoolBallFactory {
         else
             color = Config.BALL_WHITE_COLOR;
 
-        return new PoolBall(table, position, color, striped, radius);
+        return new PoolBall(table, position, color, radius, striped, number);
     }
 }
