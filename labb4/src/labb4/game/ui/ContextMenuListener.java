@@ -25,6 +25,7 @@ public class ContextMenuListener extends MouseAdapter {
             for (Hole hole : table.getHoles()) {
                 if (hole.getBounds().contains(position.x, position.y)) {
                     holePopUp(e, hole);
+                    return;
                 }
             }
 
@@ -32,11 +33,18 @@ public class ContextMenuListener extends MouseAdapter {
             for (PoolBall ball : table.getBalls()) {
                 if (ball.isVisible() && ball.getBounds().contains(position.x, position.y)) {
                     ballPopUp(e, ball);
+                    return;
                 }
             }
 
             if (table.getCueBall().isVisible() && table.getCueBall().getBounds().contains(position.x, position.y)) {
                 ballPopUp(e, table.getCueBall());
+                return;
+            }
+
+            if (table.getBounds().contains(position.x, position.y)) {
+                tablePopUp(e, table);
+                return;
             }
         }
     }
@@ -48,6 +56,11 @@ public class ContextMenuListener extends MouseAdapter {
 
     private void ballPopUp(MouseEvent e, PoolBall ball){
         PoolBallContextMenu menu = new PoolBallContextMenu(panel, ball);
+        menu.show(e.getComponent(), e.getX(), e.getY());
+    }
+
+    private void tablePopUp(MouseEvent e, Table table){
+        TableContextMenu menu = new TableContextMenu(panel, table);
         menu.show(e.getComponent(), e.getX(), e.getY());
     }
 }
