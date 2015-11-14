@@ -3,7 +3,7 @@ package labb4.game.objects;
 import labb4.game.Config;
 import labb4.game.Vector2D;
 import labb4.game.interfaces.Movable;
-import labb4.game.painters.ObjectPainter;
+import labb4.game.ui.painters.ObjectPainter;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;

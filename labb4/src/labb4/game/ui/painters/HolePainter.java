@@ -1,4 +1,4 @@
-package labb4.game.painters;
+package labb4.game.ui.painters;
 
 import labb4.game.Config;
 import labb4.game.objects.GameObject;

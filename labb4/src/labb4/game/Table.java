@@ -6,7 +6,7 @@ import labb4.game.objects.Ball;
 import labb4.game.objects.CueBall;
 import labb4.game.objects.Hole;
 import labb4.game.objects.PoolBall;
-import labb4.game.painters.TablePainter;
+import labb4.game.ui.painters.TablePainter;
 
 import java.awt.*;
 import java.util.List;
@@ -32,7 +32,7 @@ public class Table {
 
     private Player currentPlayer;
 
-    List<TableListener> listeners = new ArrayList<>();
+    private final List<TableListener> listeners;
 
     public Table(int playfieldWidth, int playfieldHeight, int outerBorderSize, int innerBorderSize,
                  BallInitializer ballInitializer, Player player1, Player player2) {

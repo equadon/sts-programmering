@@ -4,7 +4,7 @@ import labb4.game.Config;
 import labb4.game.Table;
 import labb4.game.Vector2D;
 import labb4.game.interfaces.Collidable;
-import labb4.game.painters.BallPainter;
+import labb4.game.ui.painters.BallPainter;
 
 import java.awt.*;
 

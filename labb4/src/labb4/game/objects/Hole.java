@@ -4,8 +4,7 @@ import labb4.game.Config;
 import labb4.game.Table;
 import labb4.game.Vector2D;
 import labb4.game.interfaces.Collidable;
-import labb4.game.objects.GameObject;
-import labb4.game.painters.HolePainter;
+import labb4.game.ui.painters.HolePainter;
 
 public class Hole extends GameObject implements Collidable {
     private final Table table;
