@@ -1,6 +1,7 @@
 package labb4.game.ui;
 
 import labb4.game.*;
+import labb4.game.interfaces.TableListener;
 import labb4.game.objects.CueBall;
 
 import javax.swing.*;
@@ -8,17 +9,23 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.logging.Logger;
 
-public class PoolPanel extends JPanel implements ActionListener, KeyListener, MouseListener, MouseMotionListener {
+public class PoolPanel extends JPanel implements ActionListener, KeyListener, MouseListener, MouseMotionListener, TableListener {
     private static final Logger LOG = Logger.getLogger(PoolPanel.class.getName());
 
     private final Timer timer;
     private final JFrame frame;
+    private final Player player1;
+    private final Player player2;
+    private final JLabel turnLabel;
 
     private Table table;
     private GameType gameType;
 
-    public PoolPanel(JFrame frame) {
+    public PoolPanel(JFrame frame, Player player1, Player player2, JLabel turnLabel) {
         this.frame = frame;
+        this.player1 = player1;
+        this.player2 = player2;
+        this.turnLabel = turnLabel;
 
         timer = new Timer((int) (1000.0 / Config.FRAMES_PER_SECOND), this);
 
@@ -33,7 +40,14 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
     }
 
     private void newGame() {
-        table = TableFactory.createPoolTable(gameType);
+        player1.reset();
+        player2.reset();
+
+        table = TableFactory.createPoolTable(gameType, player1, player2);
+        table.addListener(this);
+        table.addListener(player1);
+        table.addListener(player2);
+        table.init();
 
         setPreferredSize(new Dimension(table.width, table.height));
         setSize(new Dimension(table.width, table.height));
@@ -137,4 +151,15 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
             newGame();
         }
     }
+
+    @Override
+    public void turnChanged(Player currentPlayer) {
+        turnLabel.setText("Turn: " + currentPlayer.name);
+    }
+
+    @Override
+    public void pointsAdded(Player player, int points) {}
+
+    @Override
+    public void gameCreated() {}
 }

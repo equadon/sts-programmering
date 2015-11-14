@@ -1,6 +1,7 @@
 package labb4.game;
 
 import labb4.game.initializers.BallInitializer;
+import labb4.game.interfaces.TableListener;
 import labb4.game.objects.Ball;
 import labb4.game.objects.CueBall;
 import labb4.game.objects.Hole;
@@ -8,6 +9,8 @@ import labb4.game.objects.PoolBall;
 import labb4.game.painters.TablePainter;
 
 import java.awt.*;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Table {
     private final TablePainter painter;
@@ -24,7 +27,17 @@ public class Table {
     public final int outerBorderSize;
     public final int innerBorderSize;
 
-    public Table(int playfieldWidth, int playfieldHeight, int outerBorderSize, int innerBorderSize, BallInitializer ballInitializer) {
+    private final Player player1;
+    private final Player player2;
+
+    private Player currentPlayer;
+
+    List<TableListener> listeners = new ArrayList<>();
+
+    public Table(int playfieldWidth, int playfieldHeight, int outerBorderSize, int innerBorderSize,
+                 BallInitializer ballInitializer, Player player1, Player player2) {
+        this.player1 = player1;
+        this.player2 = player2;
         this.width = playfieldWidth + 2 * (outerBorderSize + innerBorderSize);
         this.height = playfieldHeight + 2 * (outerBorderSize + innerBorderSize);
         this.outerBorderSize = outerBorderSize;
@@ -46,6 +59,15 @@ public class Table {
 
         cueBall = ballInitializer.createCueBall(this);
         balls = ballInitializer.createBalls(this);
+
+        listeners = new ArrayList<>();
+    }
+
+    public void init() {
+        changeTurn();
+
+        for (TableListener listener : listeners)
+            listener.gameCreated();
     }
 
     private void createHoles() {
@@ -114,5 +136,29 @@ public class Table {
         for (Ball ball : balls) {
             ball.handleCollisions();
         }
+    }
+
+    public void addListener(TableListener observer) {
+        listeners.add(observer);
+    }
+
+    public void removeListener(TableListener observer) {
+        listeners.remove(observer);
+    }
+
+    public void changeTurn() {
+        if (currentPlayer == player1) {
+            currentPlayer = player2;
+        } else {
+            currentPlayer = player1;
+        }
+
+        for (TableListener observer : listeners)
+            observer.turnChanged(currentPlayer);
+    }
+
+    public void addPoints(int points) {
+        for (TableListener listener : listeners)
+            listener.pointsAdded(currentPlayer, 1);
     }
 }

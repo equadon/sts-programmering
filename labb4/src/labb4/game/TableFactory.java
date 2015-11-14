@@ -6,7 +6,7 @@ import labb4.game.initializers.NineBallInitializer;
 import labb4.game.initializers.SnookerInitializer;
 
 public class TableFactory {
-    public static Table createPoolTable(GameType type) {
+    public static Table createPoolTable(GameType type, Player player1, Player player2) {
         BallInitializer initializer = null;
 
         int width = Config.DEFAULT_TABLE_WIDTH;
@@ -28,10 +28,10 @@ public class TableFactory {
                 break;
         }
 
-        return new Table(width, height, 20, 15, initializer);
+        return new Table(width, height, 20, 15, initializer, player1, player2);
     }
 
-    public static Table createSnookerTable() {
-        return new Table(Config.SNOOKER_TABLE_WIDTH, Config.SNOOKER_TABLE_HEIGHT, 20, 15, new SnookerInitializer());
+    public static Table createSnookerTable(Player player1, Player player2) {
+        return new Table(Config.SNOOKER_TABLE_WIDTH, Config.SNOOKER_TABLE_HEIGHT, 20, 15, new SnookerInitializer(), player1, player2);
     }
 }
