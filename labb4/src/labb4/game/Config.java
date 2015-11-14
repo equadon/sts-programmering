@@ -10,19 +10,25 @@ public class Config {
     public static final double DEFAULT_FRICTION = 0.015;
     public static final double DEFAULT_MASS = 1.0;
 
+    /**
+     * Table constants.
+     */
     public static final Color TABLE_OUTER_BORDER_COLOR = new Color(85, 58, 34);
     public static final Color TABLE_INNER_BORDER_COLOR = new Color(7, 116, 0);
     public static final Color TABLE_COLOR = new Color(9, 226, 0);
 
-    public static final Color DEFAULT_HOLE_COLOR = new Color(34, 34, 34);
-    public static final int DEFAULT_HOLE_RADIUS = (int) (8 * RESIZE_FACTOR);
-
     public static final int DEFAULT_TABLE_WIDTH = (int) (127 * RESIZE_FACTOR);
     public static final int DEFAULT_TABLE_HEIGHT = (int) (254 * RESIZE_FACTOR);
+
+    public static final int TABLE_OUTER_BORDER_SIZE = (int) (6 * RESIZE_FACTOR);
+    public static final int TABLE_INNER_BORDER_SIZE = (int) (5 * RESIZE_FACTOR);
 
     public static final int SNOOKER_TABLE_WIDTH = (int) (142 * RESIZE_FACTOR);
     public static final int SNOOKER_TABLE_HEIGHT = (int) (284 * RESIZE_FACTOR);
 
+    /**
+     * Ball constants.
+     */
     public static final int BALL_RADIUS = (int) (5 * RESIZE_FACTOR);
     public static final int BALL_BORDER_SIZE = 2;
 
@@ -39,4 +45,10 @@ public class Config {
     public static final Color BALL_ORANGE_COLOR = new Color(207, 115, 48);
     public static final Color BALL_GREEN_COLOR = new Color(48, 162, 42);
     public static final Color BALL_BROWN_COLOR = new Color(126, 85, 54);
+
+    /**
+     * Hole constants.
+     */
+    public static final Color DEFAULT_HOLE_COLOR = new Color(34, 34, 34);
+    public static final int DEFAULT_HOLE_RADIUS = (int) (8 * RESIZE_FACTOR);
 }

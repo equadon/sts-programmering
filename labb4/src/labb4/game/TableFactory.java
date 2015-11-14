@@ -28,10 +28,6 @@ public class TableFactory {
                 break;
         }
 
-        return new Table(width, height, 20, 15, initializer, player1, player2);
-    }
-
-    public static Table createSnookerTable(Player player1, Player player2) {
-        return new Table(Config.SNOOKER_TABLE_WIDTH, Config.SNOOKER_TABLE_HEIGHT, 20, 15, new SnookerInitializer(), player1, player2);
+        return new Table(width, height, Config.TABLE_OUTER_BORDER_SIZE, Config.TABLE_INNER_BORDER_SIZE, initializer, player1, player2);
     }
 }
