@@ -3,13 +3,11 @@ package labb4.game.initializers;
 import labb4.game.PoolBallFactory;
 import labb4.game.Config;
 import labb4.game.Vector2D;
-import labb4.game.objects.Ball;
 import labb4.game.Table;
 import labb4.game.objects.CueBall;
 import labb4.game.objects.PoolBall;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
 public class EightBallInitializer implements BallInitializer {

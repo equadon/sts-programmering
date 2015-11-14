@@ -7,7 +7,6 @@ import labb4.game.Vector2D;
 import labb4.game.objects.CueBall;
 import labb4.game.objects.PoolBall;
 
-import java.util.Arrays;
 import java.util.Random;
 
 public class NineBallInitializer implements BallInitializer {
