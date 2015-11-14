@@ -23,8 +23,9 @@ public class PoolBall extends Ball {
 
     @Override
     public String toString() {
-        return "PoolBall{" +
-                "points=" + points +
-                '}';
+        return String.format("PoolBall[pos=(%.0f,%.0f), velocity=(%.0f,%.0f), points=%d]",
+                position.x, position.y,
+                velocity.x, velocity.y,
+                points);
     }
 }

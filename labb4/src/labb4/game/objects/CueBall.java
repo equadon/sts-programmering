@@ -58,4 +58,12 @@ public class CueBall extends PoolBall implements Aimable {
             aimPosition = newPosition;
         }
     }
+
+    @Override
+    public String toString() {
+        return String.format("CueBall[pos=(%.0f,%.0f), velocity=(%.0f,%.0f), isAiming=%s]",
+                position.x, position.y,
+                velocity.x, velocity.y,
+                isAiming());
+    }
 }

@@ -1,5 +1,6 @@
 package labb4.game.ui;
 
+import labb4.game.objects.CueBall;
 import labb4.game.objects.Hole;
 import labb4.game.objects.PoolBall;
 
@@ -12,7 +13,7 @@ public class HoleContextMenu extends GameContextMenu {
 
         PoolBall[] balls = hole.getBalls();
 
-        add(new JMenuItem("Hole: " + hole.toString()));
+        add(new JMenuItem(hole.toString()));
         addSeparator();
 
         if (balls.length < 1) {
@@ -22,14 +23,21 @@ public class HoleContextMenu extends GameContextMenu {
 
         if (balls.length > 0) {
             JMenuItem ballItem;
+            int n = 1;
             for (PoolBall ball : balls) {
-                ballItem = new JMenuItem(new AbstractAction("Ball: " + ball.toString()) {
+                String name = n + ". " + ball.toString();
+                if (ball instanceof CueBall) {
+                    name = ((CueBall) ball).toString();
+                }
+
+                ballItem = new JMenuItem(new AbstractAction(name) {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         JOptionPane.showMessageDialog(null, "Ball: " + ball.toString(), "Ball Info", JOptionPane.INFORMATION_MESSAGE);
                     }
                 });
                 add(ballItem);
+                n++;
             }
         }
     }

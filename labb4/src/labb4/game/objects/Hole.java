@@ -61,4 +61,9 @@ public class Hole extends GameObject implements Collidable {
         bounds.width = 2 * radius;
         bounds.height = 2 * radius;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Hole[balls=%d, pos=(%.0f,%.0f)]", balls.size(), position.x, position.y);
+    }
 }
