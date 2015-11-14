@@ -7,15 +7,18 @@ import labb4.game.Vector2D;
 import labb4.game.objects.CueBall;
 import labb4.game.objects.PoolBall;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class NineBallInitializer implements BallInitializer {
     @Override
-    public PoolBall[] createBalls(Table table) {
+    public List<PoolBall> createBalls(Table table) {
         Integer[] numbers = new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9};
         shuffle(numbers);
 
-        PoolBall[] balls = new PoolBall[numbers.length];
+        List<PoolBall> balls = new ArrayList<>();
 
         int radius = Config.BALL_RADIUS;
         int diameter = 2 * radius;
@@ -29,7 +32,7 @@ public class NineBallInitializer implements BallInitializer {
         int absRow = 1;
         int row = 1;
         int col = 0;
-        for (int i = 0; i < balls.length; i++) {
+        for (int i = 0; i < 9; i++) {
             if (col == row) {
                 if (col == 3) direction *= -1;
                 row += direction;
@@ -39,7 +42,7 @@ public class NineBallInitializer implements BallInitializer {
 
             int number = numbers[i];
             position = new Vector2D(x + (5 - row) * radius + col * diameter, y - absRow * (diameter - 0.25 * radius));
-            balls[i] = PoolBallFactory.createStandardBall(number, table, position, radius);
+            balls.add(PoolBallFactory.createStandardBall(number, table, position, radius));
 
             col++;
         }
@@ -66,6 +69,20 @@ public class NineBallInitializer implements BallInitializer {
             temp = array[index];
             array[index] = array[i];
             array[i] = temp;
+        }
+
+        // Make sure number 9 is at position 4
+        int indexEight = Arrays.asList(array).indexOf(9);
+        if (indexEight != 4) {
+            array[indexEight] = array[4];
+            array[4] = 9;
+        }
+
+        // Make sure number 1 is at position 0
+        int indexOne = Arrays.asList(array).indexOf(1);
+        if (indexOne != 0) {
+            array[indexOne] = array[0];
+            array[0] = 1;
         }
     }
 }

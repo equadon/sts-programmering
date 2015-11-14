@@ -7,16 +7,18 @@ import labb4.game.Table;
 import labb4.game.objects.CueBall;
 import labb4.game.objects.PoolBall;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class EightBallInitializer implements BallInitializer {
     @Override
-    public PoolBall[] createBalls(Table table) {
+    public List<PoolBall> createBalls(Table table) {
         Integer[] numbers = new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
         shuffle(numbers);
 
-        PoolBall[] balls = new PoolBall[numbers.length];
+        List<PoolBall> balls = new ArrayList<>();
 
         int radius = Config.BALL_RADIUS;
         int diameter = 2 * radius;
@@ -28,7 +30,7 @@ public class EightBallInitializer implements BallInitializer {
 
         int row = 1;
         int col = 0;
-        for (int i = 0; i < balls.length; i++) {
+        for (int i = 0; i < 15; i++) {
             if (col == row) {
                 row++;
                 col = 0;
@@ -36,7 +38,7 @@ public class EightBallInitializer implements BallInitializer {
 
             int number = numbers[i];
             position = new Vector2D(x + (5 - row) * radius + col * diameter, y - row * (diameter - 0.25 * radius));
-            balls[i] = PoolBallFactory.createStandardBall(number, table, position, radius);
+            balls.add(PoolBallFactory.createStandardBall(number, table, position, radius));
 
             col++;
         }

@@ -9,6 +9,8 @@ import labb4.game.ui.painters.TablePainter;
 
 import java.awt.*;
 
+import java.util.List;
+
 public class Table {
     private final TablePainter painter;
 
@@ -16,7 +18,7 @@ public class Table {
     private final Rectangle playableBounds;
 
     private final CueBall cueBall;
-    private final PoolBall[] balls;
+    private final List<PoolBall> balls;
     private final Hole[] holes;
 
     public final int width;
@@ -87,7 +89,7 @@ public class Table {
     }
 
     public PoolBall[] getBalls() {
-        return balls;
+        return balls.toArray(new PoolBall[balls.size()]);
     }
 
     public Hole[] getHoles() {

@@ -8,12 +8,15 @@ import labb4.game.Table;
 import labb4.game.objects.CueBall;
 import labb4.game.objects.PoolBall;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SnookerInitializer implements BallInitializer {
     public static final int RED_BALLS = 15;
 
     @Override
-    public PoolBall[] createBalls(Table table) {
-        PoolBall[] balls = new PoolBall[RED_BALLS + 6];
+    public List<PoolBall> createBalls(Table table) {
+        List<PoolBall> balls = new ArrayList<>();
 
         int radius = Config.BALL_RADIUS;
         int diameter = 2 * radius;
@@ -28,37 +31,32 @@ public class SnookerInitializer implements BallInitializer {
 
         // Yellow ball
         Vector2D position = new Vector2D(center.x + 0.15 * table.width, yLine);
-        balls[i] = PoolBallFactory.createSnookerBall(2, table, position, radius);
-        i++;
+        balls.add(PoolBallFactory.createSnookerBall(2, table, position, radius));
 
         // Green ball
         position = new Vector2D(center.x - 0.15 * table.width, yLine);
-        balls[i] = PoolBallFactory.createSnookerBall(3, table, position, radius);
-        i++;
+        balls.add(PoolBallFactory.createSnookerBall(3, table, position, radius));
 
         // Brown ball
         position = new Vector2D(center.x, yLine);
-        balls[i] = PoolBallFactory.createSnookerBall(4, table, position, radius);
-        i++;
+        balls.add(PoolBallFactory.createSnookerBall(4, table, position, radius));
 
         // Blue ball
         position = new Vector2D(center.x, center.y);
-        balls[i] = PoolBallFactory.createSnookerBall(5, table, position, radius);
-        i++;
+        balls.add(PoolBallFactory.createSnookerBall(5, table, position, radius));
 
         // Pink ball
         position = new Vector2D(center.x, radius/2.0 + table.height / 3.0);
-        balls[i] = PoolBallFactory.createSnookerBall(6, table, position, radius);
-        i++;
+        balls.add(PoolBallFactory.createSnookerBall(6, table, position, radius));
 
         // Black ball
         position = new Vector2D(center.x, 0.125 * table.height);
-        balls[i] = PoolBallFactory.createSnookerBall(7, table, position, radius);
+        balls.add(PoolBallFactory.createSnookerBall(7, table, position, radius));
 
         return balls;
     }
 
-    private void createRedBalls(Ball[] balls, Table table, int radius, int diameter) {
+    private void createRedBalls(List<PoolBall> balls, Table table, int radius, int diameter) {
         Vector2D position;
 
         double x = (table.getBounds().width / 2.0) - 4 * radius;
@@ -73,7 +71,7 @@ public class SnookerInitializer implements BallInitializer {
             }
 
             position = new Vector2D(x + (5 - row) * radius + col * diameter, y - row * (diameter - 0.25 * radius));
-            balls[i] = PoolBallFactory.createSnookerBall(1, table, position, radius);
+            balls.add(PoolBallFactory.createSnookerBall(1, table, position, radius));
 
             col++;
         }

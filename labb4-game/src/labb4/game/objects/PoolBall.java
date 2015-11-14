@@ -33,6 +33,7 @@ public class PoolBall extends Ball implements Placeable {
     @Override
     public void startPlacing() {
         placing = true;
+        velocity = Vector2D.zero();
         show();
     }
 

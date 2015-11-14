@@ -4,7 +4,9 @@ import labb4.game.Table;
 import labb4.game.objects.CueBall;
 import labb4.game.objects.PoolBall;
 
+import java.util.List;
+
 public interface BallInitializer {
-    PoolBall[] createBalls(Table table);
+    List<PoolBall> createBalls(Table table);
     CueBall createCueBall(Table table);
 }
