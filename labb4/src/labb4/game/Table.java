@@ -86,7 +86,7 @@ public class Table {
     public boolean isUpdating() {
         if (cueBall.isMoving()) return true;
 
-        for (Ball ball : balls) {
+        for (PoolBall ball : balls) {
             if (ball.isMoving()) {
                 return true;
             }
@@ -120,7 +120,7 @@ public class Table {
 
         cueBall.draw(g);
 
-        for (Ball ball : balls) {
+        for (PoolBall ball : balls) {
             ball.draw(g);
         }
     }
@@ -128,12 +128,13 @@ public class Table {
     public void update() {
         cueBall.update();
 
-        for (Ball ball : balls) {
+        for (PoolBall ball : balls) {
             ball.update();
         }
 
         cueBall.handleCollisions();
-        for (Ball ball : balls) {
+
+        for (PoolBall ball : balls) {
             ball.handleCollisions();
         }
     }
@@ -159,6 +160,6 @@ public class Table {
 
     public void addPoints(int points) {
         for (TableListener listener : listeners)
-            listener.pointsAdded(currentPlayer, 1);
+            listener.pointsAdded(currentPlayer, points);
     }
 }

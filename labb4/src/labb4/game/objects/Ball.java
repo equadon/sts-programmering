@@ -11,7 +11,7 @@ import java.awt.*;
 public class Ball extends GameObject implements Collidable {
     public final boolean striped;
 
-    private final Table table;
+    protected final Table table;
     private double radius;
 
     public Ball(Table table, Vector2D position, Vector2D velocity, Color color, double radius, boolean striped) {
@@ -104,12 +104,16 @@ public class Ball extends GameObject implements Collidable {
 
             if (distance < radius + other.radius) {
                 handleBallCollision(other);
+
+                collidedWith(other);
                 return true;
             }
         }
 
         return false;
     }
+
+    protected void collidedWith(Ball other) {}
 
     private void handleBallCollision(Ball other) {
         Vector2D impulseDirection = calcImpulseDirection(other);

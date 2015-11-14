@@ -1,10 +1,8 @@
 package labb4.game;
 
-import labb4.game.interfaces.TableListener;
-
 import javax.swing.*;
 
-public class Player implements TableListener {
+public class Player {
     public final int id;
     public final String name;
     private final JLabel label;
@@ -21,26 +19,15 @@ public class Player implements TableListener {
 
     public void reset() {
         points = 0;
+        updateLabel();
+    }
+
+    public void addPoints(int points) {
+        this.points += points;
+        updateLabel();
     }
 
     private void updateLabel() {
         label.setText(name + ": " + points + " points");
-    }
-
-    @Override
-    public void turnChanged(Player currentPlayer) {}
-
-    @Override
-    public void pointsAdded(Player player, int points) {
-        if (player == this) {
-            this.points += points;
-            updateLabel();
-        }
-    }
-
-    @Override
-    public void gameCreated() {
-        points = 0;
-        updateLabel();
     }
 }

@@ -45,8 +45,6 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
 
         table = TableFactory.createPoolTable(gameType, player1, player2);
         table.addListener(this);
-        table.addListener(player1);
-        table.addListener(player2);
         table.init();
 
         setPreferredSize(new Dimension(table.width, table.height));
@@ -152,14 +150,22 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
         }
     }
 
+    /**
+     * Table listener.
+     */
     @Override
     public void turnChanged(Player currentPlayer) {
         turnLabel.setText("Turn: " + currentPlayer.name);
     }
 
     @Override
-    public void pointsAdded(Player player, int points) {}
+    public void pointsAdded(Player player, int points) {
+        player.addPoints(points);
+    }
 
     @Override
-    public void gameCreated() {}
+    public void gameCreated() {
+        player1.reset();
+        player2.reset();
+    }
 }

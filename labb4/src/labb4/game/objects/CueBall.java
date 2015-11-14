@@ -58,4 +58,11 @@ public class CueBall extends Ball implements Aimable {
             aimPosition = newPosition;
         }
     }
+
+    @Override
+    protected void collidedWith(Ball other) {
+        int points = ((PoolBall) other).points;
+
+        table.addPoints(points);
+    }
 }
