@@ -32,9 +32,6 @@ public class Table {
 
         painter = new TablePainter();
 
-        cueBall = ballInitializer.createCueBall(this);
-        balls = ballInitializer.createBalls(this);
-
         holes = new Hole[6];
 
         bounds = new Rectangle(0, 0, width, height);
@@ -46,6 +43,9 @@ public class Table {
         );
 
         createHoles();
+
+        cueBall = ballInitializer.createCueBall(this);
+        balls = ballInitializer.createBalls(this);
     }
 
     private void createHoles() {
@@ -55,7 +55,7 @@ public class Table {
             int row = i / 2;
             int col = i % 2;
 
-            position = new Vector2D(playableBounds.x + col * playableBounds.width, playableBounds.y + row * playableBounds.height);
+            position = new Vector2D(playableBounds.x + col * playableBounds.width, playableBounds.y + row * (playableBounds.height / 2.0));
 
             holes[i] = new Hole(this, position, Config.DEFAULT_HOLE_RADIUS);
         }

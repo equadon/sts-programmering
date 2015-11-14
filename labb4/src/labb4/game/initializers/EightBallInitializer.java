@@ -25,8 +25,8 @@ public class EightBallInitializer implements BallInitializer {
 
         Vector2D position;
 
-        double x = 100;
-        double y = 300;
+        double x = (table.getBounds().width / 2.0) - 4 * radius;
+        double y = table.height / 3.0;
 
         int row = 1;
         int col = 0;
@@ -37,9 +37,7 @@ public class EightBallInitializer implements BallInitializer {
             }
 
             int number = numbers[i];
-
-            position = new Vector2D(x + (5 - row) * radius + col * diameter, y - row * (diameter - radius*0.2));
-
+            position = new Vector2D(x + (5 - row) * radius + col * diameter, y - row * (diameter - 0.25 * radius));
             balls[i] = PoolBallFactory.createBall(number, table, position, radius);
 
             col++;
