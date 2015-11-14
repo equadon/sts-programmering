@@ -13,7 +13,7 @@ public class Hole extends GameObject implements Collidable {
     private final Table table;
     private final double radius;
 
-    private final List<Ball> balls;
+    private final List<PoolBall> balls;
 
     public Hole(Table table, Vector2D position, double radius) {
         super(new HolePainter(), position, new Vector2D(0, 0), Config.DEFAULT_HOLE_COLOR, 0, 0);
@@ -26,6 +26,10 @@ public class Hole extends GameObject implements Collidable {
         updateBounds();
     }
 
+    public PoolBall[] getBalls() {
+        return balls.toArray(new PoolBall[balls.size()]);
+    }
+
     @Override
     public boolean handleCollisions() {
         return false;
@@ -35,7 +39,7 @@ public class Hole extends GameObject implements Collidable {
         if (position.distanceTo(ball.position) < radius) {
             PoolBall poolBall = (PoolBall) ball;
 
-            balls.add(ball);
+            balls.add(poolBall);
             ball.hide();
 
             if (ball instanceof CueBall) {

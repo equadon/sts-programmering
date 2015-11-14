@@ -20,4 +20,11 @@ public class PoolBall extends Ball {
 
         this.points = points;
     }
+
+    @Override
+    public String toString() {
+        return "PoolBall{" +
+                "points=" + points +
+                '}';
+    }
 }

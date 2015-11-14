@@ -21,6 +21,8 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
     private Table table;
     private GameType gameType;
 
+    private PopClickListener popUpListener;
+
     public PoolPanel(JFrame frame, Player player1, Player player2, JLabel turnLabel) {
         this.frame = frame;
         this.player1 = player1;
@@ -50,6 +52,13 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
         setPreferredSize(new Dimension(table.width, table.height));
         setSize(new Dimension(table.width, table.height));
         frame.pack();
+
+        if (popUpListener != null) {
+            removeMouseListener(popUpListener);
+        }
+
+        popUpListener = new PopClickListener(table);
+        addMouseListener(popUpListener);
 
         repaint();
     }
