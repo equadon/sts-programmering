@@ -2,6 +2,7 @@ package labb4.game;
 
 import labb4.game.initializers.BallInitializer;
 import labb4.game.initializers.EightBallInitializer;
+import labb4.game.initializers.NineBallInitializer;
 import labb4.game.initializers.SnookerInitializer;
 
 public class TableFactory {
@@ -11,6 +12,10 @@ public class TableFactory {
         switch (type) {
             case EightBall:
                 initializer = new EightBallInitializer();
+                break;
+
+            case NineBall:
+                initializer = new NineBallInitializer();
                 break;
 
             case Snooker:

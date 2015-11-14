@@ -19,7 +19,7 @@ public class PoolPanel extends JPanel implements ActionListener, MouseListener, 
     public PoolPanel() {
         timer = new Timer((int) (1000.0 / Config.FRAMES_PER_SECOND), this);
 
-        gameType = GameType.EightBall;
+        gameType = GameType.NineBall;
         table = TableFactory.createStandardPoolTable(gameType);
 
         setPreferredSize(new Dimension(table.width, table.height));
