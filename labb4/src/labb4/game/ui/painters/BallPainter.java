@@ -98,7 +98,7 @@ public class BallPainter extends ObjectPainter {
         double x = ball.getPosition().x - metrics.stringWidth(number) / 2.0;
         double y = ball.getPosition().y + metrics.getHeight() / 3.0;
 
-        g.setColor((ball.points == 8) ? Config.BALL_WHITE_COLOR : Config.BALL_BLACK_COLOR);
+        g.setColor((ball.getColor() == Config.BALL_BLACK_COLOR) ? Config.BALL_WHITE_COLOR : Config.BALL_BLACK_COLOR);
         g.setFont(NUMBER_FONT);
         g.drawString(number, (float) x, (float) y);
     }
