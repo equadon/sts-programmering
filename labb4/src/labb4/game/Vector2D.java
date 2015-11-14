@@ -36,9 +36,9 @@ public class Vector2D {
         return this;
     }
 
-    public Vector2D divide(double factor) {
-        x = x / factor;
-        y = x / factor;
+    public Vector2D divide(double denominator) {
+        x = x / denominator;
+        y = x / denominator;
 
         return this;
     }
