@@ -3,14 +3,12 @@ package labb4.game;
 import javax.swing.*;
 
 public class Player {
-    public final int id;
     public final String name;
     private final JLabel label;
 
     private int points;
 
-    public Player(int id, String name, JLabel label) {
-        this.id = id;
+    public Player(String name, JLabel label) {
         this.name = name;
         this.label = label;
 
@@ -29,5 +27,13 @@ public class Player {
 
     private void updateLabel() {
         label.setText(name + ": " + points + " points");
+    }
+
+    @Override
+    public String toString() {
+        return "Player[" +
+                "name='" + name + '\'' +
+                ", points=" + points +
+                ']';
     }
 }

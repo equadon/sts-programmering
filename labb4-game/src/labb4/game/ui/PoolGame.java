@@ -11,18 +11,18 @@ public class PoolGame {
         JLabel player1Points = new JLabel("");
         JLabel player2Points = new JLabel("");
 
-        JLabel turnLabel = new JLabel("Turn: ?");
+        //String player1Name = JOptionPane.showInputDialog("Enter name for player 1:");
+        //String player2Name = JOptionPane.showInputDialog("Enter name for player 2:");
+
+        Player player1 = new Player("Jane", player1Points);
+        Player player2 = new Player("Joe", player2Points);
+
+        JLabel turnLabel = new JLabel("Turn: " + player1.name);
         turnLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         infoPanel.add(player1Points, BorderLayout.WEST);
         infoPanel.add(turnLabel, BorderLayout.CENTER);
         infoPanel.add(player2Points, BorderLayout.EAST);
-
-        //String player1Name = JOptionPane.showInputDialog("Enter name for player 1:");
-        //String player2Name = JOptionPane.showInputDialog("Enter name for player 2:");
-
-        Player player1 = new Player(1, "Jane", player1Points);
-        Player player2 = new Player(2, "Joe", player2Points);
 
         JFrame frame = new JFrame("Pool Game");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
