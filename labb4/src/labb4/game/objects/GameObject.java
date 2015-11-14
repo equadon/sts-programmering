@@ -14,7 +14,7 @@ public abstract class GameObject {
     private final ObjectPainter painter;
 
     protected Vector2D lastPosition;
-    protected Vector2D position;
+    private Vector2D position;
     protected Vector2D velocity;
 
     protected Color color;
@@ -44,6 +44,11 @@ public abstract class GameObject {
 
     public Vector2D getPosition() {
         return position;
+    }
+
+    public void setPosition(Vector2D newPosition) {
+        position = newPosition;
+        updateBounds();
     }
 
     public Vector2D getVelocity() {

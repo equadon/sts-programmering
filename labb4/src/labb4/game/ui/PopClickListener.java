@@ -8,9 +8,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class PopClickListener extends MouseAdapter {
+    private final PoolPanel panel;
     private final Table table;
 
-    public PopClickListener(Table table) {
+    public PopClickListener(PoolPanel panel, Table table) {
+        this.panel = panel;
         this.table = table;
     }
 
@@ -21,14 +23,14 @@ public class PopClickListener extends MouseAdapter {
             // Hole popup?
             for (Hole hole : table.getHoles()) {
                 if (hole.getBounds().contains(position.x, position.y)) {
-                    doHolePop(e, hole);
+                    holePopUp(e, hole);
                 }
             }
         }
     }
 
-    private void doHolePop(MouseEvent e, Hole hole){
-        GameContextMenu menu = new HoleContextMenu(hole);
+    private void holePopUp(MouseEvent e, Hole hole){
+        GameContextMenu menu = new HoleContextMenu(panel, hole);
         menu.show(e.getComponent(), e.getX(), e.getY());
     }
 }

@@ -1,5 +1,6 @@
 package labb4.game.ui;
 
+import labb4.game.interfaces.Placeable;
 import labb4.game.objects.CueBall;
 import labb4.game.objects.Hole;
 import labb4.game.objects.PoolBall;
@@ -8,7 +9,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 public class HoleContextMenu extends GameContextMenu {
-    public HoleContextMenu(Hole hole) {
+    public HoleContextMenu(PoolPanel panel, Hole hole) {
         super();
 
         PoolBall[] balls = hole.getBalls();
@@ -25,15 +26,19 @@ public class HoleContextMenu extends GameContextMenu {
             JMenuItem ballItem;
             int n = 1;
             for (PoolBall ball : balls) {
+                CueBall cueBall;
                 String name = n + ". " + ball.toString();
+
                 if (ball instanceof CueBall) {
-                    name = ((CueBall) ball).toString();
+                    cueBall = (CueBall) ball;
+                    name = cueBall.toString();
                 }
 
                 ballItem = new JMenuItem(new AbstractAction(name) {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        JOptionPane.showMessageDialog(null, "Ball: " + ball.toString(), "Ball Info", JOptionPane.INFORMATION_MESSAGE);
+                        hole.remove(ball);
+                        panel.startPlacing(ball);
                     }
                 });
                 add(ballItem);

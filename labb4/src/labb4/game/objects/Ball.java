@@ -39,8 +39,8 @@ public class Ball extends GameObject implements Collidable {
 
     @Override
     protected void updateBounds() {
-        bounds.x = position.x - radius;
-        bounds.y = position.y - radius;
+        bounds.x = getPosition().x - radius;
+        bounds.y = getPosition().y - radius;
         bounds.width = getDiameter();
         bounds.height = getDiameter();
     }
@@ -68,21 +68,21 @@ public class Ball extends GameObject implements Collidable {
         boolean collision = false;
 
         if (bounds.x < tableBounds.getX()) { // Left wall
-            position.x += tableBounds.getX() - bounds.x;
+            getPosition().x += tableBounds.getX() - bounds.x;
             velocity.x = -velocity.x;
             collision = true;
         } else if (bounds.getMaxX() > tableBounds.getMaxX()) { // right wall
-            position.x -= bounds.getMaxX() - tableBounds.getMaxX();
+            getPosition().x -= bounds.getMaxX() - tableBounds.getMaxX();
             velocity.x = -velocity.x;
             collision = true;
         }
 
         if (bounds.y < tableBounds.getY()) { // top wall
-            position.y += tableBounds.getY() - bounds.y;
+            getPosition().y += tableBounds.getY() - bounds.y;
             velocity.y = -velocity.y;
             collision = true;
         } else if (bounds.getMaxY() > tableBounds.getMaxY()) { // bottom wall
-            position.y -= bounds.getMaxY() - tableBounds.getMaxY();
+            getPosition().y -= bounds.getMaxY() - tableBounds.getMaxY();
             velocity.y = -velocity.y;
             collision = true;
         }
@@ -110,7 +110,7 @@ public class Ball extends GameObject implements Collidable {
 
     private boolean checkCollisionWith(Ball other) {
         if (bounds.intersects(other.bounds)) {
-            double distance = position.distanceTo(other.position);
+            double distance = getPosition().distanceTo(other.getPosition());
 
             if (distance < radius + other.radius) {
                 handleBallCollision(other);
@@ -129,14 +129,14 @@ public class Ball extends GameObject implements Collidable {
         Vector2D impulseDirection = calcImpulseDirection(other);
         Vector2D impulseVector = calcImpulseVector(other, impulseDirection);
 
-        Vector2D diff = position.clone().subtract(other.position);
+        Vector2D diff = getPosition().clone().subtract(other.getPosition());
 
         double moveDistance = diff.length();
         Vector2D moveVector = diff.normalize().multiply((radius + other.radius - moveDistance) / 2.0);
 
         // Adjust ball position
-        position.add(moveVector);
-        other.position.subtract(moveVector);
+        getPosition().add(moveVector);
+        other.getPosition().subtract(moveVector);
 
         updateBounds();
 
@@ -146,8 +146,8 @@ public class Ball extends GameObject implements Collidable {
 
     private Vector2D calcImpulseDirection(Ball ballB) {
         return new Vector2D(
-                (position.x - ballB.position.x) / position.distanceTo(ballB.position), // Dx
-                (position.y - ballB.position.y) / position.distanceTo(ballB.position)  // Dy
+                (getPosition().x - ballB.getPosition().x) / getPosition().distanceTo(ballB.getPosition()), // Dx
+                (getPosition().y - ballB.getPosition().y) / getPosition().distanceTo(ballB.getPosition())  // Dy
         );
     }
 

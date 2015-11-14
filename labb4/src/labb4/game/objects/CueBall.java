@@ -25,7 +25,7 @@ public class CueBall extends PoolBall implements Aimable {
     }
 
     public boolean isAiming() {
-        return aimPosition != null;
+        return !isPlacing() && aimPosition != null;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class CueBall extends PoolBall implements Aimable {
     @Override
     public void shoot() {
         if (isAiming()) {
-            Vector2D aimingVector = aimPosition.subtract(position);
+            Vector2D aimingVector = aimPosition.subtract(getPosition());
             double length = aimingVector.length();
 
             velocity = aimingVector.normalize().multiply(-Math.sqrt(20.0 * length / Config.FRAMES_PER_SECOND));
@@ -47,7 +47,7 @@ public class CueBall extends PoolBall implements Aimable {
 
     @Override
     public void setAim(Vector2D startPosition) {
-        if (position.distanceTo(startPosition) < getRadius()) {
+        if (!isPlacing() && getPosition().distanceTo(startPosition) < getRadius()) {
             aimPosition = startPosition;
         }
     }
@@ -62,7 +62,7 @@ public class CueBall extends PoolBall implements Aimable {
     @Override
     public String toString() {
         return String.format("CueBall[pos=(%.0f,%.0f), velocity=(%.0f,%.0f), isAiming=%s]",
-                position.x, position.y,
+                getPosition().x, getPosition().y,
                 velocity.x, velocity.y,
                 isAiming());
     }

@@ -30,13 +30,17 @@ public class Hole extends GameObject implements Collidable {
         return balls.toArray(new PoolBall[balls.size()]);
     }
 
+    public void remove(PoolBall ball) {
+        balls.remove(ball);
+    }
+
     @Override
     public boolean handleCollisions() {
         return false;
     }
 
     public boolean handleBallCollision(Ball ball) {
-        if (position.distanceTo(ball.position) < radius) {
+        if (getPosition().distanceTo(ball.getPosition()) < radius) {
             PoolBall poolBall = (PoolBall) ball;
 
             balls.add(poolBall);
@@ -56,14 +60,14 @@ public class Hole extends GameObject implements Collidable {
 
     @Override
     protected void updateBounds() {
-        bounds.x = position.x - radius;
-        bounds.y = position.y - radius;
+        bounds.x = getPosition().x - radius;
+        bounds.y = getPosition().y - radius;
         bounds.width = 2 * radius;
         bounds.height = 2 * radius;
     }
 
     @Override
     public String toString() {
-        return String.format("Hole[balls=%d, pos=(%.0f,%.0f)]", balls.size(), position.x, position.y);
+        return String.format("Hole[balls=%d, pos=(%.0f,%.0f)]", balls.size(), getPosition().x, getPosition().y);
     }
 }
