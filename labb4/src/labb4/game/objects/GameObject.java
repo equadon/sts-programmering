@@ -73,7 +73,7 @@ public abstract class GameObject {
     }
 
     public boolean isMoving() {
-        return velocity.length() > frictionPerUpdate;
+        return isVisible() && velocity.length() > frictionPerUpdate;
     }
 
     public void update() {

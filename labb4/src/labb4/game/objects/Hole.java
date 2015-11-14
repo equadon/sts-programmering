@@ -6,9 +6,14 @@ import labb4.game.Vector2D;
 import labb4.game.interfaces.Collidable;
 import labb4.game.ui.painters.HolePainter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Hole extends GameObject implements Collidable {
     private final Table table;
     private final double radius;
+
+    private final List<Ball> balls;
 
     public Hole(Table table, Vector2D position, double radius) {
         super(new HolePainter(), position, new Vector2D(0, 0), Config.DEFAULT_HOLE_COLOR, 0, 0);
@@ -16,11 +21,32 @@ public class Hole extends GameObject implements Collidable {
         this.table = table;
         this.radius = radius;
 
+        balls = new ArrayList<>();
+
         updateBounds();
     }
 
     @Override
     public boolean handleCollisions() {
+        return false;
+    }
+
+    public boolean handleBallCollision(Ball ball) {
+        if (position.distanceTo(ball.position) < radius) {
+            PoolBall poolBall = (PoolBall) ball;
+
+            balls.add(ball);
+            ball.hide();
+
+            if (ball instanceof CueBall) {
+                table.addPoints(-500);
+            } else {
+                table.addPoints(poolBall.points);
+            }
+
+            return true;
+        }
+
         return false;
     }
 

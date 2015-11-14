@@ -8,7 +8,7 @@ import labb4.game.interfaces.Aimable;
 import java.awt.*;
 import java.util.logging.Logger;
 
-public class CueBall extends Ball implements Aimable {
+public class CueBall extends PoolBall implements Aimable {
     private static final Logger LOG = Logger.getLogger(CueBall.class.getName());
 
     private Vector2D aimPosition;
@@ -19,7 +19,7 @@ public class CueBall extends Ball implements Aimable {
 
     public CueBall(Table table, Vector2D position, Vector2D velocity, Color color, double mass, double friction,
                    double radius) {
-        super(table, position, velocity, color, mass, friction, radius, false);
+        super(table, position, velocity, color, mass, friction, radius, false, -1);
 
         aimPosition = null;
     }
@@ -57,12 +57,5 @@ public class CueBall extends Ball implements Aimable {
         if (isAiming()) {
             aimPosition = newPosition;
         }
-    }
-
-    @Override
-    protected void collidedWith(Ball other) {
-        int points = ((PoolBall) other).points;
-
-        table.addPoints(points);
     }
 }

@@ -47,7 +47,17 @@ public class Ball extends GameObject implements Collidable {
 
     @Override
     public boolean handleCollisions() {
-        return collisionWithWalls() || collisionWithBalls();
+        return isVisible() && (collisionWithWalls() || collisionWithBalls() || collisionWithHoles());
+    }
+
+    private boolean collisionWithHoles() {
+        for (Hole hole : table.getHoles()) {
+            if (hole.handleBallCollision(this)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

@@ -32,7 +32,9 @@ public class BallPainter extends ObjectPainter {
                 drawStripes(g, poolBall);
             }
 
-            drawNumber(g, poolBall);
+            if (poolBall.points >= 0) {
+                drawNumber(g, poolBall);
+            }
         }
 
         // Reflection
@@ -107,8 +109,10 @@ public class BallPainter extends ObjectPainter {
         Aimable aimable = (Aimable) object;
 
         if (aimable.isAiming()) {
-            Vector2D objPosition = object.getPosition();
+            Vector2D objPosition = object.getPosition().clone();
             Vector2D aimPosition = aimable.getAimPosition();
+
+            objPosition.multiply(2).subtract(aimPosition);
 
             g.setColor(Color.BLACK);
             g.drawLine((int) objPosition.x, (int) objPosition.y, (int) aimPosition.x, (int) aimPosition.y);

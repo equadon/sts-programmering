@@ -3,7 +3,7 @@ package labb4;
 import java.awt.*;
 
 public class Molecule extends Ball {
-    private static final double INFECTED_PROB = 1.0;
+    private static final double INFECTED_PROB = 0.1;
 
     private boolean infected;
 

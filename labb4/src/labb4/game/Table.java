@@ -77,7 +77,25 @@ public class Table {
             int row = i / 2;
             int col = i % 2;
 
-            position = new Vector2D(playableBounds.x + col * playableBounds.width, playableBounds.y + row * (playableBounds.height / 2.0));
+            int xOffset = 0;
+            int yOffset = 0;
+            if (col == 0 && (row == 0 || row == 2)) {
+                xOffset = (int) (Config.DEFAULT_HOLE_RADIUS * 0.5);
+                yOffset = (int) (Config.DEFAULT_HOLE_RADIUS * 0.5);
+
+                if (row == 2) {
+                    yOffset *= -1;
+                }
+            } else if (col == 1&& (row == 0 || row == 2)) {
+                xOffset = -(int) (Config.DEFAULT_HOLE_RADIUS * 0.5);
+                yOffset = (int) (Config.DEFAULT_HOLE_RADIUS * 0.5);
+
+                if (row == 2) {
+                    yOffset *= -1;
+                }
+            }
+
+            position = new Vector2D(xOffset + playableBounds.x + col * playableBounds.width, yOffset + playableBounds.y + row * (playableBounds.height / 2.0));
 
             holes[i] = new Hole(this, position, Config.DEFAULT_HOLE_RADIUS);
         }
@@ -111,6 +129,10 @@ public class Table {
         return balls;
     }
 
+    public Hole[] getHoles() {
+        return holes;
+    }
+
     public void draw(Graphics2D g) {
         painter.draw(g, this);
 
@@ -118,10 +140,14 @@ public class Table {
             hole.draw(g);
         }
 
-        cueBall.draw(g);
+        if (cueBall.isVisible()) {
+            cueBall.draw(g);
+        }
 
         for (PoolBall ball : balls) {
-            ball.draw(g);
+            if (ball.isVisible()) {
+                ball.draw(g);
+            }
         }
     }
 
@@ -129,13 +155,19 @@ public class Table {
         cueBall.update();
 
         for (PoolBall ball : balls) {
-            ball.update();
+            if (ball.isVisible()) {
+                ball.update();
+            }
         }
 
-        cueBall.handleCollisions();
+        if (cueBall.isVisible()) {
+            cueBall.handleCollisions();
+        }
 
         for (PoolBall ball : balls) {
-            ball.handleCollisions();
+            if (ball.isVisible()) {
+                ball.handleCollisions();
+            }
         }
     }
 
