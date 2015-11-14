@@ -12,12 +12,15 @@ public class HoleContextMenu extends GameContextMenu {
 
         PoolBall[] balls = hole.getBalls();
 
-        JMenuItem ballCount = new JMenuItem("Balls: " + balls.length);
-        add(ballCount);
+        add(new JMenuItem("Hole: " + hole.toString()));
+        addSeparator();
+
+        if (balls.length < 1) {
+            JMenuItem ballCount = new JMenuItem("Empty.");
+            add(ballCount);
+        }
 
         if (balls.length > 0) {
-            addSeparator();
-
             JMenuItem ballItem;
             for (PoolBall ball : balls) {
                 ballItem = new JMenuItem(new AbstractAction("Ball: " + ball.toString()) {
