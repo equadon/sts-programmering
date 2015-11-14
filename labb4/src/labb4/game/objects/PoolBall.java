@@ -51,7 +51,7 @@ public class PoolBall extends Ball implements Placeable {
         Vector2D oldPosition = getPosition();
         setPosition(newPosition);
 
-        if (table.getPlayableBounds().contains(getBounds())) {
+        if (table.getPlayableBounds().contains(getBounds()) && !collidesWithBall()) {
             velocity = Vector2D.zero();
             placing = false;
 
@@ -61,6 +61,16 @@ public class PoolBall extends Ball implements Placeable {
 
             return false;
         }
+    }
+
+    private boolean collidesWithBall() {
+        for (Ball ball : table.getBalls()) {
+            if (ball != this && ball.isVisible() && ball.getBounds().intersects(getBounds())) {
+                return true;
+            }
+        }
+
+        return this != table.getCueBall() && table.getCueBall().getBounds().intersects(getBounds());
     }
 
     @Override
