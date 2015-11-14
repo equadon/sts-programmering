@@ -23,8 +23,8 @@ class MoleculesPanel extends JPanel implements MouseListener, MouseMotionListene
 
     private static double INIT_INFECTED_PROB = 0.5;
 
-    private int   WIDTH          = 600;
-    private int   HEIGHT         = 600;
+    private final int   WIDTH          = 600;
+    private final int   HEIGHT         = 600;
     private final int   WALL_THICKNESS = 20;
     private final Color COLOR          = Color.green;
     private final Color WALL_COLOR     = Color.black;
@@ -47,19 +47,6 @@ class MoleculesPanel extends JPanel implements MouseListener, MouseMotionListene
 
         simulationTimer = new Timer((int) (1000.0 / Pool.UPDATE_FREQUENCY), this);
         simulationTimer.start();
-    }
-
-    private void updateSize() {
-        WIDTH = getWidth() - 2 * WALL_THICKNESS;
-        HEIGHT = getHeight() - 2 * WALL_THICKNESS;
-
-        setPreferredSize(new Dimension(WIDTH + 2 * WALL_THICKNESS,
-                HEIGHT + 2 * WALL_THICKNESS));
-
-        innerBounds.x = getBounds().x + WALL_THICKNESS;
-        innerBounds.y = getBounds().y + WALL_THICKNESS;
-        innerBounds.width = WIDTH;
-        innerBounds.height = HEIGHT;
     }
 
     private void createInitialBalls(){
@@ -174,8 +161,6 @@ class MoleculesPanel extends JPanel implements MouseListener, MouseMotionListene
     @Override
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
-
-        updateSize();
 
         Graphics2D g2D = (Graphics2D) graphics;
         g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, // This makes the graphics smoother
