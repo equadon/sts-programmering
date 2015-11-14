@@ -23,21 +23,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="PoolGame.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/labb4/game/ui/PoolGame.java">
+      <file leaf-file-name="BallPainter.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/labb4/game/ui/painters/BallPainter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5271829">
-              <caret line="19" column="61" selection-start-line="19" selection-start-column="61" selection-end-line="19" selection-end-column="61" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Player.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/labb4/game/Player.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="34" column="40" selection-start-line="34" selection-start-column="40" selection-end-line="34" selection-end-column="40" />
+            <state vertical-scroll-proportion="0.3970346">
+              <caret line="40" column="62" selection-start-line="40" selection-start-column="62" selection-end-line="40" selection-end-column="62" />
               <folding />
             </state>
           </provider>
@@ -55,6 +45,7 @@
       <list>
         <option value="$PROJECT_DIR$/src/labb4/game/Player.java" />
         <option value="$PROJECT_DIR$/src/labb4/game/ui/PoolGame.java" />
+        <option value="$PROJECT_DIR$/src/labb4/game/ui/painters/BallPainter.java" />
       </list>
     </option>
   </component>
@@ -476,12 +467,12 @@
       <created>1447540104014</created>
       <option name="number" value="Default" />
       <updated>1447540104014</updated>
-      <workItem from="1447540107695" duration="447000" />
+      <workItem from="1447540107695" duration="1117000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="447000" />
+    <option name="totallyTimeSpent" value="1117000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -525,18 +516,26 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/labb4/game/ui/PoolGame.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.461285">
+          <caret line="17" column="45" selection-start-line="17" selection-start-column="45" selection-end-line="17" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/labb4/game/Player.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.6375618">
           <caret line="34" column="40" selection-start-line="34" selection-start-column="40" selection-end-line="34" selection-end-column="40" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/labb4/game/ui/PoolGame.java">
+    <entry file="file://$PROJECT_DIR$/src/labb4/game/ui/painters/BallPainter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5271829">
-          <caret line="19" column="61" selection-start-line="19" selection-start-column="61" selection-end-line="19" selection-end-column="61" />
+        <state vertical-scroll-proportion="0.3970346">
+          <caret line="40" column="62" selection-start-line="40" selection-start-column="62" selection-end-line="40" selection-end-column="62" />
           <folding />
         </state>
       </provider>

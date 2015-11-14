@@ -14,8 +14,8 @@ public class PoolGame {
         //String player1Name = JOptionPane.showInputDialog("Enter name for player 1:");
         //String player2Name = JOptionPane.showInputDialog("Enter name for player 2:");
 
-        Player player1 = new Player("Jane", player1Points);
-        Player player2 = new Player("Joe", player2Points);
+        Player player1 = new Player("Player 1", player1Points);
+        Player player2 = new Player("Player 2", player2Points);
 
         JLabel turnLabel = new JLabel("Turn: " + player1.name);
         turnLabel.setHorizontalAlignment(SwingConstants.CENTER);
