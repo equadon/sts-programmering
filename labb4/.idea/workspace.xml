@@ -39,7 +39,7 @@
         <entry file="file://$PROJECT_DIR$/src/labb4/game/Config.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="25" column="50" selection-start-line="25" selection-start-column="50" selection-end-line="25" selection-end-column="50" />
+              <caret line="17" column="58" selection-start-line="17" selection-start-column="58" selection-end-line="17" selection-end-column="58" />
               <folding />
             </state>
           </provider>
@@ -55,11 +55,31 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SnookerInitializer.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="SnookerInitializer.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/labb4/game/initializers/SnookerInitializer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4923077">
-              <caret line="22" column="23" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="45" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="15" column="23" selection-start-line="15" selection-start-column="23" selection-end-line="15" selection-end-column="23" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PoolPanel.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/labb4/game/ui/PoolPanel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.5846154">
+              <caret line="35" column="55" selection-start-line="35" selection-start-column="55" selection-end-line="35" selection-end-column="55" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PoolGame.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/labb4/game/ui/PoolGame.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="8" column="32" selection-start-line="8" selection-start-column="32" selection-end-line="8" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -100,7 +120,6 @@
         <option value="$PROJECT_DIR$/src/labb4/game/Aimable.java" />
         <option value="$PROJECT_DIR$/src/labb4/game/PoolGame.java" />
         <option value="$PROJECT_DIR$/src/labb4/game/PoolPanel.java" />
-        <option value="$PROJECT_DIR$/src/labb4/game/ui/PoolGame.java" />
         <option value="$PROJECT_DIR$/src/labb4/game/AimableBall.java" />
         <option value="$PROJECT_DIR$/src/labb4/game/initializers/BalalInitializer.java" />
         <option value="$PROJECT_DIR$/src/labb4/game/initializers/SnookerBallInitializer.java" />
@@ -125,11 +144,12 @@
         <option value="$PROJECT_DIR$/src/labb4/game/objects/PoolBall.java" />
         <option value="$PROJECT_DIR$/src/labb4/game/PoolBallFactory.java" />
         <option value="$PROJECT_DIR$/src/labb4/game/initializers/NineBallInitializer.java" />
-        <option value="$PROJECT_DIR$/src/labb4/game/ui/PoolPanel.java" />
         <option value="$PROJECT_DIR$/src/labb4/game/TableFactory.java" />
         <option value="$PROJECT_DIR$/src/labb4/game/objects/CueBall.java" />
-        <option value="$PROJECT_DIR$/src/labb4/game/Config.java" />
         <option value="$PROJECT_DIR$/src/labb4/game/initializers/SnookerInitializer.java" />
+        <option value="$PROJECT_DIR$/src/labb4/game/ui/PoolGame.java" />
+        <option value="$PROJECT_DIR$/src/labb4/game/Config.java" />
+        <option value="$PROJECT_DIR$/src/labb4/game/ui/PoolPanel.java" />
       </list>
     </option>
   </component>
@@ -741,12 +761,12 @@
       <workItem from="1447159351980" duration="11514000" />
       <workItem from="1447355858823" duration="16663000" />
       <workItem from="1447406260718" duration="15004000" />
-      <workItem from="1447429857776" duration="32609000" />
+      <workItem from="1447429857776" duration="33292000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="77481000" />
+    <option name="totallyTimeSpent" value="78164000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -1142,26 +1162,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/labb4/game/ui/PoolGame.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.087051146">
-          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/labb4/game/initializers/NineBallInitializer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="51" column="47" selection-start-line="51" selection-start-column="47" selection-end-line="54" selection-end-column="81" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/labb4/game/ui/PoolPanel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="22" column="35" selection-start-line="22" selection-start-column="35" selection-end-line="22" selection-end-column="35" />
           <folding />
         </state>
       </provider>
@@ -1204,14 +1208,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/labb4/game/Config.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="25" column="50" selection-start-line="25" selection-start-column="50" selection-end-line="25" selection-end-column="50" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/labb4/game/initializers/EightBallInitializer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1232,8 +1228,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/labb4/game/initializers/SnookerInitializer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4923077">
-          <caret line="22" column="23" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="45" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="15" column="23" selection-start-line="15" selection-start-column="23" selection-end-line="15" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/labb4/game/ui/PoolGame.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="8" column="32" selection-start-line="8" selection-start-column="32" selection-end-line="8" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/labb4/game/Config.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="17" column="58" selection-start-line="17" selection-start-column="58" selection-end-line="17" selection-end-column="58" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/labb4/game/ui/PoolPanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5846154">
+          <caret line="35" column="55" selection-start-line="35" selection-start-column="55" selection-end-line="35" selection-end-column="55" />
           <folding />
         </state>
       </provider>

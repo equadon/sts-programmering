@@ -15,7 +15,7 @@ public class Config {
     public static final Color TABLE_COLOR = new Color(9, 226, 0);
 
     public static final Color DEFAULT_HOLE_COLOR = new Color(34, 34, 34);
-    public static final int DEFAULT_HOLE_RADIUS = (int) (10 * RESIZE_FACTOR);
+    public static final int DEFAULT_HOLE_RADIUS = (int) (8 * RESIZE_FACTOR);
 
     public static final int DEFAULT_TABLE_WIDTH = (int) (127 * RESIZE_FACTOR);
     public static final int DEFAULT_TABLE_HEIGHT = (int) (254 * RESIZE_FACTOR);

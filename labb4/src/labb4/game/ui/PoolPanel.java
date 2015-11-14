@@ -8,24 +8,38 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.logging.Logger;
 
-public class PoolPanel extends JPanel implements ActionListener, MouseListener, MouseMotionListener {
+public class PoolPanel extends JPanel implements ActionListener, KeyListener, MouseListener, MouseMotionListener {
     private static final Logger LOG = Logger.getLogger(PoolPanel.class.getName());
 
     private final Timer timer;
+    private final JFrame frame;
 
     private Table table;
     private GameType gameType;
 
-    public PoolPanel() {
+    public PoolPanel(JFrame frame) {
+        this.frame = frame;
+
         timer = new Timer((int) (1000.0 / Config.FRAMES_PER_SECOND), this);
 
-        gameType = GameType.Snooker;
+        setFocusable(true);
+
+        gameType = GameType.EightBall;
+        newGame();
+
+        addKeyListener(this);
+        addMouseListener(this);
+        addMouseMotionListener(this);
+    }
+
+    private void newGame() {
         table = TableFactory.createPoolTable(gameType);
 
         setPreferredSize(new Dimension(table.width, table.height));
+        setSize(new Dimension(table.width, table.height));
+        frame.pack();
 
-        addMouseListener(this);
-        addMouseMotionListener(this);
+        repaint();
     }
 
     @Override
@@ -103,4 +117,24 @@ public class PoolPanel extends JPanel implements ActionListener, MouseListener, 
 
     @Override
     public void mouseMoved(MouseEvent e) {}
+
+    @Override
+    public void keyTyped(KeyEvent e) {}
+
+    @Override
+    public void keyPressed(KeyEvent e) {}
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_1) {
+            gameType = GameType.values()[0];
+            newGame();
+        } else if (e.getKeyCode() == KeyEvent.VK_2) {
+            gameType = GameType.values()[1];
+            newGame();
+        } else if (e.getKeyCode() == KeyEvent.VK_3) {
+            gameType = GameType.values()[2];
+            newGame();
+        }
+    }
 }
