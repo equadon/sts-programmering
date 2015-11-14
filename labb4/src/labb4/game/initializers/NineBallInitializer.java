@@ -40,7 +40,7 @@ public class NineBallInitializer implements BallInitializer {
 
             int number = numbers[i];
             position = new Vector2D(x + (5 - row) * radius + col * diameter, y - absRow * (diameter - 0.25 * radius));
-            balls[i] = PoolBallFactory.createBall(number, table, position, radius);
+            balls[i] = PoolBallFactory.createStandardBall(number, table, position, radius);
 
             col++;
         }

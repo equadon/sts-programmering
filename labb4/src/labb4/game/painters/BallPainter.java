@@ -92,13 +92,13 @@ public class BallPainter extends ObjectPainter {
 
     private void drawNumber(Graphics2D g, PoolBall ball) {
         // Number
-        String number = ball.number + "";
+        String number = ball.points + "";
         FontMetrics metrics = g.getFontMetrics(NUMBER_FONT);
 
         double x = ball.getPosition().x - metrics.stringWidth(number) / 2.0;
         double y = ball.getPosition().y + metrics.getHeight() / 3.0;
 
-        g.setColor((ball.number == 8) ? Config.BALL_WHITE_COLOR : Config.BALL_BLACK_COLOR);
+        g.setColor((ball.points == 8) ? Config.BALL_WHITE_COLOR : Config.BALL_BLACK_COLOR);
         g.setFont(NUMBER_FONT);
         g.drawString(number, (float) x, (float) y);
     }

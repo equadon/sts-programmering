@@ -7,17 +7,17 @@ import labb4.game.Vector2D;
 import java.awt.*;
 
 public class PoolBall extends Ball {
-    public final int number;
+    public final int points;
 
-    public PoolBall(Table table, Vector2D position, Color color, double radius, boolean striped, int number) {
+    public PoolBall(Table table, Vector2D position, Color color, double radius, boolean striped, int points) {
         this(table, position, Vector2D.zero(), color, Config.DEFAULT_MASS, Config.DEFAULT_FRICTION, radius,
-                striped, number);
+                striped, points);
     }
 
     public PoolBall(Table table, Vector2D position, Vector2D velocity, Color color, double mass, double friction,
-                    double radius, boolean striped, int number) {
+                    double radius, boolean striped, int points) {
         super(table, position, velocity, color, mass, friction, radius, striped);
 
-        this.number = number;
+        this.points = points;
     }
 }

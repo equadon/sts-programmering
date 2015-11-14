@@ -39,7 +39,7 @@ public class CueBall extends Ball implements Aimable {
             Vector2D aimingVector = aimPosition.subtract(position);
             double length = aimingVector.length();
 
-            velocity = aimingVector.normalize().multiply(-Math.sqrt(30.0 * length / Config.FRAMES_PER_SECOND));
+            velocity = aimingVector.normalize().multiply(-Math.sqrt(20.0 * length / Config.FRAMES_PER_SECOND));
 
             aimPosition = null;
         }

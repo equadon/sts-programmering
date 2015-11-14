@@ -6,8 +6,11 @@ import labb4.game.initializers.NineBallInitializer;
 import labb4.game.initializers.SnookerInitializer;
 
 public class TableFactory {
-    public static Table createStandardPoolTable(GameType type) {
+    public static Table createPoolTable(GameType type) {
         BallInitializer initializer = null;
+
+        int width = Config.DEFAULT_TABLE_WIDTH;
+        int height = Config.DEFAULT_TABLE_HEIGHT;
 
         switch (type) {
             case EightBall:
@@ -20,10 +23,12 @@ public class TableFactory {
 
             case Snooker:
                 initializer = new SnookerInitializer();
+                width = Config.SNOOKER_TABLE_WIDTH;
+                height = Config.SNOOKER_TABLE_HEIGHT;
                 break;
         }
 
-        return new Table(Config.DEFAULT_TABLE_WIDTH, Config.DEFAULT_TABLE_HEIGHT, 20, 15, initializer);
+        return new Table(width, height, 20, 15, initializer);
     }
 
     public static Table createSnookerTable() {
