@@ -113,7 +113,7 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (timer.isRunning()) {
+        if (SwingUtilities.isLeftMouseButton(e) && timer.isRunning()) {
             LOG.warning("Timer is running, can't click.");
         } else if (SwingUtilities.isLeftMouseButton(e)) {
             Vector2D position = Vector2D.fromMouseEvent(e);

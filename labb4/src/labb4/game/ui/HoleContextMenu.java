@@ -1,6 +1,5 @@
 package labb4.game.ui;
 
-import labb4.game.interfaces.Placeable;
 import labb4.game.objects.CueBall;
 import labb4.game.objects.Hole;
 import labb4.game.objects.PoolBall;
@@ -8,7 +7,7 @@ import labb4.game.objects.PoolBall;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
-public class HoleContextMenu extends GameContextMenu {
+public class HoleContextMenu extends JPopupMenu {
     public HoleContextMenu(PoolPanel panel, Hole hole) {
         super();
 
@@ -19,6 +18,7 @@ public class HoleContextMenu extends GameContextMenu {
 
         if (balls.length < 1) {
             JMenuItem ballCount = new JMenuItem("Empty.");
+            ballCount.setEnabled(false);
             add(ballCount);
         }
 
@@ -31,7 +31,7 @@ public class HoleContextMenu extends GameContextMenu {
 
                 if (ball instanceof CueBall) {
                     cueBall = (CueBall) ball;
-                    name = cueBall.toString();
+                    name += cueBall.toString();
                 }
 
                 ballItem = new JMenuItem(new AbstractAction(name) {

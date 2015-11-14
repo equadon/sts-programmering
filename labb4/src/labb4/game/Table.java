@@ -125,7 +125,7 @@ public class Table {
         return cueBall;
     }
 
-    public Ball[] getBalls() {
+    public PoolBall[] getBalls() {
         return balls;
     }
 

@@ -77,9 +77,9 @@ public class PoolBall extends Ball implements Placeable {
     public String toString() {
         Vector2D position = getPosition();
 
-        return String.format("PoolBall[pos=(%.0f,%.0f), velocity=(%.0f,%.0f), points=%d]",
+        return String.format("PoolBall[points=%d, pos=(%.0f,%.0f), velocity=(%.0f,%.0f)]",
+                points,
                 position.x, position.y,
-                velocity.x, velocity.y,
-                points);
+                velocity.x, velocity.y);
     }
 }
