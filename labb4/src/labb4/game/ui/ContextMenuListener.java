@@ -2,18 +2,17 @@ package labb4.game.ui;
 
 import labb4.game.Table;
 import labb4.game.Vector2D;
-import labb4.game.objects.Ball;
 import labb4.game.objects.Hole;
 import labb4.game.objects.PoolBall;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class PopClickListener extends MouseAdapter {
+public class ContextMenuListener extends MouseAdapter {
     private final PoolPanel panel;
     private final Table table;
 
-    public PopClickListener(PoolPanel panel, Table table) {
+    public ContextMenuListener(PoolPanel panel, Table table) {
         this.panel = panel;
         this.table = table;
     }

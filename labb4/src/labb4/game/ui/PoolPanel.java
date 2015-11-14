@@ -24,7 +24,7 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
     private Table table;
     private GameType gameType;
 
-    private PopClickListener popUpListener;
+    private ContextMenuListener popUpListener;
 
     private Placeable placingBall;
 
@@ -64,7 +64,7 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
             removeMouseListener(popUpListener);
         }
 
-        popUpListener = new PopClickListener(this, table);
+        popUpListener = new ContextMenuListener(this, table);
         addMouseListener(popUpListener);
 
         repaint();
