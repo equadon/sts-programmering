@@ -52,4 +52,9 @@ public class Config {
      */
     public static final Color DEFAULT_HOLE_COLOR = new Color(34, 34, 34);
     public static final int DEFAULT_POCKET_RADIUS = (int) (8 * RESIZE_FACTOR);
+
+    /**
+     * Debugging constants.
+     */
+    public static boolean DISPLAY_BOUNDING_BOXES = false;
 }

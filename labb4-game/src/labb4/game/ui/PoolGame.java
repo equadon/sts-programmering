@@ -1,5 +1,6 @@
 package labb4.game.ui;
 
+import labb4.game.Config;
 import labb4.game.GameType;
 import labb4.game.Player;
 
@@ -38,9 +39,18 @@ public class PoolGame {
     private static JMenuBar createMenuBar(JFrame frame, PoolPanel poolPanel) {
         JMenuBar menuBar = new JMenuBar();
 
+        JMenu gameMenu = createGameMenu(frame, poolPanel);
+        menuBar.add(gameMenu);
+
+        JMenu debugMenu = createDebugMenu(frame, poolPanel);
+        menuBar.add(debugMenu);
+
+        return menuBar;
+    }
+
+    private static JMenu createGameMenu(JFrame frame, PoolPanel poolPanel) {
         JMenu gameMenu = new JMenu("Game");
         gameMenu.setMnemonic('G');
-        menuBar.add(gameMenu);
 
         JMenuItem eightBall = new JMenuItem(new AbstractAction("Eight ball") {
             @Override
@@ -84,7 +94,30 @@ public class PoolGame {
         gameMenu.addSeparator();
         gameMenu.add(exit);
 
-        return menuBar;
+        return gameMenu;
+    }
+
+    private static JMenu createDebugMenu(JFrame frame, PoolPanel poolPanel) {
+        JMenu debugMenu = new JMenu("Debug");
+        debugMenu.setMnemonic('D');
+
+        JMenuItem boundingBoxes = new JCheckBoxMenuItem(new AbstractAction("Show bounding boxes") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JCheckBoxMenuItem item = (JCheckBoxMenuItem) e.getSource();
+
+                Config.DISPLAY_BOUNDING_BOXES = item.isSelected();
+                poolPanel.repaint();
+            }
+        });
+
+        boundingBoxes.setMnemonic('E');
+
+        boundingBoxes.setAccelerator(KeyStroke.getKeyStroke('1'));
+
+        debugMenu.add(boundingBoxes);
+
+        return debugMenu;
     }
 
     private static JPanel createInfoPanel(Player player1, JLabel player1Points, JLabel player2Points, JLabel turnLabel) {

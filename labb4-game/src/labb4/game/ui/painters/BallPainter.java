@@ -59,6 +59,11 @@ public class BallPainter extends ObjectPainter {
     }
 
     private void drawBall(Graphics2D g, Color color, int x, int y, int width, int height) {
+        if (Config.DISPLAY_BOUNDING_BOXES) {
+            g.setColor(Config.BALL_BLACK_COLOR);
+            g.drawRect(x, y, width, height);
+        }
+
         // Background
         g.setColor(color);
         g.fillOval(
