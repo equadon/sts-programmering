@@ -87,10 +87,12 @@ public class NineBallHandler extends GameHandler {
         PoolBall target = null;
 
         if (balls.length > 0) {
-            target = balls[0];
+            for (int i = 0; i < balls.length; i++) {
+                if (balls[i].points < 1) continue;
 
-            for (int i = 1; i < balls.length; i++) {
-                if (balls[i].points < target.points) {
+                if (target == null) {
+                    target = balls[i];
+                } else if (balls[i].points < target.points) {
                     target = balls[i];
                 }
             }

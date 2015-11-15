@@ -47,11 +47,12 @@ public class NineBallInitializer implements BallInitializer {
             col++;
         }
 
+        balls.add(createCueBall(table));
+
         return balls;
     }
 
-    @Override
-    public CueBall createCueBall(Table table) {
+    private CueBall createCueBall(Table table) {
         Vector2D position = new Vector2D(table.width / 2.0, 3 * table.height / 4.0);
 
         return new CueBall(table, position, Vector2D.zero(), Config.BALL_RADIUS);

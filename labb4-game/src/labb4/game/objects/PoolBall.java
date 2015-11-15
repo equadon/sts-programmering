@@ -71,7 +71,8 @@ public class PoolBall extends Ball implements Placeable {
             }
         }
 
-        return this != table.getCueBall() && table.getCueBall().getBounds().intersects(getBounds());
+        //return this != table.getCueBall() && table.getCueBall().getBounds().intersects(getBounds());
+        return false;
     }
 
     @Override

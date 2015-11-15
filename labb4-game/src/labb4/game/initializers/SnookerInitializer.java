@@ -52,6 +52,8 @@ public class SnookerInitializer implements BallInitializer {
         position = new Vector2D(center.x, 0.125 * table.height);
         balls.add(PoolBallFactory.createSnookerBall(7, table, position, radius));
 
+        balls.add(createCueBall(table));
+
         return balls;
     }
 
@@ -76,8 +78,7 @@ public class SnookerInitializer implements BallInitializer {
         }
     }
 
-    @Override
-    public CueBall createCueBall(Table table) {
+    private CueBall createCueBall(Table table) {
         Vector2D position = new Vector2D(table.width / 2.0, 4.5 * table.height / 5.0);
 
         return new CueBall(table, position, Vector2D.zero(), Config.BALL_RADIUS);

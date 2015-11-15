@@ -16,7 +16,6 @@ public class Table {
     private final Rectangle bounds;
     private final Rectangle playableBounds;
 
-    private final CueBall cueBall;
     private final List<PoolBall> balls;
     private final Pocket[] pockets;
 
@@ -60,15 +59,12 @@ public class Table {
 
         createPockets();
 
-        cueBall = ballInitializer.createCueBall(this);
         balls = ballInitializer.createBalls(this);
 
         changeTurn();
     }
 
     public boolean isUpdating() {
-        if (cueBall.isMoving()) return true;
-
         for (PoolBall ball : balls) {
             if (ball.isMoving()) {
                 return true;
@@ -84,10 +80,6 @@ public class Table {
 
     public Rectangle getPlayableBounds() {
         return playableBounds;
-    }
-
-    public CueBall getCueBall() {
-        return cueBall;
     }
 
     public PoolBall[] getBalls() {
@@ -127,10 +119,6 @@ public class Table {
             pocket.draw(g);
         }
 
-        if (cueBall.isVisible()) {
-            cueBall.draw(g);
-        }
-
         for (PoolBall ball : balls) {
             if (ball.isVisible()) {
                 ball.draw(g);
@@ -139,20 +127,14 @@ public class Table {
     }
 
     public void update() {
-        cueBall.update();
-
         for (PoolBall ball : balls) {
             if (ball.isVisible()) {
                 ball.update();
             }
         }
 
-        if (!cueBall.isPlacing() && cueBall.isVisible()) {
-            cueBall.handleCollisions();
-        }
-
         for (PoolBall ball : getBalls()) {
-            if (ball.isVisible()) {
+            if (!ball.isPlacing() && ball.isVisible()) {
                 ball.handleCollisions();
             }
         }

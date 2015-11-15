@@ -8,8 +8,8 @@ import labb4.game.ui.PoolPanel;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
-public class HoleContextMenu extends JPopupMenu {
-    public HoleContextMenu(PoolPanel panel, Pocket pocket) {
+public class PocketContextMenu extends JPopupMenu {
+    public PocketContextMenu(PoolPanel panel, Pocket pocket) {
         super();
 
         PoolBall[] balls = pocket.getBalls();

@@ -8,5 +8,4 @@ import java.util.List;
 
 public interface BallInitializer {
     List<PoolBall> createBalls(Table table);
-    CueBall createCueBall(Table table);
 }

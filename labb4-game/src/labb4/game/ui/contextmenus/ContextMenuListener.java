@@ -38,20 +38,14 @@ public class ContextMenuListener extends MouseAdapter {
                 }
             }
 
-            if (table.getCueBall().isVisible() && table.getCueBall().getBounds().contains(position.x, position.y)) {
-                ballPopUp(e, table.getCueBall());
-                return;
-            }
-
             if (table.getBounds().contains(position.x, position.y)) {
                 tablePopUp(e, table);
-                return;
             }
         }
     }
 
     private void holePopUp(MouseEvent e, Pocket pocket){
-        HoleContextMenu menu = new HoleContextMenu(panel, pocket);
+        PocketContextMenu menu = new PocketContextMenu(panel, pocket);
         menu.show(e.getComponent(), e.getX(), e.getY());
     }
 
