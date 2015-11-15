@@ -1,7 +1,7 @@
 package labb4.game.ui.contextmenus;
 
 import labb4.game.objects.CueBall;
-import labb4.game.objects.Hole;
+import labb4.game.objects.Pocket;
 import labb4.game.objects.PoolBall;
 import labb4.game.ui.PoolPanel;
 
@@ -9,12 +9,12 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 public class HoleContextMenu extends JPopupMenu {
-    public HoleContextMenu(PoolPanel panel, Hole hole) {
+    public HoleContextMenu(PoolPanel panel, Pocket pocket) {
         super();
 
-        PoolBall[] balls = hole.getBalls();
+        PoolBall[] balls = pocket.getBalls();
 
-        add(new JMenuItem(hole.toString()));
+        add(new JMenuItem(pocket.toString()));
         addSeparator();
 
         if (balls.length < 1) {
@@ -38,7 +38,7 @@ public class HoleContextMenu extends JPopupMenu {
                 ballItem = new JMenuItem(new AbstractAction(name) {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        hole.remove(ball);
+                        pocket.remove(ball);
                         panel.startPlacing(ball);
                     }
                 });

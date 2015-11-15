@@ -75,6 +75,11 @@ public class PoolBall extends Ball implements Placeable {
     }
 
     @Override
+    protected void collidedWith(Ball other) {
+        table.getHandler().collision(this, (PoolBall) other);
+    }
+
+    @Override
     public String toString() {
         Vector2D position = getPosition();
 

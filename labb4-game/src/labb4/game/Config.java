@@ -13,9 +13,10 @@ public class Config {
     /**
      * Table constants.
      */
+    public static final Color TABLE_COLOR = new Color(9, 226, 0);
+    public static final Color TABLE_LINE_COLOR = new Color(9, 202, 0);
     public static final Color TABLE_OUTER_BORDER_COLOR = new Color(85, 58, 34);
     public static final Color TABLE_INNER_BORDER_COLOR = new Color(7, 116, 0);
-    public static final Color TABLE_COLOR = new Color(9, 226, 0);
 
     public static final int DEFAULT_TABLE_WIDTH = (int) (127 * RESIZE_FACTOR);
     public static final int DEFAULT_TABLE_HEIGHT = (int) (254 * RESIZE_FACTOR);
@@ -47,8 +48,8 @@ public class Config {
     public static final Color BALL_BROWN_COLOR = new Color(126, 85, 54);
 
     /**
-     * Hole constants.
+     * Pocket constants.
      */
     public static final Color DEFAULT_HOLE_COLOR = new Color(34, 34, 34);
-    public static final int DEFAULT_HOLE_RADIUS = (int) (8 * RESIZE_FACTOR);
+    public static final int DEFAULT_POCKET_RADIUS = (int) (8 * RESIZE_FACTOR);
 }

@@ -3,7 +3,7 @@ package labb4.game;
 import labb4.game.handlers.GameHandler;
 import labb4.game.initializers.BallInitializer;
 import labb4.game.objects.CueBall;
-import labb4.game.objects.Hole;
+import labb4.game.objects.Pocket;
 import labb4.game.objects.PoolBall;
 import labb4.game.ui.painters.TablePainter;
 
@@ -19,7 +19,7 @@ public class Table {
 
     private final CueBall cueBall;
     private final List<PoolBall> balls;
-    private final Hole[] holes;
+    private final Pocket[] pockets;
 
     public final int width;
     public final int height;
@@ -46,7 +46,7 @@ public class Table {
 
         painter = new TablePainter();
 
-        holes = new Hole[6];
+        pockets = new Pocket[6];
 
         bounds = new Rectangle(0, 0, width, height);
         playableBounds = new Rectangle(
@@ -56,7 +56,7 @@ public class Table {
                 height - 2 * (outerBorderSize + innerBorderSize)
         );
 
-        createHoles();
+        createPockets();
 
         cueBall = ballInitializer.createCueBall(this);
         balls = ballInitializer.createBalls(this);
@@ -92,19 +92,23 @@ public class Table {
         return balls.toArray(new PoolBall[balls.size()]);
     }
 
-    public Hole[] getHoles() {
-        return holes;
+    public Pocket[] getPockets() {
+        return pockets;
     }
 
     public GameHandler getHandler() {
         return gameHandler;
     }
 
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
     public void draw(Graphics2D g) {
         painter.draw(g, this);
 
-        for (Hole hole : holes) {
-            hole.draw(g);
+        for (Pocket pocket : pockets) {
+            pocket.draw(g);
         }
 
         if (cueBall.isVisible()) {
@@ -131,7 +135,7 @@ public class Table {
             cueBall.handleCollisions();
         }
 
-        for (PoolBall ball : balls) {
+        for (PoolBall ball : getBalls()) {
             if (ball.isVisible()) {
                 ball.handleCollisions();
             }
@@ -146,25 +150,32 @@ public class Table {
         }
     }
 
-    private void createHoles() {
+    /**
+     * Ball pocketed, remove from list.
+     */
+    public void pocket(PoolBall ball) {
+        balls.remove(ball);
+    }
+
+    private void createPockets() {
         Vector2D position;
 
-        for (int i = 0; i < holes.length; i++) {
+        for (int i = 0; i < pockets.length; i++) {
             int row = i / 2;
             int col = i % 2;
 
             int xOffset = 0;
             int yOffset = 0;
             if (col == 0 && (row == 0 || row == 2)) {
-                xOffset = (int) (Config.DEFAULT_HOLE_RADIUS * 0.5);
-                yOffset = (int) (Config.DEFAULT_HOLE_RADIUS * 0.5);
+                xOffset = (int) (Config.DEFAULT_POCKET_RADIUS * 0.5);
+                yOffset = (int) (Config.DEFAULT_POCKET_RADIUS * 0.5);
 
                 if (row == 2) {
                     yOffset *= -1;
                 }
             } else if (col == 1&& (row == 0 || row == 2)) {
-                xOffset = -(int) (Config.DEFAULT_HOLE_RADIUS * 0.5);
-                yOffset = (int) (Config.DEFAULT_HOLE_RADIUS * 0.5);
+                xOffset = -(int) (Config.DEFAULT_POCKET_RADIUS * 0.5);
+                yOffset = (int) (Config.DEFAULT_POCKET_RADIUS * 0.5);
 
                 if (row == 2) {
                     yOffset *= -1;
@@ -173,7 +184,7 @@ public class Table {
 
             position = new Vector2D(xOffset + playableBounds.x + col * playableBounds.width, yOffset + playableBounds.y + row * (playableBounds.height / 2.0));
 
-            holes[i] = new Hole(this, position, Config.DEFAULT_HOLE_RADIUS);
+            pockets[i] = new Pocket(this, position, Config.DEFAULT_POCKET_RADIUS);
         }
     }
 }

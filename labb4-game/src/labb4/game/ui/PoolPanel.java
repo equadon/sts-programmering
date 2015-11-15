@@ -4,13 +4,14 @@ import labb4.game.*;
 import labb4.game.interfaces.Placeable;
 import labb4.game.objects.Ball;
 import labb4.game.objects.CueBall;
-import labb4.game.objects.PoolBall;
 import labb4.game.ui.contextmenus.ContextMenuListener;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.logging.Logger;
+import java.util.List;
 
 public class PoolPanel extends JPanel implements ActionListener, KeyListener, MouseListener, MouseMotionListener {
     private static final Logger LOG = Logger.getLogger(PoolPanel.class.getName());
@@ -27,7 +28,7 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
     private ContextMenuListener popUpListener;
     private PoolGameListener gameListener;
 
-    private Placeable placingBall;
+    private List<Placeable> placingBalls;
 
     public PoolPanel(JFrame frame, Player player1, Player player2, JLabel turnLabel) {
         this.frame = frame;
@@ -51,7 +52,7 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
         player1.reset();
         player2.reset();
 
-        placingBall = null;
+        placingBalls = new ArrayList<>();
 
         table = TableFactory.createPoolTable(gameType, player1, player2);
 
@@ -66,23 +67,45 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
         popUpListener = new ContextMenuListener(this, table);
         addMouseListener(popUpListener);
 
-        gameListener = new PoolGameListener();
+        gameListener = new PoolGameListener(this);
         table.getHandler().addListener(gameListener);
 
         repaint();
     }
 
-    public void startPlacing(PoolBall ball) {
-        placingBall = ball;
-        placingBall.startPlacing();
+    public void setTurn(Player player) {
+        turnLabel.setText("Turn: " + player.name);
     }
 
-    public void place(Vector2D position) {
-        placingBall.place(position);
+    public void startPlacing(Placeable ball) {
+        placingBalls.add(ball);
+
+        placingBalls.get(0).startPlacing();
+    }
+
+    public boolean place(Vector2D position) {
+        boolean placed = false;
+
+        if (isPlacing()) {
+            Placeable ball = placingBalls.get(0);
+            placed = ball.place(position);
+            placingBalls.remove(ball);
+
+            // If more balls to place, restart placing process
+            if (placingBalls.size() > 0) {
+                startPlacing(placingBalls.get(0));
+            }
+        }
+
+        return placed;
     }
 
     public boolean isPlacing() {
-        return placingBall != null;
+        return placingBalls.size() > 0;
+    }
+
+    public JLabel getTurnLabel() {
+        return turnLabel;
     }
 
     @Override
@@ -95,7 +118,7 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
         table.draw(g);
 
         if (isPlacing()) {
-            ((Ball) placingBall).draw(g);
+            ((Ball) placingBalls.get(0)).draw(g);
         }
     }
 
@@ -107,6 +130,7 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
             repaint();
         } else {
             timer.stop();
+            table.getHandler().endTurn();
         }
     }
 
@@ -143,11 +167,10 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
                 repaint();
 
                 timer.start();
+                table.getHandler().beginTurn(table.getCurrentPlayer());
             } else if (isPlacing()) {
                 Vector2D position = Vector2D.fromMouseEvent(e);
-                if (placingBall.place(position)) {
-                    placingBall = null;
-                } else {
+                if (!place(position)) {
                     LOG.warning("Invalid placement position: " + position);
                 }
             }
@@ -175,7 +198,7 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
     public void mouseMoved(MouseEvent e) {
         if (isPlacing()) {
             Vector2D position = Vector2D.fromMouseEvent(e);
-            placingBall.updatePlacement(position);
+            placingBalls.get(0).updatePlacement(position);
 
             repaint();
         }

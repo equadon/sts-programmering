@@ -9,13 +9,13 @@ import labb4.game.ui.painters.HolePainter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Hole extends GameObject implements Collidable {
+public class Pocket extends GameObject implements Collidable {
     private final Table table;
     private final double radius;
 
     private final List<PoolBall> balls;
 
-    public Hole(Table table, Vector2D position, double radius) {
+    public Pocket(Table table, Vector2D position, double radius) {
         super(new HolePainter(), position, new Vector2D(0, 0), Config.DEFAULT_HOLE_COLOR, 0, 0);
 
         this.table = table;
@@ -32,6 +32,7 @@ public class Hole extends GameObject implements Collidable {
 
     public void remove(PoolBall ball) {
         balls.remove(ball);
+        table.getHandler().removedFromPocket(this, (PoolBall) ball);
     }
 
     @Override
@@ -43,13 +44,21 @@ public class Hole extends GameObject implements Collidable {
         if (getPosition().distanceTo(ball.getPosition()) < radius) {
             PoolBall poolBall = (PoolBall) ball;
 
-            balls.add(poolBall);
-            ball.hide();
+            pocketBall(poolBall);
 
             return true;
         }
 
         return false;
+    }
+
+    private void pocketBall(PoolBall ball) {
+        balls.add(ball);
+
+        table.pocket(ball);
+        ball.hide();
+
+        table.getHandler().ballPocketed(this, ball);
     }
 
     @Override
@@ -62,6 +71,6 @@ public class Hole extends GameObject implements Collidable {
 
     @Override
     public String toString() {
-        return String.format("Hole[balls=%d, pos=(%.0f,%.0f)]", balls.size(), getPosition().x, getPosition().y);
+        return String.format("Pocket[balls=%d, pos=(%.0f,%.0f)]", balls.size(), getPosition().x, getPosition().y);
     }
 }

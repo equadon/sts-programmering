@@ -51,8 +51,8 @@ public class Ball extends GameObject implements Collidable {
     }
 
     private boolean collisionWithHoles() {
-        for (Hole hole : table.getHoles()) {
-            if (hole.handleBallCollision(this)) {
+        for (Pocket pocket : table.getPockets()) {
+            if (pocket.handleBallCollision(this)) {
                 return true;
             }
         }

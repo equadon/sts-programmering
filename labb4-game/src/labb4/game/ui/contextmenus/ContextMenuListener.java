@@ -2,7 +2,7 @@ package labb4.game.ui.contextmenus;
 
 import labb4.game.Table;
 import labb4.game.Vector2D;
-import labb4.game.objects.Hole;
+import labb4.game.objects.Pocket;
 import labb4.game.objects.PoolBall;
 import labb4.game.ui.PoolPanel;
 
@@ -22,10 +22,10 @@ public class ContextMenuListener extends MouseAdapter {
         if (e.isPopupTrigger()) {
             Vector2D position = Vector2D.fromMouseEvent(e);
 
-            // Hole popup
-            for (Hole hole : table.getHoles()) {
-                if (hole.getBounds().contains(position.x, position.y)) {
-                    holePopUp(e, hole);
+            // Pocket popup
+            for (Pocket pocket : table.getPockets()) {
+                if (pocket.getBounds().contains(position.x, position.y)) {
+                    holePopUp(e, pocket);
                     return;
                 }
             }
@@ -50,8 +50,8 @@ public class ContextMenuListener extends MouseAdapter {
         }
     }
 
-    private void holePopUp(MouseEvent e, Hole hole){
-        HoleContextMenu menu = new HoleContextMenu(panel, hole);
+    private void holePopUp(MouseEvent e, Pocket pocket){
+        HoleContextMenu menu = new HoleContextMenu(panel, pocket);
         menu.show(e.getComponent(), e.getX(), e.getY());
     }
 
