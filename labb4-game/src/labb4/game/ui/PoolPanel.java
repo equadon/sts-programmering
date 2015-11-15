@@ -71,12 +71,24 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
 
         gameListener = new PoolGameListener(this);
         table.getHandler().addListener(gameListener);
+        table.getHandler().newGame();
 
         repaint();
     }
 
-    public void setTurn(Player player) {
-        turnLabel.setText("Turn: " + player.name);
+    public Table getTable() {
+        return table;
+    }
+
+    public void setTurn(String text) {
+        turnLabel.setText(text);
+    }
+
+    public void setMessage(String message) {
+        table.setMessage(message);
+    }
+    public void setTurnText(String message) {
+        table.setTurnText(message);
     }
 
     public void startPlacing(Placeable ball) {

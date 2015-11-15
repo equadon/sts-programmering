@@ -5,6 +5,9 @@ import labb4.game.objects.PoolBall;
 
 public class EightBallHandler extends GameHandler {
     @Override
+    public void newGame() {}
+
+    @Override
     public void beginTurn(Player player) {}
 
     @Override

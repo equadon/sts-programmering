@@ -32,6 +32,9 @@ public class Table {
 
     private Player currentPlayer;
 
+    private String turnText;
+    private String message;
+
     public Table(int playfieldWidth, int playfieldHeight, int outerBorderSize, int innerBorderSize,
                  BallInitializer ballInitializer, GameHandler gameHandler, Player player1, Player player2) {
         this.player1 = player1;
@@ -102,6 +105,20 @@ public class Table {
 
     public Player getCurrentPlayer() {
         return currentPlayer;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getTurnText() {
+        return turnText;
+    }
+    public void setTurnText(String message) {
+        this.turnText = message;
     }
 
     public void draw(Graphics2D g) {

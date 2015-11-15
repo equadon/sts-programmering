@@ -23,7 +23,7 @@ public class PoolGameListener implements GameListener {
     @Override
     public void changedPlayer(Player player) {
         LOG.info("Current player: " + player.name);
-        panel.setTurn(player);
+        panel.setTurn(player.name + "'s turn!");
         panel.repaint();
     }
 
@@ -33,8 +33,23 @@ public class PoolGameListener implements GameListener {
     }
 
     @Override
+    public void updateMessage(String message) {
+        panel.setMessage(message);
+        panel.repaint();
+    }
+
+    @Override
+    public void updateTurnText(String message) {
+        panel.setTurnText(message);
+        panel.repaint();
+    }
+
+    @Override
     public void gameOver(Player winner) {
+        panel.setTurn("Winner: " + winner.name);
+        panel.setMessage(winner.name + " won!");
+        panel.setTurnText("Game Over");
+        panel.repaint();
         JOptionPane.showMessageDialog(panel, winner.name + " won the game!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
-        panel.getTurnLabel().setText("Winner: " + winner.name);
     }
 }

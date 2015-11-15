@@ -76,6 +76,7 @@ public abstract class GameHandler {
     /**
      * Trigger methods when certain events happen in-game.
      */
+    public abstract void newGame();
     public abstract void beginTurn(Player player);
     public abstract void collision(PoolBall ball1, PoolBall ball2);
     public abstract void endTurn();
@@ -101,5 +102,15 @@ public abstract class GameHandler {
     protected void notifyAddPoints(int points) {
         for (GameListener listener : listeners)
             listener.addPoints(table.getCurrentPlayer(), points);
+    }
+
+    protected void notifyMessageUpdate(String message) {
+        for (GameListener listener : listeners)
+            listener.updateMessage(message);
+    }
+
+    protected void notifyTurnTextUpdate(String message) {
+        for (GameListener listener : listeners)
+            listener.updateTurnText(message);
     }
 }

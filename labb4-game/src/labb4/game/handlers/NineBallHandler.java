@@ -10,11 +10,18 @@ import java.util.ArrayList;
  * This class handles nine ball rules.
  */
 public class NineBallHandler extends GameHandler {
+    private boolean isGameOver;
     private PoolBall firstHit;
     private PoolBall targetBall;
 
     public NineBallHandler() {
         pocketedBalls = new ArrayList<>();
+    }
+
+    @Override
+    public void newGame() {
+        updateTurnText();
+        updateMessage();
     }
 
     @Override
@@ -49,9 +56,22 @@ public class NineBallHandler extends GameHandler {
                 notifyPlayerChange(table.getCurrentPlayer());
             } else if (isBallPocketed(9)) {
                 // won game!
+                isGameOver = true;
                 notifyGameWinner();
             }
         }
+
+        if (!isGameOver) {
+            updateMessage();
+        }
+    }
+
+    private void updateMessage() {
+        notifyMessageUpdate("Next ball: " + findTargetBall().points);
+    }
+
+    private void updateTurnText() {
+        notifyTurnTextUpdate(table.getCurrentPlayer().name + "' turn!");
     }
 
     private void illegalMove(String reason) {
