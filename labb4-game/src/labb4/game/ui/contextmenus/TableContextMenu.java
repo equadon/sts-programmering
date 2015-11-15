@@ -1,8 +1,6 @@
 package labb4.game.ui.contextmenus;
 
 import labb4.game.Table;
-import labb4.game.objects.CueBall;
-import labb4.game.objects.PoolBall;
 import labb4.game.ui.PoolPanel;
 
 import javax.swing.*;

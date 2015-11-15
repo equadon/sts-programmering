@@ -8,7 +8,6 @@ import labb4.game.objects.PoolBall;
 import labb4.game.ui.painters.TablePainter;
 
 import java.awt.*;
-
 import java.util.List;
 
 public class Table {

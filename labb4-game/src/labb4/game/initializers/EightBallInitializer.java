@@ -1,9 +1,9 @@
 package labb4.game.initializers;
 
-import labb4.game.PoolBallFactory;
 import labb4.game.Config;
-import labb4.game.Vector2D;
+import labb4.game.PoolBallFactory;
 import labb4.game.Table;
+import labb4.game.Vector2D;
 import labb4.game.objects.CueBall;
 import labb4.game.objects.PoolBall;
 

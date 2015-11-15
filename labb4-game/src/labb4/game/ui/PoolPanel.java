@@ -10,8 +10,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.logging.Logger;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class PoolPanel extends JPanel implements ActionListener, KeyListener, MouseListener, MouseMotionListener {
     private static final Logger LOG = Logger.getLogger(PoolPanel.class.getName());
