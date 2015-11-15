@@ -3,6 +3,7 @@ package labb4.game.handlers;
 import labb4.game.Player;
 import labb4.game.Table;
 import labb4.game.interfaces.GameListener;
+import labb4.game.interfaces.Placeable;
 import labb4.game.objects.CueBall;
 import labb4.game.objects.Pocket;
 import labb4.game.objects.PoolBall;
@@ -53,6 +54,26 @@ public abstract class GameHandler {
         }
 
         return false;
+    }
+
+    protected PoolBall getPocketedBall(int number) {
+        for (PoolBall ball : pocketedBalls) {
+            if (ball.points == number) {
+                return ball;
+            }
+        }
+
+        return null;
+    }
+
+    protected CueBall getCueBall() {
+        for (PoolBall ball : pocketedBalls) {
+            if (ball instanceof CueBall) {
+                return (CueBall) ball;
+            }
+        }
+
+        return null;
     }
 
     protected int calculatePocketedPoints() {
@@ -112,5 +133,11 @@ public abstract class GameHandler {
     protected void notifyTurnTextUpdate(String message) {
         for (GameListener listener : listeners)
             listener.updateTurnText(message);
+    }
+
+    protected void notifyPlaceBall(PoolBall ball) {
+        if (ball != null)
+            for (GameListener listener : listeners)
+                listener.startPlacingBall(ball);
     }
 }

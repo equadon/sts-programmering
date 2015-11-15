@@ -2,6 +2,7 @@ package labb4.game.ui;
 
 import labb4.game.Player;
 import labb4.game.interfaces.GameListener;
+import labb4.game.objects.PoolBall;
 
 import javax.swing.*;
 import java.util.logging.Logger;
@@ -41,6 +42,11 @@ public class PoolGameListener implements GameListener {
     public void updateTurnText(String message) {
         panel.setTurnText(message);
         panel.repaint();
+    }
+
+    @Override
+    public void startPlacingBall(PoolBall ball) {
+        panel.startPlacing(ball);
     }
 
     @Override
