@@ -213,13 +213,5 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
     public void keyPressed(KeyEvent e) {}
 
     @Override
-    public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_1) {
-            newGame(GameType.values()[0]);
-        } else if (e.getKeyCode() == KeyEvent.VK_2) {
-            newGame(GameType.values()[1]);
-        } else if (e.getKeyCode() == KeyEvent.VK_3) {
-            newGame(GameType.values()[2]);
-        }
-    }
+    public void keyReleased(KeyEvent e) {}
 }

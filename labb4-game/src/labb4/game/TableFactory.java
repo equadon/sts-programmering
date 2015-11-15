@@ -1,7 +1,9 @@
 package labb4.game;
 
+import labb4.game.handlers.EightBallHandler;
 import labb4.game.handlers.GameHandler;
 import labb4.game.handlers.NineBallHandler;
+import labb4.game.handlers.SnookerHandler;
 import labb4.game.initializers.BallInitializer;
 import labb4.game.initializers.EightBallInitializer;
 import labb4.game.initializers.NineBallInitializer;
@@ -18,6 +20,7 @@ public class TableFactory {
         switch (type) {
             case EightBall:
                 initializer = new EightBallInitializer();
+                handler = new EightBallHandler();
                 break;
 
             case NineBall:
@@ -27,6 +30,7 @@ public class TableFactory {
 
             case Snooker:
                 initializer = new SnookerInitializer();
+                handler = new SnookerHandler();
                 width = Config.SNOOKER_TABLE_WIDTH;
                 height = Config.SNOOKER_TABLE_HEIGHT;
                 break;

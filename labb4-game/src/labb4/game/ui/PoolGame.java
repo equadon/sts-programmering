@@ -6,6 +6,8 @@ import labb4.game.Player;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 
 public class PoolGame {
     public static void main(String[] args) {
@@ -22,7 +24,7 @@ public class PoolGame {
         JFrame frame = new JFrame("Pool Game");
         PoolPanel poolPanel = new PoolPanel(frame, player1, player2, turnLabel);
         
-        JMenuBar menu = createMenuBar(poolPanel);
+        JMenuBar menu = createMenuBar(frame, poolPanel);
         frame.setJMenuBar(menu);
 
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -34,32 +36,54 @@ public class PoolGame {
         frame.setVisible(true);
     }
 
-    private static JMenuBar createMenuBar(PoolPanel poolPanel) {
+    private static JMenuBar createMenuBar(JFrame frame, PoolPanel poolPanel) {
         JMenuBar menuBar = new JMenuBar();
 
         JMenu gameMenu = new JMenu("Game");
+        gameMenu.setMnemonic('G');
         menuBar.add(gameMenu);
 
-        gameMenu.add(new JMenuItem(new AbstractAction("Eight ball") {
+        JMenuItem eightBall = new JMenuItem(new AbstractAction("Eight ball") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 poolPanel.newGame(GameType.EightBall);
             }
-        }));
-
-        gameMenu.add(new JMenuItem(new AbstractAction("Nine ball") {
+        });
+        JMenuItem nineBall = new JMenuItem(new AbstractAction("Nine ball") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 poolPanel.newGame(GameType.NineBall);
             }
-        }));
-
-        gameMenu.add(new JMenuItem(new AbstractAction("Snooker") {
+        });
+        JMenuItem snooker = new JMenuItem(new AbstractAction("Snooker") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 poolPanel.newGame(GameType.Snooker);
             }
-        }));
+        });
+
+        JMenuItem exit = new JMenuItem(new AbstractAction("Quit") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+            }
+        });
+
+        eightBall.setMnemonic('E');
+        nineBall.setMnemonic('N');
+        snooker.setMnemonic('S');
+        exit.setMnemonic('Q');
+
+        eightBall.setAccelerator(KeyStroke.getKeyStroke('1'));
+        nineBall.setAccelerator(KeyStroke.getKeyStroke('2'));
+        snooker.setAccelerator(KeyStroke.getKeyStroke('3'));
+        exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, Event.CTRL_MASK));
+
+        gameMenu.add(eightBall);
+        gameMenu.add(nineBall);
+        gameMenu.add(snooker);
+        gameMenu.addSeparator();
+        gameMenu.add(exit);
 
         return menuBar;
     }
