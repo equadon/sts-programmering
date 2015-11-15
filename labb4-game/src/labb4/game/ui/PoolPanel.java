@@ -100,22 +100,24 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
     }
 
     public boolean place(Vector2D position) {
-        boolean placed = false;
-
         if (isPlacing()) {
-            Placeable ball = placingBalls.get(0);
-            placed = ball.place(position);
-            placingBalls.remove(ball);
+            Placeable placeable = placingBalls.get(0);
 
-            repaint();
+            if (placeable.place(position)) {
+                placingBalls.remove(placeable);
 
-            // If more balls to place, restart placing process
-            if (placingBalls.size() > 0) {
-                startPlacing(placingBalls.get(0));
+                repaint();
+
+                // If more balls to place, restart placing process
+                if (placingBalls.size() > 0) {
+                    startPlacing(placingBalls.get(0));
+                }
+
+                return true;
             }
         }
 
-        return placed;
+        return false;
     }
 
     public boolean isPlacing() {
