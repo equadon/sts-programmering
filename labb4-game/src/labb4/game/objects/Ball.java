@@ -61,6 +61,13 @@ public class Ball extends GameObject implements Collidable {
     }
 
     /**
+     * Check if position is inside the ball.
+     */
+    public boolean contains(Vector2D position) {
+        return bounds.contains(position.x, position.y) && getPosition().distanceTo(position) < radius;
+    }
+
+    /**
      * Collision detection.
      */
     private boolean collisionWithWalls() {

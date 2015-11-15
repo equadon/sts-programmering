@@ -173,6 +173,16 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
                 }
             }
         }
+
+        if (!isPlacing() && SwingUtilities.isMiddleMouseButton(e)) {
+            Vector2D position = Vector2D.fromMouseEvent(e);
+
+            for (PoolBall ball : table.getBalls()) {
+                if (ball.contains(position)) {
+                    startPlacing(ball);
+                }
+            }
+        }
     }
 
     @Override
@@ -200,6 +210,13 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
                     }
                 }
             }
+        } else if (SwingUtilities.isMiddleMouseButton(e)) {
+            if (isPlacing()) {
+                Vector2D position = Vector2D.fromMouseEvent(e);
+                if (!place(position)) {
+                    LOG.warning("Invalid placement position: " + position);
+                }
+            }
         }
     }
 
@@ -219,6 +236,12 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
                     ((Aimable) ball).updateAim(position);
                 }
             }
+
+            repaint();
+        }
+
+        if (SwingUtilities.isMiddleMouseButton(e) && isPlacing()) {
+            placingBalls.get(0).updatePlacement(position);
 
             repaint();
         }
