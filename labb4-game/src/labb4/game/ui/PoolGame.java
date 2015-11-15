@@ -14,8 +14,11 @@ public class PoolGame {
         JLabel player1Points = new JLabel("");
         JLabel player2Points = new JLabel("");
 
-        Player player1 = new Player("Player 1", player1Points);
-        Player player2 = new Player("Player 2", player2Points);
+        String player1Name = "Player 1"; //JOptionPane.showInputDialog("Enter name for player 1:");
+        String player2Name = "Player 2"; //JOptionPane.showInputDialog("Enter name for player 2:");
+
+        Player player1 = new Player(player1Name, player1Points);
+        Player player2 = new Player(player2Name, player2Points);
 
         JLabel turnLabel = new JLabel("Turn: " + player1.name);
 
@@ -120,9 +123,6 @@ public class PoolGame {
 
     private static JPanel createInfoPanel(Player player1, JLabel player1Points, JLabel player2Points, JLabel turnLabel) {
         JPanel infoPanel = new JPanel(new BorderLayout());
-
-        //String player1Name = JOptionPane.showInputDialog("Enter name for player 1:");
-        //String player2Name = JOptionPane.showInputDialog("Enter name for player 2:");
 
         turnLabel.setHorizontalAlignment(SwingConstants.CENTER);
 

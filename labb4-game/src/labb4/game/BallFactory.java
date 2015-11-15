@@ -4,7 +4,7 @@ import labb4.game.objects.PoolBall;
 
 import java.awt.*;
 
-public class PoolBallFactory {
+public class BallFactory {
     public static PoolBall createStandardBall(int points, Table table, Vector2D position, int radius) {
         boolean striped = points > 8;
         Color color = Config.BALL_WHITE_COLOR;

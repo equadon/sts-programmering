@@ -37,8 +37,8 @@ public class Vector2D {
     }
 
     public Vector2D divide(double denominator) {
-        x = x / denominator;
-        y = x / denominator;
+        x /= denominator;
+        y /= denominator;
 
         return this;
     }
@@ -82,10 +82,6 @@ public class Vector2D {
     @Override
     public String toString() {
         return "Vector2D[" + "x=" + x + ", y=" + y + ']';
-    }
-
-    public static Vector2D zero() {
-        return new Vector2D(0, 0);
     }
 
     public static Vector2D fromMouseEvent(MouseEvent event) {

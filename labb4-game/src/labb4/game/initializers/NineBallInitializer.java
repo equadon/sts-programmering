@@ -1,7 +1,7 @@
 package labb4.game.initializers;
 
 import labb4.game.Config;
-import labb4.game.PoolBallFactory;
+import labb4.game.BallFactory;
 import labb4.game.Table;
 import labb4.game.Vector2D;
 import labb4.game.objects.CueBall;
@@ -42,7 +42,7 @@ public class NineBallInitializer implements BallInitializer {
 
             int number = numbers[i];
             position = new Vector2D(x + (5 - row) * radius + col * diameter, y - absRow * (diameter - 0.25 * radius));
-            balls.add(PoolBallFactory.createStandardBall(number, table, position, radius));
+            balls.add(BallFactory.createStandardBall(number, table, position, radius));
 
             col++;
         }
@@ -55,7 +55,7 @@ public class NineBallInitializer implements BallInitializer {
     private CueBall createCueBall(Table table) {
         Vector2D position = new Vector2D(table.width / 2.0, 3 * table.height / 4.0);
 
-        return new CueBall(table, position, Vector2D.zero(), Config.BALL_RADIUS);
+        return new CueBall(table, position, new Vector2D(0, 0), Config.BALL_RADIUS);
     }
 
     /**

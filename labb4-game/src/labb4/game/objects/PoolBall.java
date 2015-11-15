@@ -13,7 +13,7 @@ public class PoolBall extends Ball implements Placeable {
     private boolean placing;
 
     public PoolBall(Table table, Vector2D position, Color color, double radius, boolean striped, int points) {
-        this(table, position, Vector2D.zero(), color, Config.DEFAULT_MASS, Config.DEFAULT_FRICTION, radius,
+        this(table, position, new Vector2D(0, 0), color, Config.DEFAULT_MASS, Config.DEFAULT_FRICTION, radius,
                 striped, points);
     }
 
@@ -33,7 +33,7 @@ public class PoolBall extends Ball implements Placeable {
     @Override
     public void startPlacing() {
         placing = true;
-        velocity = Vector2D.zero();
+        velocity = new Vector2D(0, 0);
         show();
     }
 
@@ -53,7 +53,7 @@ public class PoolBall extends Ball implements Placeable {
         setPosition(newPosition);
 
         if (table.getPlayableBounds().contains(getBounds()) && !collidesWithBall()) {
-            velocity = Vector2D.zero();
+            velocity = new Vector2D(0, 0);
             placing = false;
 
             return true;
