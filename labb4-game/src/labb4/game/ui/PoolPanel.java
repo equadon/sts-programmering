@@ -41,14 +41,16 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
         setFocusable(true);
 
         gameType = GameType.NineBall;
-        newGame();
+        newGame(gameType);
 
         addKeyListener(this);
         addMouseListener(this);
         addMouseMotionListener(this);
     }
 
-    private void newGame() {
+    public void newGame(GameType type) {
+        this.gameType = type;
+
         player1.reset();
         player2.reset();
 
@@ -213,14 +215,11 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_1) {
-            gameType = GameType.values()[0];
-            newGame();
+            newGame(GameType.values()[0]);
         } else if (e.getKeyCode() == KeyEvent.VK_2) {
-            gameType = GameType.values()[1];
-            newGame();
+            newGame(GameType.values()[1]);
         } else if (e.getKeyCode() == KeyEvent.VK_3) {
-            gameType = GameType.values()[2];
-            newGame();
+            newGame(GameType.values()[2]);
         }
     }
 }

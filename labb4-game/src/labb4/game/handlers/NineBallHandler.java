@@ -2,18 +2,14 @@ package labb4.game.handlers;
 
 import labb4.game.Player;
 import labb4.game.objects.CueBall;
-import labb4.game.objects.Pocket;
 import labb4.game.objects.PoolBall;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class handles nine ball rules.
  */
 public class NineBallHandler extends GameHandler {
-    private int turn;
-
     private PoolBall firstHit;
     private PoolBall targetBall;
 
@@ -37,8 +33,6 @@ public class NineBallHandler extends GameHandler {
 
     @Override
     public void endTurn() {
-        turn++;
-
         // Invalid move if target ball was not hit first
         if (isCueBallPocketed()) {
             illegalMove("Cue ball cannot be pocketed.");
