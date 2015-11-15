@@ -3,13 +3,12 @@ package labb4.game.objects;
 import labb4.game.Config;
 import labb4.game.Table;
 import labb4.game.Vector2D;
-import labb4.game.interfaces.Collidable;
 import labb4.game.interfaces.Placeable;
 import labb4.game.ui.painters.BallPainter;
 
 import java.awt.*;
 
-public class Ball extends GameObject implements Collidable {
+public class Ball extends GameObject {
     public final boolean striped;
 
     protected final Table table;
@@ -46,7 +45,6 @@ public class Ball extends GameObject implements Collidable {
         bounds.height = getDiameter();
     }
 
-    @Override
     public boolean handleCollisions() {
         return isVisible() && (collisionWithWalls() || collisionWithBalls() || collisionWithHoles());
     }

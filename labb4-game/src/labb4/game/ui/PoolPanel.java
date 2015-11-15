@@ -230,7 +230,7 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
     public void mouseDragged(MouseEvent e) {
         Vector2D position = Vector2D.fromMouseEvent(e);
 
-        if (SwingUtilities.isLeftMouseButton(e)) {// && table.getCueBall().isAiming()) {
+        if (SwingUtilities.isLeftMouseButton(e)) {
             for (PoolBall ball : table.getBalls()) {
                 if (ball instanceof Aimable) {
                     ((Aimable) ball).updateAim(position);

@@ -89,7 +89,15 @@ public abstract class GameObject {
         painter.draw(g, this);
     }
 
-    public void move() {
+    public void hide() {
+        visible = false;
+    }
+
+    public void show() {
+        visible = true;
+    }
+
+    private void move() {
         if (isMoving()) {
             lastPosition.x = position.x;
             lastPosition.y = position.y;
@@ -101,17 +109,5 @@ public abstract class GameObject {
 
             updateBounds();
         }
-    }
-
-    public void hide() {
-        visible = false;
-    }
-
-    public void show() {
-        visible = true;
-    }
-
-    public void toggle() {
-        visible = !visible;
     }
 }

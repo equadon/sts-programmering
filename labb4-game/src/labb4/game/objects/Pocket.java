@@ -3,13 +3,12 @@ package labb4.game.objects;
 import labb4.game.Config;
 import labb4.game.Table;
 import labb4.game.Vector2D;
-import labb4.game.interfaces.Collidable;
 import labb4.game.ui.painters.PocketPainter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Pocket extends GameObject implements Collidable {
+public class Pocket extends GameObject {
     private final Table table;
     private final double radius;
 
@@ -38,11 +37,6 @@ public class Pocket extends GameObject implements Collidable {
 
     public void empty() {
         balls.clear();
-    }
-
-    @Override
-    public boolean handleCollisions() {
-        return false;
     }
 
     public boolean handleBallCollision(Ball ball) {
