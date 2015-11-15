@@ -34,8 +34,11 @@ public class NineBallHandler extends GameHandler {
 
     @Override
     public void collision(PoolBall ball1, PoolBall ball2) {
-        if (firstHit == null && ball1 instanceof CueBall) {
-            firstHit = ball2;
+        if (firstHit == null) {
+            if (ball1 instanceof CueBall)
+                firstHit = ball2;
+            else if (ball2 instanceof CueBall)
+                firstHit = ball1;
         }
     }
 
