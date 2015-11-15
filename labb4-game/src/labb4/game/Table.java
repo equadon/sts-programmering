@@ -193,9 +193,9 @@ public class Table {
     }
 
     public void gameOver() {
-        balls.clear();
+        /*balls.clear();
 
         for (Pocket pocket : pockets)
-            pocket.empty();
+            pocket.empty();*/
     }
 }

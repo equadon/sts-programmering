@@ -9,12 +9,5 @@ import java.awt.event.ActionEvent;
 public class TableContextMenu extends JPopupMenu {
     public TableContextMenu(PoolPanel panel, Table table) {
         super();
-
-        add(new JMenuItem(new AbstractAction("Change turn") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                table.changeTurn();
-            }
-        }));
     }
 }
