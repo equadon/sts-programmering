@@ -173,6 +173,12 @@ public class Table {
         balls.remove(ball);
     }
 
+    public void add(PoolBall ball) {
+        if (!(ball instanceof CueBall)) {
+            balls.add(ball);
+        }
+    }
+
     private void createPockets() {
         Vector2D position;
 
