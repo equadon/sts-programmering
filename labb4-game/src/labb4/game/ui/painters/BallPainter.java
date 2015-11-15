@@ -60,8 +60,9 @@ public class BallPainter extends ObjectPainter {
 
     private void drawBall(Graphics2D g, Color color, int x, int y, int width, int height) {
         if (Config.DISPLAY_BOUNDING_BOXES) {
+            g.setStroke(new BasicStroke(Config.BALL_BORDER_SIZE));
             g.setColor(Config.BALL_BLACK_COLOR);
-            g.drawRect(x, y, width, height);
+            g.drawRect(x, y, width - Config.BALL_BORDER_SIZE, height - Config.BALL_BORDER_SIZE);
         }
 
         // Background

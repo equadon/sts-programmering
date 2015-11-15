@@ -116,6 +116,8 @@ public abstract class GameHandler {
     }
 
     protected void notifyGameWinner() {
+        table.gameOver();
+
         for (GameListener listener : listeners)
             listener.gameOver(table.getCurrentPlayer());
     }

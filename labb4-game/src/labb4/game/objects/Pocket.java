@@ -4,7 +4,7 @@ import labb4.game.Config;
 import labb4.game.Table;
 import labb4.game.Vector2D;
 import labb4.game.interfaces.Collidable;
-import labb4.game.ui.painters.HolePainter;
+import labb4.game.ui.painters.PocketPainter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ public class Pocket extends GameObject implements Collidable {
     private final List<PoolBall> balls;
 
     public Pocket(Table table, Vector2D position, double radius) {
-        super(new HolePainter(), position, new Vector2D(0, 0), Config.DEFAULT_HOLE_COLOR, 0, 0);
+        super(new PocketPainter(), position, new Vector2D(0, 0), Config.DEFAULT_HOLE_COLOR, 0, 0);
 
         this.table = table;
         this.radius = radius;
@@ -34,6 +34,10 @@ public class Pocket extends GameObject implements Collidable {
         balls.remove(ball);
         table.add(ball);
         table.getHandler().removedFromPocket(this, ball);
+    }
+
+    public void empty() {
+        balls.clear();
     }
 
     @Override

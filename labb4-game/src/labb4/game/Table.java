@@ -191,4 +191,11 @@ public class Table {
             pockets[i] = new Pocket(this, position, Config.DEFAULT_POCKET_RADIUS);
         }
     }
+
+    public void gameOver() {
+        balls.clear();
+
+        for (Pocket pocket : pockets)
+            pocket.empty();
+    }
 }

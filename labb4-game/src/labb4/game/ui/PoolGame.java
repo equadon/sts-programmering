@@ -111,10 +111,8 @@ public class PoolGame {
             }
         });
 
-        boundingBoxes.setMnemonic('E');
-
-        boundingBoxes.setAccelerator(KeyStroke.getKeyStroke('1'));
-
+        boundingBoxes.setMnemonic('B');
+        boundingBoxes.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, Event.CTRL_MASK));
         debugMenu.add(boundingBoxes);
 
         return debugMenu;

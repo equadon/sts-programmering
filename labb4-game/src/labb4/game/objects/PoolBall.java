@@ -67,11 +67,12 @@ public class PoolBall extends Ball implements Placeable {
     private boolean collidesWithBall() {
         for (Ball ball : table.getBalls()) {
             if (ball != this && ball.isVisible() && ball.getBounds().intersects(getBounds())) {
-                return true;
+                if (getPosition().distanceTo(ball.getPosition()) < getRadius() + ball.getRadius()) {
+                    return true;
+                }
             }
         }
 
-        //return this != table.getCueBall() && table.getCueBall().getBounds().intersects(getBounds());
         return false;
     }
 
