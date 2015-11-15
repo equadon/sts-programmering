@@ -4,6 +4,7 @@ import labb4.game.Config;
 import labb4.game.Table;
 import labb4.game.Vector2D;
 import labb4.game.interfaces.Collidable;
+import labb4.game.interfaces.Placeable;
 import labb4.game.ui.painters.BallPainter;
 
 import java.awt.*;
@@ -116,6 +117,11 @@ public class Ball extends GameObject implements Collidable {
     }
 
     private boolean checkCollisionWith(Ball other) {
+        // Do not collide with placable objects that are placing
+        if ((this instanceof Placeable && ((Placeable) this).isPlacing()) ||
+                (other instanceof Placeable && ((Placeable) other).isPlacing()))
+            return false;
+
         if (bounds.intersects(other.bounds)) {
             double distance = getPosition().distanceTo(other.getPosition());
 
