@@ -105,7 +105,6 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
             Placeable ball = placingBalls.get(0);
             placed = ball.place(position);
             placingBalls.remove(ball);
-            table.add((PoolBall) ball);
 
             repaint();
 

@@ -32,7 +32,8 @@ public class Pocket extends GameObject implements Collidable {
 
     public void remove(PoolBall ball) {
         balls.remove(ball);
-        table.getHandler().removedFromPocket(this, (PoolBall) ball);
+        table.add(ball);
+        table.getHandler().removedFromPocket(this, ball);
     }
 
     @Override

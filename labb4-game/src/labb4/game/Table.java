@@ -174,7 +174,7 @@ public class Table {
     }
 
     public void add(PoolBall ball) {
-        if (!(ball instanceof CueBall)) {
+        if (!balls.contains(ball)) {
             balls.add(ball);
         }
     }
