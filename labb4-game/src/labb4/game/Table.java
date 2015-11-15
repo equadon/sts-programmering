@@ -147,7 +147,7 @@ public class Table {
             }
         }
 
-        if (cueBall.isVisible()) {
+        if (!cueBall.isPlacing() && cueBall.isVisible()) {
             cueBall.handleCollisions();
         }
 

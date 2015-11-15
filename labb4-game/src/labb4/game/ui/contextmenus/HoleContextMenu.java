@@ -27,13 +27,7 @@ public class HoleContextMenu extends JPopupMenu {
             JMenuItem ballItem;
             int n = 1;
             for (PoolBall ball : balls) {
-                CueBall cueBall;
                 String name = n + ". " + ball.toString();
-
-                if (ball instanceof CueBall) {
-                    cueBall = (CueBall) ball;
-                    name += cueBall.toString();
-                }
 
                 ballItem = new JMenuItem(new AbstractAction(name) {
                     @Override

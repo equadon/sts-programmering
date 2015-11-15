@@ -22,7 +22,6 @@ public class PoolGameListener implements GameListener {
 
     @Override
     public void changedPlayer(Player player) {
-        LOG.info("Current player: " + player.name);
         panel.setTurn(player.name + "'s turn!");
         panel.repaint();
     }
@@ -50,6 +49,7 @@ public class PoolGameListener implements GameListener {
         panel.setMessage(winner.name + " won!");
         panel.setTurnText("Game Over");
         panel.repaint();
+
         JOptionPane.showMessageDialog(panel, winner.name + " won the game!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
     }
 }

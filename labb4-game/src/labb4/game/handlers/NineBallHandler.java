@@ -20,6 +20,7 @@ public class NineBallHandler extends GameHandler {
 
     @Override
     public void newGame() {
+        notifyPlayerChange(table.getCurrentPlayer());
         updateTurnText();
         updateMessage();
     }
@@ -62,6 +63,7 @@ public class NineBallHandler extends GameHandler {
         }
 
         if (!isGameOver) {
+            updateTurnText();
             updateMessage();
         }
     }
