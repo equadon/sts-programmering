@@ -36,6 +36,8 @@ public class TableFactory {
                 break;
         }
 
-        return new Table(width, height, Config.TABLE_OUTER_BORDER_SIZE, Config.TABLE_INNER_BORDER_SIZE, initializer, handler, player1, player2);
+        return new Table(width, height,
+                Config.TABLE_OUTER_BORDER_SIZE, Config.TABLE_INNER_BORDER_SIZE,
+                initializer, handler, player1, player2);
     }
 }
