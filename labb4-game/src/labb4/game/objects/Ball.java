@@ -14,13 +14,8 @@ public class Ball extends GameObject {
     protected final Table table;
     private double radius;
 
-    public Ball(Table table, Vector2D position, Vector2D velocity, Color color, double radius, boolean striped) {
-        this(table, position, velocity, color, Config.DEFAULT_MASS, Config.DEFAULT_FRICTION, radius, striped);
-    }
-
-    public Ball(Table table, Vector2D position, Vector2D velocity, Color color, double mass, double friction,
-                double radius, boolean striped) {
-        super(new BallPainter(), position, velocity, color, mass, friction);
+    public Ball(Table table, Vector2D position, Color color, double radius, boolean striped) {
+        super(new BallPainter(), position, new Vector2D(0, 0), color, Config.DEFAULT_MASS, Config.DEFAULT_FRICTION);
 
         this.table = table;
         this.striped = striped;

@@ -28,9 +28,9 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
     private GameType gameType;
 
     private ContextMenuListener popUpListener;
-    private PoolGameListener gameListener;
+    private PoolGameObserver gameObserver;
 
-    private List<Placeable> placingBalls;
+    private List<Placeable> placing; // list of objects being placed
 
     public PoolPanel(JFrame frame, Player player1, Player player2, JLabel turnLabel) {
         this.frame = frame;
@@ -56,7 +56,7 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
         player1.reset();
         player2.reset();
 
-        placingBalls = new ArrayList<>();
+        placing = new ArrayList<>();
 
         table = Table.createTable(gameType, player1, player2);
 
@@ -71,9 +71,8 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
         popUpListener = new ContextMenuListener(this, table);
         addMouseListener(popUpListener);
 
-        gameListener = new PoolGameListener(this);
-        table.getHandler().addListener(gameListener);
-        table.getHandler().newGame();
+        gameObserver = new PoolGameObserver(this);
+        table.addObserver(gameObserver);
 
         repaint();
     }
@@ -86,31 +85,33 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
         turnLabel.setText(text);
     }
 
-    public void setMessage(String message) {
-        table.setMessage(message);
-    }
-    public void setTurnText(String message) {
-        table.setTurnText(message);
+    public void setMessages(String above, String below) {
+        table.setMessage(above);
+        table.setTurnText(below);
     }
 
-    public void startPlacing(Placeable ball) {
-        placingBalls.add(ball);
+    public Placeable nextPlacement() {
+        return placing.get(0);
+    }
 
-        placingBalls.get(0).startPlacing();
+    public void startPlacing(Placeable placeable) {
+        placing.add(placeable);
+
+        nextPlacement().startPlacing();
     }
 
     public boolean place(Vector2D position) {
         if (isPlacing()) {
-            Placeable placeable = placingBalls.get(0);
+            Placeable placeable = placing.get(0);
 
             if (placeable.place(position)) {
-                placingBalls.remove(placeable);
+                placing.remove(placeable);
 
                 repaint();
 
                 // If more balls to place, restart placing process
-                if (placingBalls.size() > 0) {
-                    startPlacing(placingBalls.get(0));
+                if (placing.size() > 0) {
+                    startPlacing(placing.get(0));
                 }
 
                 return true;
@@ -121,7 +122,7 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
     }
 
     public boolean isPlacing() {
-        return placingBalls.size() > 0;
+        return placing.size() > 0;
     }
 
     @Override
@@ -134,7 +135,7 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
         table.draw(g);
 
         if (isPlacing()) {
-            ((Ball) placingBalls.get(0)).draw(g);
+            ((Ball) nextPlacement()).draw(g);
         }
     }
 
@@ -146,7 +147,6 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
             repaint();
         } else {
             timer.stop();
-            table.getHandler().endTurn();
         }
     }
 
@@ -203,7 +203,6 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
                             repaint();
 
                             timer.start();
-                            table.getHandler().beginTurn(table.getCurrentPlayer());
 
                             break;
                         }
@@ -241,7 +240,7 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
         }
 
         if (SwingUtilities.isMiddleMouseButton(e) && isPlacing()) {
-            placingBalls.get(0).updatePlacement(position);
+            nextPlacement().updatePlacement(position);
 
             repaint();
         }
@@ -251,7 +250,7 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
     public void mouseMoved(MouseEvent e) {
         if (isPlacing()) {
             Vector2D position = Vector2D.fromMouseEvent(e);
-            placingBalls.get(0).updatePlacement(position);
+            nextPlacement().updatePlacement(position);
 
             repaint();
         }

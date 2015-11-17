@@ -13,13 +13,8 @@ public class CueBall extends PoolBall implements Aimable {
 
     private Vector2D aimPosition;
 
-    public CueBall(Table table, Vector2D position, Vector2D velocity, double radius) {
-        this(table, position, velocity, Color.WHITE, Config.DEFAULT_MASS, Config.DEFAULT_FRICTION, radius);
-    }
-
-    public CueBall(Table table, Vector2D position, Vector2D velocity, Color color, double mass, double friction,
-                   double radius) {
-        super(table, position, velocity, color, mass, friction, radius, false, -1);
+    public CueBall(Table table, Vector2D position, double radius) {
+        super(table, position, Color.WHITE, radius, false, 0);
 
         aimPosition = null;
     }

@@ -3,6 +3,10 @@ package labb4.game.tables;
 import labb4.game.*;
 import labb4.game.handlers.EightBallHandler;
 import labb4.game.objects.CueBall;
+import labb4.game.objects.PoolBall;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EightBallTable extends Table {
     public EightBallTable(Player player1, Player player2) {
@@ -10,7 +14,9 @@ public class EightBallTable extends Table {
     }
 
     @Override
-    protected void createBalls() {
+    protected List<PoolBall> createBalls() {
+        List<PoolBall> balls = new ArrayList<>();
+
         Integer[] numbers = new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
         Utility.shuffle(numbers);
         Utility.moveNumber(numbers, 8, 4);
@@ -40,6 +46,8 @@ public class EightBallTable extends Table {
 
         // Add cue ball
         Vector2D cueBallPosition = new Vector2D(width / 2.0, 3 * height / 4.0);
-        balls.add(new CueBall(this, cueBallPosition, new Vector2D(0, 0), Config.BALL_RADIUS));
+        balls.add(new CueBall(this, cueBallPosition, Config.BALL_RADIUS));
+
+        return balls;
     }
 }

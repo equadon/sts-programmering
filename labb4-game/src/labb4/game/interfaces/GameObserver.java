@@ -3,12 +3,11 @@ package labb4.game.interfaces;
 import labb4.game.Player;
 import labb4.game.objects.PoolBall;
 
-public interface GameListener {
+public interface GameObserver {
     void illegalMove(String reason);
-    void changedPlayer(Player player);
+    void changePlayer(Player newPlayer);
     void addPoints(Player player, int points);
-    void updateMessage(String message);
-    void updateTurnText(String message);
-    void startPlacingBall(PoolBall ball);
+    void updateMessages(String above, String below);
+    void startPlacingBall(Placeable placeable);
     void gameOver(Player winner);
 }

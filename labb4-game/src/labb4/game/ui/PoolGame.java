@@ -17,8 +17,8 @@ public class PoolGame {
         String player1Name = "Player 1"; //JOptionPane.showInputDialog("Enter name for player 1:");
         String player2Name = "Player 2"; //JOptionPane.showInputDialog("Enter name for player 2:");
 
-        Player player1 = new Player(player1Name, player1Points);
-        Player player2 = new Player(player2Name, player2Points);
+        Player player1 = new Player(player1Name);
+        Player player2 = new Player(player2Name);
 
         JLabel turnLabel = new JLabel("Turn: " + player1.name);
 

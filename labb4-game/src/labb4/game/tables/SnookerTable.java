@@ -5,6 +5,7 @@ import labb4.game.handlers.SnookerHandler;
 import labb4.game.objects.CueBall;
 import labb4.game.objects.PoolBall;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SnookerTable extends Table {
@@ -15,7 +16,9 @@ public class SnookerTable extends Table {
     }
 
     @Override
-    protected void createBalls() {
+    protected List<PoolBall> createBalls() {
+        List<PoolBall> balls = new ArrayList<>();
+
         int radius = Config.BALL_RADIUS;
         int diameter = 2 * radius;
 
@@ -50,7 +53,9 @@ public class SnookerTable extends Table {
         balls.add(BallFactory.createSnookerBall(7, this, position, radius));
 
         Vector2D cueBallPosition = new Vector2D(width / 2.0, 4.5 * height / 5.0);
-        balls.add(new CueBall(this, cueBallPosition, new Vector2D(0, 0), Config.BALL_RADIUS));
+        balls.add(new CueBall(this, cueBallPosition, Config.BALL_RADIUS));
+
+        return balls;
     }
 
     private void createRedBalls(List<PoolBall> balls, Table table, int radius, int diameter) {

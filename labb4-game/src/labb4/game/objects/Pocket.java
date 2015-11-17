@@ -15,7 +15,7 @@ public class Pocket extends GameObject {
     private final List<PoolBall> balls;
 
     public Pocket(Table table, Vector2D position, double radius) {
-        super(new PocketPainter(), position, new Vector2D(0, 0), Config.DEFAULT_HOLE_COLOR, 0, 0);
+        super(new PocketPainter(), position, new Vector2D(0, 0), Config.DEFAULT_POCKET_COLOR, 0, 0);
 
         this.table = table;
         this.radius = radius;
@@ -32,7 +32,6 @@ public class Pocket extends GameObject {
     public void remove(PoolBall ball) {
         balls.remove(ball);
         table.add(ball);
-        table.getHandler().removedFromPocket(this, ball);
     }
 
     public void empty() {
@@ -56,8 +55,6 @@ public class Pocket extends GameObject {
 
         table.remove(ball);
         ball.hide();
-
-        table.getHandler().ballPocketed(this, ball);
     }
 
     @Override

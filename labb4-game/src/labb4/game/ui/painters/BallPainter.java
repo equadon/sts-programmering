@@ -4,6 +4,7 @@ import labb4.game.Config;
 import labb4.game.Vector2D;
 import labb4.game.interfaces.Aimable;
 import labb4.game.objects.Ball;
+import labb4.game.objects.CueBall;
 import labb4.game.objects.GameObject;
 import labb4.game.objects.PoolBall;
 
@@ -32,7 +33,7 @@ public class BallPainter extends ObjectPainter {
                 drawStripes(g, poolBall);
             }
 
-            if (poolBall.points >= 0) {
+            if (!(poolBall instanceof CueBall)) {
                 drawNumber(g, poolBall);
             }
         }
