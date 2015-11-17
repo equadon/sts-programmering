@@ -20,7 +20,6 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
 
     private final Timer timer;
     private final JFrame frame;
-    private final JLabel turnLabel;
 
     private final Player[] players;
 
@@ -32,9 +31,8 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
 
     private List<Placeable> placing; // list of objects being placed
 
-    public PoolPanel(JFrame frame, JLabel turnLabel, Player[] players) {
+    public PoolPanel(JFrame frame, Player[] players) {
         this.frame = frame;
-        this.turnLabel = turnLabel;
         this.players = players;
 
         timer = new Timer((int) (1000.0 / Config.FRAMES_PER_SECOND), this);
@@ -85,23 +83,14 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
         return table;
     }
 
-    public void setTurn(String text) {
-        turnLabel.setText(text);
-    }
-
-    public void setMessages(String above, String below) {
-        table.setTurnText(above);
-        table.setMessage(below);
-    }
-
-    public Placeable nextPlacement() {
+    public Placeable getPlacing() {
         return placing.get(0);
     }
 
     public void startPlacing(Placeable placeable) {
         placing.add(placeable);
 
-        nextPlacement().startPlacing();
+        getPlacing().startPlacing();
     }
 
     public boolean place(Vector2D position) {
@@ -129,6 +118,28 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
         return placing.size() > 0;
     }
 
+    private PoolBall getBall(Vector2D position) {
+        for (PoolBall ball : table.getBalls()) {
+            if (ball.contains(position)) {
+                return ball;
+            }
+        }
+
+        return null;
+    }
+
+    private Aimable getAimable(Vector2D position) {
+        for (PoolBall ball : table.getBalls()) {
+            if (ball instanceof Aimable) {
+                if (ball.contains(position)) {
+                    return (Aimable) ball;
+                }
+            }
+        }
+
+        return null;
+    }
+
     @Override
     protected void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
@@ -139,7 +150,7 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
         table.draw(g);
 
         if (isPlacing()) {
-            ((Ball) nextPlacement()).draw(g);
+            ((Ball) getPlacing()).draw(g);
         }
     }
 
@@ -160,64 +171,52 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (SwingUtilities.isLeftMouseButton(e) && timer.isRunning()) {
-            LOG.warning("Timer is running, can't click.");
-        } else if (SwingUtilities.isLeftMouseButton(e)) {
-            Vector2D position = Vector2D.fromMouseEvent(e);
+        if (timer.isRunning()) return;
 
+        Vector2D position = Vector2D.fromMouseEvent(e);
+
+        if (SwingUtilities.isLeftMouseButton(e)) {
             if (!isPlacing()) {
-                for (PoolBall ball : table.getBalls()) {
-                    if (ball instanceof Aimable) {
-                        if (ball.getBounds().contains(position.x, position.y) && ball.getPosition().distanceTo(position) < ball.getRadius()) {
-                            ((Aimable) ball).setAim(position);
-                            repaint();
-
-                            break;
-                        }
-                    }
+                Aimable aimable = getAimable(position);
+                if (aimable != null) {
+                    aimable.setAim(position);
+                    repaint();
                 }
             }
-        }
-
-        if (!isPlacing() && SwingUtilities.isMiddleMouseButton(e)) {
-            Vector2D position = Vector2D.fromMouseEvent(e);
-
-            for (PoolBall ball : table.getBalls()) {
-                if (ball.contains(position)) {
-                    startPlacing(ball);
-                }
+        } else if (SwingUtilities.isMiddleMouseButton(e)) {
+            // Start placing ball
+            PoolBall ball = getBall(position);
+            if (ball != null) {
+                startPlacing(ball);
             }
         }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        Vector2D position = Vector2D.fromMouseEvent(e);
+
         if (SwingUtilities.isLeftMouseButton(e)) {
             if (isPlacing()) {
-                Vector2D position = Vector2D.fromMouseEvent(e);
                 if (!place(position)) {
                     LOG.warning("Invalid placement position: " + position);
                 }
             } else {
-                for (PoolBall ball : table.getBalls()) {
-                    if (ball instanceof Aimable) {
-                        Aimable aimable = (Aimable) ball;
-                        if (aimable.isAiming()) {
-                            aimable.shoot();
+                for (Aimable aimable : table.getAimable()) {
+                    if (aimable.isAiming()) {
+                        aimable.shoot();
 
-                            repaint();
+                        repaint();
 
-                            timer.start();
-                            table.getHandler().beginTurn(table.getCurrentPlayer());
+                        timer.start();
+                        table.getHandler().beginTurn(table.getCurrentPlayer());
 
-                            break;
-                        }
+                        break;
                     }
                 }
             }
         } else if (SwingUtilities.isMiddleMouseButton(e)) {
             if (isPlacing()) {
-                Vector2D position = Vector2D.fromMouseEvent(e);
                 if (!place(position)) {
                     LOG.warning("Invalid placement position: " + position);
                 }
@@ -243,10 +242,8 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
             }
 
             repaint();
-        }
-
-        if (SwingUtilities.isMiddleMouseButton(e) && isPlacing()) {
-            nextPlacement().updatePlacement(position);
+        } else if (SwingUtilities.isMiddleMouseButton(e) && isPlacing()) {
+            getPlacing().updatePlacement(position);
 
             repaint();
         }
@@ -256,7 +253,7 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
     public void mouseMoved(MouseEvent e) {
         if (isPlacing()) {
             Vector2D position = Vector2D.fromMouseEvent(e);
-            nextPlacement().updatePlacement(position);
+            getPlacing().updatePlacement(position);
 
             repaint();
         }

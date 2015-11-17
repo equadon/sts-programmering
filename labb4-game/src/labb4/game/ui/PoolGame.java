@@ -14,14 +14,10 @@ import java.util.ArrayList;
 
 public class PoolGame {
     public static void main(String[] args) {
-        JLabel turnLabel = new JLabel("Turn: ?");
-
-        JPanel infoPanel = createInfoPanel(turnLabel);
-
         Player[] players = createPlayers();
 
         JFrame frame = new JFrame("Pool Game");
-        PoolPanel poolPanel = new PoolPanel(frame, turnLabel, players);
+        PoolPanel poolPanel = new PoolPanel(frame, players);
         
         JMenuBar menu = createMenuBar(frame, poolPanel);
         frame.setJMenuBar(menu);
@@ -30,7 +26,6 @@ public class PoolGame {
         frame.setResizable(false);
         frame.setLayout(new BorderLayout());
         frame.getContentPane().add(poolPanel, BorderLayout.CENTER);
-        frame.getContentPane().add(infoPanel, BorderLayout.SOUTH);
         frame.pack();
         frame.setVisible(true);
     }
@@ -137,15 +132,5 @@ public class PoolGame {
         debugMenu.add(boundingBoxes);
 
         return debugMenu;
-    }
-
-    private static JPanel createInfoPanel(JLabel turnLabel) {
-        JPanel infoPanel = new JPanel(new BorderLayout());
-
-        turnLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
-        infoPanel.add(turnLabel, BorderLayout.CENTER);
-
-        return infoPanel;
     }
 }

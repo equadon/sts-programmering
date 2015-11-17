@@ -5,6 +5,7 @@ import labb4.game.GameType;
 import labb4.game.Player;
 import labb4.game.Vector2D;
 import labb4.game.handlers.GameHandler;
+import labb4.game.interfaces.Aimable;
 import labb4.game.interfaces.GameObserver;
 import labb4.game.objects.Pocket;
 import labb4.game.objects.PoolBall;
@@ -92,6 +93,17 @@ public abstract class Table {
     }
     public Pocket[] getPockets() {
         return pockets;
+    }
+
+    public Aimable[] getAimable() {
+        List<Aimable> aimables = new ArrayList<>();
+        for (PoolBall ball : getBalls()) {
+            if (ball instanceof Aimable) {
+                aimables.add((Aimable) ball);
+            }
+        }
+
+        return aimables.toArray(new Aimable[aimables.size()]);
     }
 
     public Player getCurrentPlayer() {
