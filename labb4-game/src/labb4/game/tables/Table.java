@@ -32,8 +32,8 @@ public abstract class Table {
     public final int innerBorderSize;
 
     // Info messages
-    private String topText;
-    private String bottomText;
+    private String leftText;
+    private String rightText;
 
     protected GameHandler handler;
 
@@ -66,6 +66,9 @@ public abstract class Table {
 
         pockets = createPockets();
         balls = createBalls();
+
+        leftText = players[0].name + "'s turn!";
+        rightText = "Next ball: 5";
     }
 
     public boolean isUpdating() {
@@ -78,12 +81,12 @@ public abstract class Table {
         return false;
     }
 
-    public String getTopText() {
-        return topText;
+    public String getLeftText() {
+        return leftText;
     }
 
-    public String getBottomText() {
-        return bottomText;
+    public String getRightText() {
+        return rightText;
     }
 
     public GameHandler getHandler() {

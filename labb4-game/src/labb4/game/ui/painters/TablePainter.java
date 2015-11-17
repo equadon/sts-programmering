@@ -38,20 +38,21 @@ public class TablePainter {
         );
 
         // Lines
+        double xLine;
         if (table instanceof SnookerTable) {
             drawSnookerLines(g, playableBounds);
+            xLine = Config.SNOOKER_X_LINE * playableBounds.getMaxX();
         } else {
             drawStandardLines(g, playableBounds);
+            xLine = Config.DEFAULT_X_LINE * playableBounds.getMaxX();
         }
 
-        if (table.getTopText() != null) {
-            //printCurrentPlayer(g, table.getTurnText(), playableBounds, yLine);
-            //printTopText(g, PLAYER_FONT, FONT_COLOR, playableBounds, xLine, table.getTopText());
+        if (table.getLeftText() != null) {
+            printLeftText(g, PLAYER_FONT, FONT_COLOR, playableBounds, xLine, table.getLeftText());
         }
 
-        if (table.getBottomText() != null) {
-            //printMessage(g, table.getMessage(), playableBounds, yLine);
-            //printBottomText(g, MESSAGE_FONT, MESSAGE_COLOR, playableBounds, xLine, table.getBottomText());
+        if (table.getRightText() != null) {
+            printRightText(g, MESSAGE_FONT, MESSAGE_COLOR, playableBounds, xLine, table.getRightText());
         }
     }
 
@@ -77,20 +78,20 @@ public class TablePainter {
         g.drawArc((int) (xLine - arcDiameter / 2.0), (int) (center.y - arcDiameter / 2.0), (int) arcDiameter, (int) arcDiameter, 90, 180);
     }
 
-    private void printTopText(Graphics2D g, Font font, Color color, Rectangle bounds, double yLine, String text) {
-        FontMetrics metrics = g.getFontMetrics(font);
+    private void printLeftText(Graphics2D g, Font font, Color color, Rectangle bounds, double xLine, String text) {
+        float x = (float) (xLine - 5);
+        float y = (float) bounds.getCenterY();
 
-        float x = (float) bounds.getCenterX();
-        float y = (float) yLine;
-
-        printCenteredText(g, font, color, text, x, (float) (y - metrics.getHeight() / 5.0));
+        g.rotate(-Math.PI / 2.0, x, y);
+        printCenteredText(g, font, color, text, x, y);
+        g.rotate(Math.PI / 2.0, x, y);
     }
 
-    private void printBottomText(Graphics2D g, Font font, Color color, Rectangle bounds, double yLine, String text) {
+    private void printRightText(Graphics2D g, Font font, Color color, Rectangle bounds, double xLine, String text) {
         FontMetrics metrics = g.getFontMetrics(font);
 
-        float x = (float) bounds.getCenterX();
-        float y = (float) yLine + metrics.getHeight();
+        float x = (float) (xLine + metrics.stringWidth(text) / 2.0) + 5;
+        float y = (float) bounds.getMaxY() - 5;
 
         printCenteredText(g, font, color, text, x, y);
     }
