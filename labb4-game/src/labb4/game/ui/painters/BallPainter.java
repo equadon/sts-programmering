@@ -33,7 +33,7 @@ public class BallPainter extends ObjectPainter {
                 drawStripes(g, poolBall);
             }
 
-            if (!(poolBall instanceof CueBall)) {
+            if (poolBall.showNumber) {
                 drawNumber(g, poolBall);
             }
         }

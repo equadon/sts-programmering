@@ -7,14 +7,20 @@ import labb4.game.interfaces.Placeable;
 import java.awt.*;
 
 public class PoolBall extends Ball implements Placeable {
+    public final boolean showNumber;
     public final int number;
 
     private boolean placing;
 
     public PoolBall(Table table, Vector2D position, Color color, double radius, boolean striped, int number) {
+        this(table, position, color, radius, striped, number, true);
+    }
+
+    public PoolBall(Table table, Vector2D position, Color color, double radius, boolean striped, int number, boolean showNumber) {
         super(table, position, color, radius, striped);
 
         this.number = number;
+        this.showNumber = showNumber;
         placing = false;
     }
 

@@ -63,4 +63,5 @@ public class Config {
      * Debugging constants.
      */
     public static boolean DISPLAY_BOUNDING_BOXES = false;
+    public static boolean HIDE_BALLS = false;
 }

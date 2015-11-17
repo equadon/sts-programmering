@@ -3,6 +3,7 @@ package labb4.game.ui;
 import labb4.game.Config;
 import labb4.game.GameType;
 import labb4.game.Player;
+import labb4.game.objects.Ball;
 
 import javax.swing.*;
 import java.awt.*;
@@ -126,9 +127,33 @@ public class PoolGame extends JFrame {
             }
         });
 
+        JMenuItem hideBalls = new JCheckBoxMenuItem(new AbstractAction("Hide balls") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JCheckBoxMenuItem item = (JCheckBoxMenuItem) e.getSource();
+
+                Config.HIDE_BALLS = item.isSelected();
+                if (Config.HIDE_BALLS) {
+                    for (Ball ball : poolPanel.getTable().getBalls()) {
+                        ball.hide();
+                    }
+                } else {
+                    for (Ball ball : poolPanel.getTable().getBalls()) {
+                        ball.show();
+                    }
+                }
+                poolPanel.repaint();
+            }
+        });
+
         boundingBoxes.setMnemonic('B');
+        hideBalls.setMnemonic('H');
+
         boundingBoxes.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, Event.CTRL_MASK));
+        hideBalls.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, Event.CTRL_MASK));
+
         debugMenu.add(boundingBoxes);
+        debugMenu.add(hideBalls);
 
         return debugMenu;
     }

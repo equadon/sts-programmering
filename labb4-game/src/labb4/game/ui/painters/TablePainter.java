@@ -48,7 +48,7 @@ public class TablePainter {
         }
 
         if (table.getLeftText() != null) {
-            printLeftText(g, PLAYER_FONT, FONT_COLOR, playableBounds, xLine, table.getLeftText());
+            printTopText(g, PLAYER_FONT, FONT_COLOR, playableBounds, xLine, table.getLeftText());
         }
 
         if (table.getRightText() != null) {
@@ -78,13 +78,13 @@ public class TablePainter {
         g.drawArc((int) (xLine - arcDiameter / 2.0), (int) (center.y - arcDiameter / 2.0), (int) arcDiameter, (int) arcDiameter, 90, 180);
     }
 
-    private void printLeftText(Graphics2D g, Font font, Color color, Rectangle bounds, double xLine, String text) {
-        float x = (float) (xLine - 5);
-        float y = (float) bounds.getCenterY();
+    private void printTopText(Graphics2D g, Font font, Color color, Rectangle bounds, double xLine, String text) {
+        FontMetrics metrics = g.getFontMetrics(font);
 
-        g.rotate(-Math.PI / 2.0, x, y);
+        float x = (float) (xLine + metrics.stringWidth(text) / 2.0 + 5);
+        float y = (float) (bounds.getY() + metrics.getHeight() / 2.0 + Config.TABLE_INNER_BORDER_SIZE);
+
         printCenteredText(g, font, color, text, x, y);
-        g.rotate(Math.PI / 2.0, x, y);
     }
 
     private void printRightText(Graphics2D g, Font font, Color color, Rectangle bounds, double xLine, String text) {

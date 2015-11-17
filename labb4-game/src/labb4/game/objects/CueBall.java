@@ -12,7 +12,7 @@ public class CueBall extends PoolBall implements Aimable {
     private Vector2D aimPosition;
 
     public CueBall(Table table, Vector2D position, double radius) {
-        super(table, position, Color.WHITE, radius, false, 0);
+        super(table, position, Color.WHITE, radius, false, 0, false);
 
         aimPosition = null;
     }

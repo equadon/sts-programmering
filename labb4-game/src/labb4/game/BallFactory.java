@@ -48,6 +48,6 @@ public class BallFactory {
         else if (points == 7)
             color = Config.BALL_BLACK_COLOR;
 
-        return new PoolBall(table, position, color, radius, false, points);
+        return new PoolBall(table, position, color, radius, false, points, points != 1);
     }
 }
