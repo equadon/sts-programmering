@@ -43,7 +43,7 @@ public class Config {
     public static final Color BALL_WHITE_COLOR = new Color(255, 253, 241);
     public static final Color BALL_LIGHT_GRAY_COLOR = new Color(197, 195, 184);
     public static final Color BALL_BLACK_COLOR = new Color(21, 21, 21);
-    public static final Color BALL_PINK_COLOR = new Color(189, 92, 166);
+    public static final Color BALL_PINK_COLOR = new Color(218, 96, 195);
     public static final Color BALL_YELLOW_COLOR = new Color(211, 195, 0);
     public static final Color BALL_BLUE_COLOR = new Color(0, 105, 215);
     public static final Color BALL_RED_COLOR = new Color(198, 8, 0);

@@ -45,7 +45,7 @@ public class SnookerTable extends Table {
         balls.add(BallFactory.createSnookerBall(5, this, position, radius));
 
         // Pink ball
-        position = new Vector2D(radius/2.0 + width / 3.0, center.y);
+        position = new Vector2D(2 * width / 3.0 - radius / 4.0, center.y);
         balls.add(BallFactory.createSnookerBall(6, this, position, radius));
 
         // Black ball
