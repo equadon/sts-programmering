@@ -5,24 +5,31 @@ import labb4.game.objects.Pocket;
 import labb4.game.objects.PoolBall;
 
 /**
- * This class handles nine ball rules.
+ * This class handle nine ball rules.
  */
 public class NineBallHandler extends GameHandler {
     @Override
-    public void newGame() {}
+    public void newGame() {
+        System.out.println("new game");
+    }
 
     @Override
-    public void beginTurn(Player current) {}
+    public void beginTurn(Player current) {
+        System.out.println("begin turn");
+    }
 
     @Override
-    public void collision(PoolBall ball1, PoolBall ball2) {}
+    public void collision(PoolBall ball1, PoolBall ball2) {
+        System.out.println("collision detected between " + ball1 + " and " + ball2);
+    }
 
     @Override
-    public void pocketed(Pocket pocket, PoolBall ball) {}
+    public void pocketed(PoolBall ball, Pocket pocket) {
+        System.out.println(ball + " went in " + pocket);
+    }
 
     @Override
-    public void endTurn() {}
-
-    @Override
-    public void gameOver() {}
+    public void endTurn() {
+        System.out.println("end turn");
+    }
 }

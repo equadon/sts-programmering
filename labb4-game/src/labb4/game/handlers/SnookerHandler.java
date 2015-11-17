@@ -6,7 +6,7 @@ import labb4.game.objects.PoolBall;
 import labb4.game.tables.Table;
 
 /**
- * This class handles nine ball rules.
+ * This class handle snooker rules.
  */
 public class SnookerHandler extends GameHandler {
     @Override
@@ -19,11 +19,8 @@ public class SnookerHandler extends GameHandler {
     public void collision(PoolBall ball1, PoolBall ball2) {}
 
     @Override
-    public void pocketed(Pocket pocket, PoolBall ball) {}
+    public void pocketed(PoolBall ball, Pocket pocket) {}
 
     @Override
     public void endTurn() {}
-
-    @Override
-    public void gameOver() {}
 }

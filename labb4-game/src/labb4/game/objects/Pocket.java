@@ -42,7 +42,7 @@ public class Pocket extends GameObject {
         if (getPosition().distanceTo(ball.getPosition()) < radius) {
             PoolBall poolBall = (PoolBall) ball;
 
-            pocketBall(poolBall);
+            add(poolBall);
 
             return true;
         }
@@ -50,11 +50,13 @@ public class Pocket extends GameObject {
         return false;
     }
 
-    private void pocketBall(PoolBall ball) {
+    public void add(PoolBall ball) {
         balls.add(ball);
 
         table.remove(ball);
         ball.hide();
+
+        table.getHandler().pocketed(this, ball);
     }
 
     @Override

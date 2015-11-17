@@ -67,6 +67,8 @@ public abstract class Table {
 
         pockets = createPockets();
         balls = createBalls();
+
+        handler.newGame();
     }
 
     public boolean isUpdating() {
@@ -149,6 +151,8 @@ public abstract class Table {
         } else {
             currentPlayer = player1;
         }
+
+        handler.beginTurn(currentPlayer);
     }
 
     /**

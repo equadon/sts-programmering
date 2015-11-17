@@ -146,6 +146,7 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
 
             repaint();
         } else {
+            table.getHandler().endTurn();
             timer.stop();
         }
     }

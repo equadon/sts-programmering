@@ -8,6 +8,6 @@ public interface GameObserver {
     void changePlayer(Player newPlayer);
     void addPoints(Player player, int points);
     void updateMessages(String above, String below);
-    void startPlacingBall(Placeable placeable);
+    void startPlacing(Placeable placeable);
     void gameOver(Player winner);
 }

@@ -38,7 +38,7 @@ public class PoolGameObserver implements GameObserver {
     }
 
     @Override
-    public void startPlacingBall(Placeable placeable) {
+    public void startPlacing(Placeable placeable) {
         panel.startPlacing(placeable);
     }
 
