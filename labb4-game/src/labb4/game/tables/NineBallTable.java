@@ -18,8 +18,8 @@ public class NineBallTable extends Table {
         List<PoolBall> balls = new ArrayList<>();
 
         Integer[] numbers = new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9};
-        Utility.shuffle(numbers);
 
+        Utility.shuffle(numbers);
         Utility.moveNumber(numbers, 9, 4);
         Utility.moveNumber(numbers, 1, 0);
 
@@ -28,30 +28,31 @@ public class NineBallTable extends Table {
 
         Vector2D position;
 
-        double x = (getBounds().width / 2.0) - 4 * radius;
-        double y = height / 3.0;
+        double x = 2 * getBounds().width / 3.0;
+        double y = (getBounds().height / 2.0) - 4 * radius;
 
         int direction = 1;
-        int absRow = 1;
-        int row = 1;
-        int col = 0;
+        int absCol = 1;
+        int col = 1;
+        int row = 0;
         for (int i = 0; i < 9; i++) {
             if (col == row) {
                 if (col == 3) direction *= -1;
-                row += direction;
-                absRow++;
-                col = 0;
+                col += direction;
+                absCol++;
+                row = 0;
             }
 
             int number = numbers[i];
-            position = new Vector2D(x + (5 - row) * radius + col * diameter, y - absRow * (diameter - 0.25 * radius));
+            //position = new Vector2D(x + (5 - row) * radius + col * diameter, y - absRow * (diameter - 0.25 * radius));
+            position = new Vector2D(x + absCol * (diameter - 0.25*radius), y + (5 - col) * radius + row * diameter);
             balls.add(BallFactory.createStandardBall(number, this, position, radius));
 
-            col++;
+            row++;
         }
 
         // Add cue ball
-        Vector2D cueBallPosition = new Vector2D(width / 2.0, Config.DEFAULT_Y_LINE * getPlayableBounds().getMaxY() + Config.LINE_SIZE);
+        Vector2D cueBallPosition = new Vector2D(Config.DEFAULT_X_LINE * getPlayableBounds().getMaxX() + Config.LINE_SIZE, height / 2.0);
         balls.add(new CueBall(this, cueBallPosition, Config.BALL_RADIUS));
 
         return balls;

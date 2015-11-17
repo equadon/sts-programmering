@@ -1,6 +1,7 @@
 package labb4.game.ui.painters;
 
 import labb4.game.Config;
+import labb4.game.Vector2D;
 import labb4.game.tables.SnookerTable;
 import labb4.game.tables.Table;
 
@@ -36,39 +37,61 @@ public class TablePainter {
                 playableBounds.height
         );
 
-        // Line
-        double yLine = (table instanceof SnookerTable) ?
-                Config.SNOOKER_Y_LINE * playableBounds.getMaxY() :
-                Config.DEFAULT_Y_LINE * playableBounds.getMaxY();
+        // Lines
+        double xLine;
+        if (table instanceof SnookerTable) {
+            drawSnookerLines(g, playableBounds);
+            xLine = Config.SNOOKER_X_LINE * playableBounds.getMaxX();
+        } else {
+            drawStandardLines(g, playableBounds);
+            xLine = Config.DEFAULT_X_LINE * playableBounds.getMaxX();
+        }
+
+        if (table.getLeftText() != null) {
+            printLeftText(g, PLAYER_FONT, FONT_COLOR, playableBounds, xLine, table.getLeftText());
+        }
+
+        if (table.getRightText() != null) {
+            printRightText(g, MESSAGE_FONT, MESSAGE_COLOR, playableBounds, xLine, table.getRightText());
+        }
+    }
+
+    private void drawStandardLines(Graphics2D g, Rectangle bounds) {
+        double xLine = Config.DEFAULT_X_LINE * bounds.getMaxX();
 
         g.setColor(Config.TABLE_LINE_COLOR);
-        g.fillRect(playableBounds.x, (int) yLine, playableBounds.width, Config.LINE_SIZE);
-
-        if (table.getTopText() != null) {
-            //printCurrentPlayer(g, table.getTurnText(), playableBounds, yLine);
-            printTopText(g, PLAYER_FONT, FONT_COLOR, playableBounds, yLine, table.getTopText());
-        }
-
-        if (table.getBottomText() != null) {
-            //printMessage(g, table.getMessage(), playableBounds, yLine);
-            printBottomText(g, MESSAGE_FONT, MESSAGE_COLOR, playableBounds, yLine, table.getBottomText());
-        }
+        g.fillRect((int) xLine, bounds.y, Config.LINE_SIZE, bounds.height);
     }
 
-    private void printTopText(Graphics2D g, Font font, Color color, Rectangle bounds, double yLine, String text) {
-        FontMetrics metrics = g.getFontMetrics(font);
+    private void drawSnookerLines(Graphics2D g, Rectangle bounds) {
+        int height = bounds.height;
 
-        float x = (float) bounds.getCenterX();
-        float y = (float) yLine;
+        Vector2D center = new Vector2D(bounds.getCenterX(), bounds.getCenterY());
+        double xLine = Config.SNOOKER_X_LINE * bounds.getMaxX();
 
-        printCenteredText(g, font, color, text, x, (float) (y - metrics.getHeight() / 5.0));
+        g.setColor(Config.TABLE_LINE_COLOR);
+        g.fillRect((int) xLine, bounds.y, Config.LINE_SIZE, height);
+
+        double arcDiameter = 0.3 * height + 2 * Config.BALL_RADIUS - 2*Config.LINE_SIZE;
+
+        g.setStroke(new BasicStroke(Config.LINE_SIZE));
+        g.drawArc((int) (xLine - arcDiameter / 2.0), (int) (center.y - arcDiameter / 2.0), (int) arcDiameter, (int) arcDiameter, 90, 180);
     }
 
-    private void printBottomText(Graphics2D g, Font font, Color color, Rectangle bounds, double yLine, String text) {
+    private void printLeftText(Graphics2D g, Font font, Color color, Rectangle bounds, double xLine, String text) {
+        float x = (float) (xLine - 5);
+        float y = (float) bounds.getCenterY();
+
+        g.rotate(-Math.PI / 2.0, x, y);
+        printCenteredText(g, font, color, text, x, y);
+        g.rotate(Math.PI / 2.0, x, y);
+    }
+
+    private void printRightText(Graphics2D g, Font font, Color color, Rectangle bounds, double xLine, String text) {
         FontMetrics metrics = g.getFontMetrics(font);
 
-        float x = (float) bounds.getCenterX();
-        float y = (float) yLine + metrics.getHeight();
+        float x = (float) (xLine + metrics.stringWidth(text) / 2.0) + 5;
+        float y = (float) bounds.getMaxY() - 5;
 
         printCenteredText(g, font, color, text, x, y);
     }

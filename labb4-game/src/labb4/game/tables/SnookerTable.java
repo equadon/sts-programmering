@@ -22,22 +22,22 @@ public class SnookerTable extends Table {
         int radius = Config.BALL_RADIUS;
         int diameter = 2 * radius;
 
-        createRedBalls(balls, this, radius, diameter);
+        createRedBalls(balls, radius, diameter);
 
-        double yLine = Config.SNOOKER_Y_LINE * getPlayableBounds().getMaxY();
+        double xLine = Config.SNOOKER_X_LINE * getPlayableBounds().getMaxX();
 
         Vector2D center = new Vector2D(getPlayableBounds().getCenterX(), getPlayableBounds().getCenterY());
 
         // Yellow ball
-        Vector2D position = new Vector2D(center.x + 0.15 * width, yLine);
+        Vector2D position = new Vector2D(xLine, center.y + 0.15 * height);
         balls.add(BallFactory.createSnookerBall(2, this, position, radius));
 
         // Green ball
-        position = new Vector2D(center.x - 0.15 * width, yLine);
+        position = new Vector2D(xLine, center.y - 0.15 * height);
         balls.add(BallFactory.createSnookerBall(3, this, position, radius));
 
         // Brown ball
-        position = new Vector2D(center.x, yLine);
+        position = new Vector2D(xLine, center.y);
         balls.add(BallFactory.createSnookerBall(4, this, position, radius));
 
         // Blue ball
@@ -45,37 +45,37 @@ public class SnookerTable extends Table {
         balls.add(BallFactory.createSnookerBall(5, this, position, radius));
 
         // Pink ball
-        position = new Vector2D(center.x, radius/2.0 + height / 3.0);
+        position = new Vector2D(radius/2.0 + width / 3.0, center.y);
         balls.add(BallFactory.createSnookerBall(6, this, position, radius));
 
         // Black ball
-        position = new Vector2D(center.x, 0.125 * height);
+        position = new Vector2D((1-0.125) * width, center.y);
         balls.add(BallFactory.createSnookerBall(7, this, position, radius));
 
-        Vector2D cueBallPosition = new Vector2D(width / 2.0, yLine + Config.LINE_SIZE + 5*Config.BALL_RADIUS);
+        Vector2D cueBallPosition = new Vector2D(xLine + Config.LINE_SIZE - 0.15 * height, height / 2.0);
         balls.add(new CueBall(this, cueBallPosition, Config.BALL_RADIUS));
 
         return balls;
     }
 
-    private void createRedBalls(List<PoolBall> balls, Table table, int radius, int diameter) {
+    private void createRedBalls(List<PoolBall> balls, int radius, int diameter) {
         Vector2D position;
 
-        double x = (table.getBounds().width / 2.0) - 4 * radius;
-        double y = table.height / 3.0;
+        double x = 2 * getBounds().width / 3.0;
+        double y = (getBounds().height / 2.0) - 4 * radius;
 
-        int row = 1;
-        int col = 0;
-        for (int i = 0; i < RED_BALL_COUNT; i++) {
+        int col = 1;
+        int row = 0;
+        for (int i = 0; i < 15; i++) {
             if (col == row) {
-                row++;
-                col = 0;
+                col++;
+                row = 0;
             }
 
-            position = new Vector2D(x + (5 - row) * radius + col * diameter, y - row * (diameter - 0.25 * radius));
-            balls.add(BallFactory.createSnookerBall(1, table, position, radius));
+            position = new Vector2D(x + col * (diameter - 0.25*radius), y + (5 - col) * radius + row * diameter);
+            balls.add(BallFactory.createSnookerBall(1, this, position, radius));
 
-            col++;
+            row++;
         }
     }
 }
