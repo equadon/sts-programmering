@@ -101,7 +101,7 @@ public class BallPainter extends ObjectPainter {
 
     private void drawNumber(Graphics2D g, PoolBall ball) {
         // Number
-        String number = ball.points + "";
+        String number = ball.number + "";
         FontMetrics metrics = g.getFontMetrics(NUMBER_FONT);
 
         double x = ball.getPosition().x - metrics.stringWidth(number) / 2.0;

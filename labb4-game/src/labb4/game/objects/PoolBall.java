@@ -7,14 +7,14 @@ import labb4.game.interfaces.Placeable;
 import java.awt.*;
 
 public class PoolBall extends Ball implements Placeable {
-    public final int points;
+    public final int number;
 
     private boolean placing;
 
-    public PoolBall(Table table, Vector2D position, Color color, double radius, boolean striped, int points) {
+    public PoolBall(Table table, Vector2D position, Color color, double radius, boolean striped, int number) {
         super(table, position, color, radius, striped);
 
-        this.points = points;
+        this.number = number;
         placing = false;
     }
 
@@ -78,8 +78,8 @@ public class PoolBall extends Ball implements Placeable {
     public String toString() {
         Vector2D position = getPosition();
 
-        return String.format("PoolBall[points=%d, pos=(%.0f,%.0f), velocity=(%.0f,%.0f)]",
-                points,
+        return String.format("PoolBall[number=%d, pos=(%.0f,%.0f), velocity=(%.0f,%.0f)]",
+                number,
                 position.x, position.y,
                 velocity.x, velocity.y);
     }

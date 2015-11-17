@@ -56,7 +56,7 @@ public class Pocket extends GameObject {
         table.remove(ball);
         ball.hide();
 
-        table.getHandler().pocketed(this, ball);
+        table.getHandler().pocketed(ball, this);
     }
 
     @Override

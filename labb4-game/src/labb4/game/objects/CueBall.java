@@ -9,8 +9,6 @@ import java.awt.*;
 import java.util.logging.Logger;
 
 public class CueBall extends PoolBall implements Aimable {
-    private static final Logger LOG = Logger.getLogger(CueBall.class.getName());
-
     private Vector2D aimPosition;
 
     public CueBall(Table table, Vector2D position, double radius) {
