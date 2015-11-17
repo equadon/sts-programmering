@@ -1,7 +1,7 @@
 package labb4.game.objects;
 
 import labb4.game.Config;
-import labb4.game.Table;
+import labb4.game.tables.Table;
 import labb4.game.Vector2D;
 import labb4.game.ui.painters.PocketPainter;
 
@@ -54,7 +54,7 @@ public class Pocket extends GameObject {
     private void pocketBall(PoolBall ball) {
         balls.add(ball);
 
-        table.pocket(ball);
+        table.remove(ball);
         ball.hide();
 
         table.getHandler().ballPocketed(this, ball);

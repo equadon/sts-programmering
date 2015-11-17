@@ -4,8 +4,8 @@ import labb4.game.*;
 import labb4.game.interfaces.Aimable;
 import labb4.game.interfaces.Placeable;
 import labb4.game.objects.Ball;
-import labb4.game.objects.CueBall;
 import labb4.game.objects.PoolBall;
+import labb4.game.tables.Table;
 import labb4.game.ui.contextmenus.ContextMenuListener;
 
 import javax.swing.*;
@@ -58,7 +58,7 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
 
         placingBalls = new ArrayList<>();
 
-        table = TableFactory.createPoolTable(gameType, player1, player2);
+        table = Table.createTable(gameType, player1, player2);
 
         setPreferredSize(new Dimension(table.width, table.height));
         setSize(new Dimension(table.width, table.height));

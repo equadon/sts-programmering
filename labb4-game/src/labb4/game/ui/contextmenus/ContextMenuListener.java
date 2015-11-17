@@ -1,6 +1,6 @@
 package labb4.game.ui.contextmenus;
 
-import labb4.game.Table;
+import labb4.game.tables.Table;
 import labb4.game.Vector2D;
 import labb4.game.objects.Pocket;
 import labb4.game.objects.PoolBall;

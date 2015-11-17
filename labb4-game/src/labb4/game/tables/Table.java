@@ -1,5 +1,9 @@
-package labb4.game;
+package labb4.game.tables;
 
+import labb4.game.Config;
+import labb4.game.GameType;
+import labb4.game.Player;
+import labb4.game.Vector2D;
 import labb4.game.handlers.GameHandler;
 import labb4.game.initializers.BallInitializer;
 import labb4.game.objects.CueBall;
@@ -8,6 +12,7 @@ import labb4.game.objects.PoolBall;
 import labb4.game.ui.painters.TablePainter;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Table {
@@ -16,8 +21,8 @@ public class Table {
     private final Rectangle bounds;
     private final Rectangle playableBounds;
 
-    private final List<PoolBall> balls;
-    private final Pocket[] pockets;
+    protected final List<PoolBall> balls;
+    protected final Pocket[] pockets;
 
     public final int width;
     public final int height;
@@ -33,14 +38,15 @@ public class Table {
     private String turnText;
     private String message;
 
-    public Table(int playfieldWidth, int playfieldHeight, int outerBorderSize, int innerBorderSize,
-                 BallInitializer ballInitializer, GameHandler gameHandler, Player player1, Player player2) {
+    public Table(int width, int height, GameHandler gameHandler, Player player1, Player player2) {
         this.player1 = player1;
         this.player2 = player2;
-        this.width = playfieldWidth + 2 * (outerBorderSize + innerBorderSize);
-        this.height = playfieldHeight + 2 * (outerBorderSize + innerBorderSize);
-        this.outerBorderSize = outerBorderSize;
-        this.innerBorderSize = innerBorderSize;
+
+        outerBorderSize = Config.TABLE_OUTER_BORDER_SIZE;
+        innerBorderSize = Config.TABLE_INNER_BORDER_SIZE;
+
+        this.width = width + 2 * (outerBorderSize + innerBorderSize);
+        this.height = height + 2 * (outerBorderSize + innerBorderSize);
 
         this.gameHandler = gameHandler;
         gameHandler.setTable(this);
@@ -48,20 +54,20 @@ public class Table {
         painter = new TablePainter();
 
         pockets = new Pocket[6];
+        balls = new ArrayList<>();
 
-        bounds = new Rectangle(0, 0, width, height);
+        bounds = new Rectangle(0, 0, this.width, this.height);
         playableBounds = new Rectangle(
                 outerBorderSize + innerBorderSize,
                 outerBorderSize + innerBorderSize,
-                width - 2 * (outerBorderSize + innerBorderSize),
-                height - 2 * (outerBorderSize + innerBorderSize)
+                this.width - 2 * (outerBorderSize + innerBorderSize),
+                this.height - 2 * (outerBorderSize + innerBorderSize)
         );
 
         createPockets();
+        currentPlayer = player1;
 
-        balls = ballInitializer.createBalls(this);
-
-        changeTurn();
+        createBalls();
     }
 
     public boolean isUpdating() {
@@ -151,7 +157,7 @@ public class Table {
     /**
      * Ball pocketed, remove from list.
      */
-    public void pocket(PoolBall ball) {
+    public void remove(PoolBall ball) {
         balls.remove(ball);
     }
 
@@ -161,7 +167,9 @@ public class Table {
         }
     }
 
-    private void createPockets() {
+    protected void createBalls() {}
+
+    protected void createPockets() {
         Vector2D position;
 
         for (int i = 0; i < pockets.length; i++) {
@@ -195,7 +203,22 @@ public class Table {
     public void gameOver() {
         /*balls.clear();
 
-        for (Pocket pocket : pockets)
-            pocket.empty();*/
+        for (Pocket remove : pockets)
+            remove.empty();*/
+    }
+
+    public static Table createTable(GameType type, Player player1, Player player2) {
+        switch (type) {
+            case EightBall:
+                return new EightBallTable(player1, player2);
+
+            case NineBall:
+                return new NineBallTable(player1, player2);
+
+            case Snooker:
+                return new SnookerTable(player1, player2);
+        }
+
+        return null;
     }
 }

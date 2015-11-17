@@ -1,7 +1,7 @@
 package labb4.game.ui.painters;
 
 import labb4.game.Config;
-import labb4.game.Table;
+import labb4.game.tables.Table;
 
 import java.awt.*;
 

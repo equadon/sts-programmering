@@ -1,0 +1,51 @@
+package labb4.game.tables;
+
+import labb4.game.*;
+import labb4.game.handlers.NineBallHandler;
+import labb4.game.objects.CueBall;
+
+public class NineBallTable extends Table {
+    public NineBallTable(Player player1, Player player2) {
+        super(Config.DEFAULT_TABLE_WIDTH, Config.DEFAULT_TABLE_HEIGHT, new NineBallHandler(), player1, player2);
+    }
+
+    @Override
+    protected void createBalls() {
+        Integer[] numbers = new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        Utility.shuffle(numbers);
+
+        Utility.moveNumber(numbers, 9, 4);
+        Utility.moveNumber(numbers, 1, 0);
+
+        int radius = Config.BALL_RADIUS;
+        int diameter = 2 * radius;
+
+        Vector2D position;
+
+        double x = (getBounds().width / 2.0) - 4 * radius;
+        double y = height / 3.0;
+
+        int direction = 1;
+        int absRow = 1;
+        int row = 1;
+        int col = 0;
+        for (int i = 0; i < 9; i++) {
+            if (col == row) {
+                if (col == 3) direction *= -1;
+                row += direction;
+                absRow++;
+                col = 0;
+            }
+
+            int number = numbers[i];
+            position = new Vector2D(x + (5 - row) * radius + col * diameter, y - absRow * (diameter - 0.25 * radius));
+            balls.add(BallFactory.createStandardBall(number, this, position, radius));
+
+            col++;
+        }
+
+        // Add cue ball
+        Vector2D cueBallPosition = new Vector2D(width / 2.0, 3 * height / 4.0);
+        balls.add(new CueBall(this, cueBallPosition, new Vector2D(0, 0), Config.BALL_RADIUS));
+    }
+}

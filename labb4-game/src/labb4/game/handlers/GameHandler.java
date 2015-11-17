@@ -1,9 +1,8 @@
 package labb4.game.handlers;
 
 import labb4.game.Player;
-import labb4.game.Table;
+import labb4.game.tables.Table;
 import labb4.game.interfaces.GameListener;
-import labb4.game.interfaces.Placeable;
 import labb4.game.objects.CueBall;
 import labb4.game.objects.Pocket;
 import labb4.game.objects.PoolBall;

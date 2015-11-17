@@ -1,6 +1,7 @@
 package labb4.game;
 
 import labb4.game.objects.PoolBall;
+import labb4.game.tables.Table;
 
 import java.awt.*;
 
