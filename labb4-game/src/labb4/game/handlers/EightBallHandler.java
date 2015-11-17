@@ -10,7 +10,7 @@ import labb4.game.tables.Table;
  */
 public class EightBallHandler extends GameHandler {
     @Override
-    public void newGame() {}
+    public void newGame(Player starting) {}
 
     @Override
     public void beginTurn(Player current) {}
@@ -22,5 +22,5 @@ public class EightBallHandler extends GameHandler {
     public void pocketed(PoolBall ball, Pocket pocket) {}
 
     @Override
-    public void endTurn() {}
+    public void endTurn(Player nextPlayer) {}
 }

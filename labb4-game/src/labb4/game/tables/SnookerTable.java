@@ -11,8 +11,8 @@ import java.util.List;
 public class SnookerTable extends Table {
     public static final int RED_BALL_COUNT = 15;
 
-    public SnookerTable(Player player1, Player player2) {
-        super(Config.SNOOKER_TABLE_WIDTH, Config.SNOOKER_TABLE_HEIGHT, new SnookerHandler(), player1, player2);
+    public SnookerTable(Player[] players) {
+        super(Config.SNOOKER_TABLE_WIDTH, Config.SNOOKER_TABLE_HEIGHT, new SnookerHandler(), players);
     }
 
     @Override

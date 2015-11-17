@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EightBallTable extends Table {
-    public EightBallTable(Player player1, Player player2) {
-        super(Config.DEFAULT_TABLE_WIDTH, Config.DEFAULT_TABLE_HEIGHT, new EightBallHandler(), player1, player2);
+    public EightBallTable(Player[] players) {
+        super(Config.DEFAULT_TABLE_WIDTH, Config.DEFAULT_TABLE_HEIGHT, new EightBallHandler(), players);
     }
 
     @Override

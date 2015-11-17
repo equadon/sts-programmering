@@ -21,10 +21,7 @@ public class PoolGameObserver implements GameObserver {
     }
 
     @Override
-    public void changePlayer(Player newPlayer) {
-        panel.setTurn(newPlayer.name + "'s turn!");
-        panel.repaint();
-    }
+    public void changePlayer(Player newPlayer) {}
 
     @Override
     public void addPoints(Player player, int points) {
@@ -32,8 +29,14 @@ public class PoolGameObserver implements GameObserver {
     }
 
     @Override
-    public void updateMessages(String above, String below) {
-        panel.setMessages(above, below);
+    public void updateMessageTop(String text) {
+        panel.getTable().setTurnText(text);
+        panel.repaint();
+    }
+
+    @Override
+    public void updateMessageBottom(String text) {
+        panel.getTable().setMessage(text);
         panel.repaint();
     }
 

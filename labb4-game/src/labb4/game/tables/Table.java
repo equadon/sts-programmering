@@ -32,18 +32,17 @@ public abstract class Table {
 
     protected GameHandler handler;
 
-    private final Player player1;
-    private final Player player2;
-
-    private Player currentPlayer;
+    private final Player[] players;
+    private int currentPlayerId;
 
     private String turnText;
     private String message;
 
-    public Table(int width, int height, GameHandler handler, Player player1, Player player2) {
+    public Table(int width, int height, GameHandler handler, Player[] players) {
         this.handler = handler;
-        this.player1 = player1;
-        this.player2 = player2;
+        this.players = players;
+
+        currentPlayerId = 0;
 
         outerBorderSize = Config.TABLE_OUTER_BORDER_SIZE;
         innerBorderSize = Config.TABLE_INNER_BORDER_SIZE;
@@ -63,12 +62,8 @@ public abstract class Table {
 
         listeners = new ArrayList<>();
 
-        currentPlayer = player1;
-
         pockets = createPockets();
         balls = createBalls();
-
-        handler.newGame();
     }
 
     public boolean isUpdating() {
@@ -100,7 +95,7 @@ public abstract class Table {
     }
 
     public Player getCurrentPlayer() {
-        return currentPlayer;
+        return players[currentPlayerId];
     }
 
     public String getMessage() {
@@ -145,14 +140,17 @@ public abstract class Table {
         }
     }
 
-    public void changeTurn() {
-        if (currentPlayer == player1) {
-            currentPlayer = player2;
-        } else {
-            currentPlayer = player1;
-        }
+    public void newGame() {
+        handler.newGame(getCurrentPlayer());
+    }
 
-        handler.beginTurn(currentPlayer);
+    public void endTurn() {
+        nextPlayer();
+        handler.endTurn(getCurrentPlayer());
+    }
+
+    protected void nextPlayer() {
+        currentPlayerId = (currentPlayerId + 1) % players.length;
     }
 
     /**
@@ -215,16 +213,16 @@ public abstract class Table {
     /**
      * Helper method to create a Table object based on chosen game type.
      */
-    public static Table createTable(GameType type, Player player1, Player player2) {
+    public static Table createTable(GameType type, Player[] players) {
         switch (type) {
             case EightBall:
-                return new EightBallTable(player1, player2);
+                return new EightBallTable(players);
 
             case NineBall:
-                return new NineBallTable(player1, player2);
+                return new NineBallTable(players);
 
             case Snooker:
-                return new SnookerTable(player1, player2);
+                return new SnookerTable(players);
         }
 
         return null;

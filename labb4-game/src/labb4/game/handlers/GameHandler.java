@@ -29,11 +29,11 @@ public abstract class GameHandler {
         observers.remove(observer);
     }
 
-    public abstract void newGame();
+    public abstract void newGame(Player starting);
     public abstract void beginTurn(Player current);
     public abstract void collision(PoolBall ball1, PoolBall ball2);
     public abstract void pocketed(PoolBall ball, Pocket pocket);
-    public abstract void endTurn();
+    public abstract void endTurn(Player nextPlayer);
 
     /**
      * Notification methods.
@@ -53,9 +53,14 @@ public abstract class GameHandler {
             o.addPoints(player, points);
     }
 
-    protected void notifyUpdateMessages(String above, String below) {
+    protected void notifyUpdateTopMessage(String text) {
         for (GameObserver o : observers)
-            o.updateMessages(above, below);
+            o.updateMessageTop(text);
+    }
+
+    protected void notifyUpdateBottomMessage(String text) {
+        for (GameObserver o : observers)
+            o.updateMessageBottom(text);
     }
 
     protected void notifyPlacingBall(Placeable placeable) {

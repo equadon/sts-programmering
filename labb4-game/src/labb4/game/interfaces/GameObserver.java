@@ -7,7 +7,8 @@ public interface GameObserver {
     void illegalMove(String reason);
     void changePlayer(Player newPlayer);
     void addPoints(Player player, int points);
-    void updateMessages(String above, String below);
+    void updateMessageTop(String text);
+    void updateMessageBottom(String text);
     void startPlacing(Placeable placeable);
     void gameOver(Player winner);
 }

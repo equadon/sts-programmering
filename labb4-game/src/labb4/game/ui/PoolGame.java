@@ -9,23 +9,19 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
+import java.util.List;
+import java.util.ArrayList;
+
 public class PoolGame {
     public static void main(String[] args) {
-        JLabel player1Points = new JLabel("");
-        JLabel player2Points = new JLabel("");
+        JLabel turnLabel = new JLabel("Turn: ?");
 
-        String player1Name = "Player 1"; //JOptionPane.showInputDialog("Enter name for player 1:");
-        String player2Name = "Player 2"; //JOptionPane.showInputDialog("Enter name for player 2:");
+        JPanel infoPanel = createInfoPanel(turnLabel);
 
-        Player player1 = new Player(player1Name);
-        Player player2 = new Player(player2Name);
-
-        JLabel turnLabel = new JLabel("Turn: " + player1.name);
-
-        JPanel infoPanel = createInfoPanel(player1, player1Points, player2Points, turnLabel);
+        Player[] players = createPlayers();
 
         JFrame frame = new JFrame("Pool Game");
-        PoolPanel poolPanel = new PoolPanel(frame, player1, player2, turnLabel);
+        PoolPanel poolPanel = new PoolPanel(frame, turnLabel, players);
         
         JMenuBar menu = createMenuBar(frame, poolPanel);
         frame.setJMenuBar(menu);
@@ -37,6 +33,28 @@ public class PoolGame {
         frame.getContentPane().add(infoPanel, BorderLayout.SOUTH);
         frame.pack();
         frame.setVisible(true);
+    }
+
+    private static Player[] createPlayers() {
+        List<Player> players = new ArrayList<>();
+
+        int n = 1;
+
+        boolean continueAsking = true;
+        String name;
+        while (n < 3) {// || continueAsking) {
+            name = "Player " + n; //JOptionPane.showInputDialog("Enter name for player " + n);
+
+            if (name == null || name.trim().equals("")) {
+                continueAsking = false;
+            } else {
+                players.add(new Player(name));
+                n++;
+                continueAsking = true;
+            }
+        }
+
+        return players.toArray(new Player[players.size()]);
     }
 
     private static JMenuBar createMenuBar(JFrame frame, PoolPanel poolPanel) {
@@ -121,14 +139,12 @@ public class PoolGame {
         return debugMenu;
     }
 
-    private static JPanel createInfoPanel(Player player1, JLabel player1Points, JLabel player2Points, JLabel turnLabel) {
+    private static JPanel createInfoPanel(JLabel turnLabel) {
         JPanel infoPanel = new JPanel(new BorderLayout());
 
         turnLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        infoPanel.add(player1Points, BorderLayout.WEST);
         infoPanel.add(turnLabel, BorderLayout.CENTER);
-        infoPanel.add(player2Points, BorderLayout.EAST);
 
         return infoPanel;
     }

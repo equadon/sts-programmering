@@ -20,9 +20,9 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
 
     private final Timer timer;
     private final JFrame frame;
-    private final Player player1;
-    private final Player player2;
     private final JLabel turnLabel;
+
+    private final Player[] players;
 
     private Table table;
     private GameType gameType;
@@ -32,11 +32,10 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
 
     private List<Placeable> placing; // list of objects being placed
 
-    public PoolPanel(JFrame frame, Player player1, Player player2, JLabel turnLabel) {
+    public PoolPanel(JFrame frame, JLabel turnLabel, Player[] players) {
         this.frame = frame;
-        this.player1 = player1;
-        this.player2 = player2;
         this.turnLabel = turnLabel;
+        this.players = players;
 
         timer = new Timer((int) (1000.0 / Config.FRAMES_PER_SECOND), this);
 
@@ -53,17 +52,20 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
     public void newGame(GameType type) {
         this.gameType = type;
 
-        player1.reset();
-        player2.reset();
+        for (Player player : players) {
+            player.reset();
+        }
 
         placing = new ArrayList<>();
 
-        table = Table.createTable(gameType, player1, player2);
+        table = Table.createTable(gameType, players);
 
+        // Update window size
         setPreferredSize(new Dimension(table.width, table.height));
         setSize(new Dimension(table.width, table.height));
         frame.pack();
 
+        // Listeners
         if (popUpListener != null) {
             removeMouseListener(popUpListener);
         }
@@ -73,6 +75,8 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
 
         gameObserver = new PoolGameObserver(this);
         table.addObserver(gameObserver);
+
+        table.newGame();
 
         repaint();
     }
@@ -86,8 +90,8 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
     }
 
     public void setMessages(String above, String below) {
-        table.setMessage(above);
-        table.setTurnText(below);
+        table.setTurnText(above);
+        table.setMessage(below);
     }
 
     public Placeable nextPlacement() {
@@ -146,7 +150,7 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
 
             repaint();
         } else {
-            table.getHandler().endTurn();
+            table.endTurn();
             timer.stop();
         }
     }
@@ -204,6 +208,7 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
                             repaint();
 
                             timer.start();
+                            table.getHandler().beginTurn(table.getCurrentPlayer());
 
                             break;
                         }

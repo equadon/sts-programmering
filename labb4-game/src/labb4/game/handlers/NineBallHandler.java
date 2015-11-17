@@ -9,27 +9,17 @@ import labb4.game.objects.PoolBall;
  */
 public class NineBallHandler extends GameHandler {
     @Override
-    public void newGame() {
-        System.out.println("new game");
-    }
+    public void newGame(Player starting) {}
 
     @Override
-    public void beginTurn(Player current) {
-        System.out.println("begin turn");
-    }
+    public void beginTurn(Player current) {}
 
     @Override
-    public void collision(PoolBall ball1, PoolBall ball2) {
-        System.out.println("collision detected between " + ball1 + " and " + ball2);
-    }
+    public void collision(PoolBall ball1, PoolBall ball2) {}
 
     @Override
-    public void pocketed(PoolBall ball, Pocket pocket) {
-        System.out.println(ball + " went in " + pocket);
-    }
+    public void pocketed(PoolBall ball, Pocket pocket) {}
 
     @Override
-    public void endTurn() {
-        System.out.println("end turn");
-    }
+    public void endTurn(Player nextPlayer) {}
 }
