@@ -4,8 +4,8 @@ import labb4.game.*;
 import labb4.game.interfaces.Aimable;
 import labb4.game.interfaces.Placeable;
 import labb4.game.objects.Ball;
-import labb4.game.objects.CueBall;
 import labb4.game.objects.PoolBall;
+import labb4.game.tables.Table;
 import labb4.game.ui.contextmenus.ContextMenuListener;
 
 import javax.swing.*;
@@ -20,23 +20,20 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
 
     private final Timer timer;
     private final JFrame frame;
-    private final Player player1;
-    private final Player player2;
-    private final JLabel turnLabel;
+
+    private final Player[] players;
 
     private Table table;
     private GameType gameType;
 
     private ContextMenuListener popUpListener;
-    private PoolGameListener gameListener;
+    private PoolGameObserver gameObserver;
 
-    private List<Placeable> placingBalls;
+    private List<Placeable> placing; // list of objects being placed
 
-    public PoolPanel(JFrame frame, Player player1, Player player2, JLabel turnLabel) {
+    public PoolPanel(JFrame frame, Player[] players) {
         this.frame = frame;
-        this.player1 = player1;
-        this.player2 = player2;
-        this.turnLabel = turnLabel;
+        this.players = players;
 
         timer = new Timer((int) (1000.0 / Config.FRAMES_PER_SECOND), this);
 
@@ -53,17 +50,20 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
     public void newGame(GameType type) {
         this.gameType = type;
 
-        player1.reset();
-        player2.reset();
+        for (Player player : players) {
+            player.reset();
+        }
 
-        placingBalls = new ArrayList<>();
+        placing = new ArrayList<>();
 
-        table = TableFactory.createPoolTable(gameType, player1, player2);
+        table = Table.createTable(gameType, players);
 
+        // Update window size
         setPreferredSize(new Dimension(table.width, table.height));
         setSize(new Dimension(table.width, table.height));
         frame.pack();
 
+        // Listeners
         if (popUpListener != null) {
             removeMouseListener(popUpListener);
         }
@@ -71,9 +71,10 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
         popUpListener = new ContextMenuListener(this, table);
         addMouseListener(popUpListener);
 
-        gameListener = new PoolGameListener(this);
-        table.getHandler().addListener(gameListener);
-        table.getHandler().newGame();
+        gameObserver = new PoolGameObserver(this);
+        table.addObserver(gameObserver);
+
+        table.newGame();
 
         repaint();
     }
@@ -82,35 +83,28 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
         return table;
     }
 
-    public void setTurn(String text) {
-        turnLabel.setText(text);
+    public Placeable getPlacing() {
+        return placing.get(0);
     }
 
-    public void setMessage(String message) {
-        table.setMessage(message);
-    }
-    public void setTurnText(String message) {
-        table.setTurnText(message);
-    }
+    public void startPlacing(Placeable placeable) {
+        placing.add(placeable);
 
-    public void startPlacing(Placeable ball) {
-        placingBalls.add(ball);
-
-        placingBalls.get(0).startPlacing();
+        getPlacing().startPlacing();
     }
 
     public boolean place(Vector2D position) {
         if (isPlacing()) {
-            Placeable placeable = placingBalls.get(0);
+            Placeable placeable = placing.get(0);
 
             if (placeable.place(position)) {
-                placingBalls.remove(placeable);
+                placing.remove(placeable);
 
                 repaint();
 
                 // If more balls to place, restart placing process
-                if (placingBalls.size() > 0) {
-                    startPlacing(placingBalls.get(0));
+                if (placing.size() > 0) {
+                    startPlacing(placing.get(0));
                 }
 
                 return true;
@@ -121,7 +115,29 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
     }
 
     public boolean isPlacing() {
-        return placingBalls.size() > 0;
+        return placing.size() > 0;
+    }
+
+    private PoolBall getBall(Vector2D position) {
+        for (PoolBall ball : table.getBalls()) {
+            if (ball.contains(position)) {
+                return ball;
+            }
+        }
+
+        return null;
+    }
+
+    private Aimable getAimable(Vector2D position) {
+        for (PoolBall ball : table.getBalls()) {
+            if (ball instanceof Aimable) {
+                if (ball.contains(position)) {
+                    return (Aimable) ball;
+                }
+            }
+        }
+
+        return null;
     }
 
     @Override
@@ -134,7 +150,7 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
         table.draw(g);
 
         if (isPlacing()) {
-            ((Ball) placingBalls.get(0)).draw(g);
+            ((Ball) getPlacing()).draw(g);
         }
     }
 
@@ -145,8 +161,8 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
 
             repaint();
         } else {
+            table.endTurn();
             timer.stop();
-            table.getHandler().endTurn();
         }
     }
 
@@ -155,64 +171,52 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (SwingUtilities.isLeftMouseButton(e) && timer.isRunning()) {
-            LOG.warning("Timer is running, can't click.");
-        } else if (SwingUtilities.isLeftMouseButton(e)) {
-            Vector2D position = Vector2D.fromMouseEvent(e);
+        if (timer.isRunning()) return;
 
+        Vector2D position = Vector2D.fromMouseEvent(e);
+
+        if (SwingUtilities.isLeftMouseButton(e)) {
             if (!isPlacing()) {
-                for (PoolBall ball : table.getBalls()) {
-                    if (ball instanceof Aimable) {
-                        if (ball.getBounds().contains(position.x, position.y) && ball.getPosition().distanceTo(position) < ball.getRadius()) {
-                            ((Aimable) ball).setAim(position);
-                            repaint();
-
-                            break;
-                        }
-                    }
+                Aimable aimable = getAimable(position);
+                if (aimable != null) {
+                    aimable.setAim(position);
+                    repaint();
                 }
             }
-        }
-
-        if (!isPlacing() && SwingUtilities.isMiddleMouseButton(e)) {
-            Vector2D position = Vector2D.fromMouseEvent(e);
-
-            for (PoolBall ball : table.getBalls()) {
-                if (ball.contains(position)) {
-                    startPlacing(ball);
-                }
+        } else if (SwingUtilities.isMiddleMouseButton(e)) {
+            // Start placing ball
+            PoolBall ball = getBall(position);
+            if (ball != null) {
+                startPlacing(ball);
             }
         }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        Vector2D position = Vector2D.fromMouseEvent(e);
+
         if (SwingUtilities.isLeftMouseButton(e)) {
             if (isPlacing()) {
-                Vector2D position = Vector2D.fromMouseEvent(e);
                 if (!place(position)) {
                     LOG.warning("Invalid placement position: " + position);
                 }
             } else {
-                for (PoolBall ball : table.getBalls()) {
-                    if (ball instanceof Aimable) {
-                        Aimable aimable = (Aimable) ball;
-                        if (aimable.isAiming()) {
-                            aimable.shoot();
+                for (Aimable aimable : table.getAimable()) {
+                    if (aimable.isAiming()) {
+                        aimable.shoot();
 
-                            repaint();
+                        repaint();
 
-                            timer.start();
-                            table.getHandler().beginTurn(table.getCurrentPlayer());
+                        timer.start();
+                        table.getHandler().beginTurn(table.getCurrentPlayer());
 
-                            break;
-                        }
+                        break;
                     }
                 }
             }
         } else if (SwingUtilities.isMiddleMouseButton(e)) {
             if (isPlacing()) {
-                Vector2D position = Vector2D.fromMouseEvent(e);
                 if (!place(position)) {
                     LOG.warning("Invalid placement position: " + position);
                 }
@@ -238,10 +242,8 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
             }
 
             repaint();
-        }
-
-        if (SwingUtilities.isMiddleMouseButton(e) && isPlacing()) {
-            placingBalls.get(0).updatePlacement(position);
+        } else if (SwingUtilities.isMiddleMouseButton(e) && isPlacing()) {
+            getPlacing().updatePlacement(position);
 
             repaint();
         }
@@ -251,7 +253,7 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
     public void mouseMoved(MouseEvent e) {
         if (isPlacing()) {
             Vector2D position = Vector2D.fromMouseEvent(e);
-            placingBalls.get(0).updatePlacement(position);
+            getPlacing().updatePlacement(position);
 
             repaint();
         }

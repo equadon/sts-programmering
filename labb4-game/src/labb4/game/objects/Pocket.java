@@ -1,7 +1,7 @@
 package labb4.game.objects;
 
 import labb4.game.Config;
-import labb4.game.Table;
+import labb4.game.tables.Table;
 import labb4.game.Vector2D;
 import labb4.game.ui.painters.PocketPainter;
 
@@ -15,7 +15,7 @@ public class Pocket extends GameObject {
     private final List<PoolBall> balls;
 
     public Pocket(Table table, Vector2D position, double radius) {
-        super(new PocketPainter(), position, new Vector2D(0, 0), Config.DEFAULT_HOLE_COLOR, 0, 0);
+        super(new PocketPainter(), position, new Vector2D(0, 0), Config.DEFAULT_POCKET_COLOR, 0, 0);
 
         this.table = table;
         this.radius = radius;
@@ -32,7 +32,6 @@ public class Pocket extends GameObject {
     public void remove(PoolBall ball) {
         balls.remove(ball);
         table.add(ball);
-        table.getHandler().removedFromPocket(this, ball);
     }
 
     public void empty() {
@@ -43,7 +42,7 @@ public class Pocket extends GameObject {
         if (getPosition().distanceTo(ball.getPosition()) < radius) {
             PoolBall poolBall = (PoolBall) ball;
 
-            pocketBall(poolBall);
+            add(poolBall);
 
             return true;
         }
@@ -51,13 +50,13 @@ public class Pocket extends GameObject {
         return false;
     }
 
-    private void pocketBall(PoolBall ball) {
+    public void add(PoolBall ball) {
         balls.add(ball);
 
-        table.pocket(ball);
+        table.remove(ball);
         ball.hide();
 
-        table.getHandler().ballPocketed(this, ball);
+        table.getHandler().pocketed(ball, this);
     }
 
     @Override

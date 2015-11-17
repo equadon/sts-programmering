@@ -1,39 +1,31 @@
 package labb4.game;
 
-import javax.swing.*;
-
 public class Player {
     public final String name;
-    private final JLabel label;
 
     private int points;
 
-    public Player(String name, JLabel label) {
+    public Player(String name) {
         this.name = name;
-        this.label = label;
-
-        updateLabel();
     }
 
-    public void reset() {
-        points = 0;
-        updateLabel();
+    public int getPoints() {
+        return points;
     }
 
     public void addPoints(int points) {
         this.points += points;
-        updateLabel();
     }
 
-    private void updateLabel() {
-        label.setText(name + ": " + points + " points");
+    public void reset() {
+        points = 0;
     }
 
     @Override
     public String toString() {
         return "Player[" +
                 "name='" + name + '\'' +
-                ", points=" + points +
+                ", number=" + points +
                 ']';
     }
 }

@@ -16,7 +16,7 @@ public class PocketPainter extends ObjectPainter {
             g.drawRect((int) Math.round(bounds.x), (int) Math.round(bounds.y), (int) Math.round(bounds.width), (int) Math.round(bounds.height));
         }
 
-        g.setColor(Config.DEFAULT_HOLE_COLOR);
+        g.setColor(Config.DEFAULT_POCKET_COLOR);
         g.fillOval((int) bounds.x, (int) bounds.y, (int) bounds.width, (int) bounds.height);
     }
 }

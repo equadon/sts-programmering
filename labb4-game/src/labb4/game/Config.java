@@ -50,8 +50,9 @@ public class Config {
     /**
      * Pocket constants.
      */
-    public static final Color DEFAULT_HOLE_COLOR = new Color(34, 34, 34);
+    public static final Color DEFAULT_POCKET_COLOR = new Color(34, 34, 34);
     public static final int DEFAULT_POCKET_RADIUS = (int) (8 * RESIZE_FACTOR);
+    public static final int POCKET_COUNT = 6;
 
     /**
      * Debugging constants.
