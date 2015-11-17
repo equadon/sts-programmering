@@ -24,7 +24,7 @@ public class SnookerTable extends Table {
 
         createRedBalls(balls, this, radius, diameter);
 
-        double yLine = 4 * height / 5.0;
+        double yLine = Config.SNOOKER_Y_LINE * getPlayableBounds().getMaxY();
 
         Vector2D center = new Vector2D(getPlayableBounds().getCenterX(), getPlayableBounds().getCenterY());
 
@@ -52,7 +52,7 @@ public class SnookerTable extends Table {
         position = new Vector2D(center.x, 0.125 * height);
         balls.add(BallFactory.createSnookerBall(7, this, position, radius));
 
-        Vector2D cueBallPosition = new Vector2D(width / 2.0, 4.5 * height / 5.0);
+        Vector2D cueBallPosition = new Vector2D(width / 2.0, yLine + Config.LINE_SIZE + 5*Config.BALL_RADIUS);
         balls.add(new CueBall(this, cueBallPosition, Config.BALL_RADIUS));
 
         return balls;

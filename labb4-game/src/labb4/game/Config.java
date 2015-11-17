@@ -24,8 +24,13 @@ public class Config {
     public static final int TABLE_OUTER_BORDER_SIZE = (int) (6 * RESIZE_FACTOR);
     public static final int TABLE_INNER_BORDER_SIZE = (int) (5 * RESIZE_FACTOR);
 
-    public static final int SNOOKER_TABLE_WIDTH = (int) (142 * RESIZE_FACTOR);
-    public static final int SNOOKER_TABLE_HEIGHT = (int) (284 * RESIZE_FACTOR);
+    public static final int SNOOKER_TABLE_WIDTH = (int) (178 * RESIZE_FACTOR);
+    public static final int SNOOKER_TABLE_HEIGHT = (int) (356 * RESIZE_FACTOR);
+
+    public static final double DEFAULT_Y_LINE = 3.0 / 4.0;
+    public static final double SNOOKER_Y_LINE = 4.0 / 5.0;
+
+    public static final int LINE_SIZE = 3;
 
     /**
      * Ball constants.

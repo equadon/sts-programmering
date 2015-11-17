@@ -3,10 +3,8 @@ package labb4.game.ui;
 import labb4.game.Player;
 import labb4.game.interfaces.GameObserver;
 import labb4.game.interfaces.Placeable;
-import labb4.game.objects.PoolBall;
 
 import javax.swing.*;
-import java.util.logging.Logger;
 
 public class PoolGameObserver implements GameObserver {
     private final PoolPanel panel;
@@ -26,18 +24,6 @@ public class PoolGameObserver implements GameObserver {
     @Override
     public void addPoints(Player player, int points) {
         player.addPoints(points);
-    }
-
-    @Override
-    public void updateMessageTop(String text) {
-        panel.getTable().setTurnText(text);
-        panel.repaint();
-    }
-
-    @Override
-    public void updateMessageBottom(String text) {
-        panel.getTable().setMessage(text);
-        panel.repaint();
     }
 
     @Override

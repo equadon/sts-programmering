@@ -51,7 +51,7 @@ public class NineBallTable extends Table {
         }
 
         // Add cue ball
-        Vector2D cueBallPosition = new Vector2D(width / 2.0, 3 * height / 4.0);
+        Vector2D cueBallPosition = new Vector2D(width / 2.0, Config.DEFAULT_Y_LINE * getPlayableBounds().getMaxY() + Config.LINE_SIZE);
         balls.add(new CueBall(this, cueBallPosition, Config.BALL_RADIUS));
 
         return balls;

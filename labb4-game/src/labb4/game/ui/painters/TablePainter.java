@@ -1,6 +1,7 @@
 package labb4.game.ui.painters;
 
 import labb4.game.Config;
+import labb4.game.tables.SnookerTable;
 import labb4.game.tables.Table;
 
 import java.awt.*;
@@ -36,37 +37,49 @@ public class TablePainter {
         );
 
         // Line
-        double yLine = 3.0 * playableBounds.getMaxY() / 4.0;
+        double yLine = (table instanceof SnookerTable) ?
+                Config.SNOOKER_Y_LINE * playableBounds.getMaxY() :
+                Config.DEFAULT_Y_LINE * playableBounds.getMaxY();
 
         g.setColor(Config.TABLE_LINE_COLOR);
-        g.fillRect(playableBounds.x, (int) yLine, playableBounds.width, 3);
+        g.fillRect(playableBounds.x, (int) yLine, playableBounds.width, Config.LINE_SIZE);
 
-        if (table.getTurnText() != null) {
-            printCurrentPlayer(g, table.getTurnText(), playableBounds, yLine);
+        if (table.getTopText() != null) {
+            //printCurrentPlayer(g, table.getTurnText(), playableBounds, yLine);
+            printTopText(g, PLAYER_FONT, FONT_COLOR, playableBounds, yLine, table.getTopText());
         }
 
-        if (table.getMessage() != null) {
-            printMessage(g, table.getMessage(), playableBounds, yLine);
+        if (table.getBottomText() != null) {
+            //printMessage(g, table.getMessage(), playableBounds, yLine);
+            printBottomText(g, MESSAGE_FONT, MESSAGE_COLOR, playableBounds, yLine, table.getBottomText());
         }
     }
 
-    private void printCurrentPlayer(Graphics2D g, String message, Rectangle playable, double yLine) {
-        FontMetrics metrics = g.getFontMetrics(PLAYER_FONT);
+    private void printTopText(Graphics2D g, Font font, Color color, Rectangle bounds, double yLine, String text) {
+        FontMetrics metrics = g.getFontMetrics(font);
 
-        double x = playable.getCenterX() - metrics.stringWidth(message) / 2.0;
+        float x = (float) bounds.getCenterX();
+        float y = (float) yLine;
 
-        g.setFont(PLAYER_FONT);
-        g.setColor(FONT_COLOR);
-        g.drawString(message, (int) x, (int) yLine - 5);
+        printCenteredText(g, font, color, text, x, (float) (y - metrics.getHeight() / 5.0));
     }
 
-    private void printMessage(Graphics2D g, String message, Rectangle playable, double yLine) {
-        FontMetrics metrics = g.getFontMetrics(MESSAGE_FONT);
+    private void printBottomText(Graphics2D g, Font font, Color color, Rectangle bounds, double yLine, String text) {
+        FontMetrics metrics = g.getFontMetrics(font);
 
-        double x = playable.getCenterX() - metrics.stringWidth(message) / 2.0;
+        float x = (float) bounds.getCenterX();
+        float y = (float) yLine + metrics.getHeight();
 
-        g.setFont(MESSAGE_FONT);
-        g.setColor(MESSAGE_COLOR);
-        g.drawString(message, (int) x, (int) yLine + metrics.getHeight());
+        printCenteredText(g, font, color, text, x, y);
+    }
+
+    private void printCenteredText(Graphics2D g, Font font, Color color, String text, float x, float y) {
+        FontMetrics metrics = g.getFontMetrics(font);
+
+        x = (float) (x - metrics.stringWidth(text) / 2.0);
+
+        g.setFont(font);
+        g.setColor(color);
+        g.drawString(text, x, y);
     }
 }

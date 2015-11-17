@@ -12,25 +12,24 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.ArrayList;
 
-public class PoolGame {
-    public static void main(String[] args) {
+public class PoolGame extends JFrame {
+    public PoolGame() {
+        setLayout(new BorderLayout());
+
         Player[] players = createPlayers();
 
-        JFrame frame = new JFrame("Pool Game");
-        PoolPanel poolPanel = new PoolPanel(frame, players);
-        
-        JMenuBar menu = createMenuBar(frame, poolPanel);
-        frame.setJMenuBar(menu);
+        PoolPanel poolPanel = new PoolPanel(this, players);
 
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setResizable(false);
-        frame.setLayout(new BorderLayout());
-        frame.getContentPane().add(poolPanel, BorderLayout.CENTER);
-        frame.pack();
-        frame.setVisible(true);
+        setJMenuBar(createMenuBar(poolPanel));
+
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setResizable(false);
+        add(poolPanel, BorderLayout.CENTER);
+        pack();
+        setVisible(true);
     }
 
-    private static Player[] createPlayers() {
+    private Player[] createPlayers() {
         List<Player> players = new ArrayList<>();
 
         int n = 1;
@@ -52,19 +51,19 @@ public class PoolGame {
         return players.toArray(new Player[players.size()]);
     }
 
-    private static JMenuBar createMenuBar(JFrame frame, PoolPanel poolPanel) {
+    private JMenuBar createMenuBar(PoolPanel poolPanel) {
         JMenuBar menuBar = new JMenuBar();
 
-        JMenu gameMenu = createGameMenu(frame, poolPanel);
-        menuBar.add(gameMenu);
+        JMenu gameMenu = createGameMenu(poolPanel);
+        JMenu debugMenu = createDebugMenu(poolPanel);
 
-        JMenu debugMenu = createDebugMenu(frame, poolPanel);
+        menuBar.add(gameMenu);
         menuBar.add(debugMenu);
 
         return menuBar;
     }
 
-    private static JMenu createGameMenu(JFrame frame, PoolPanel poolPanel) {
+    private JMenu createGameMenu(PoolPanel poolPanel) {
         JMenu gameMenu = new JMenu("Game");
         gameMenu.setMnemonic('G');
 
@@ -90,7 +89,7 @@ public class PoolGame {
         JMenuItem exit = new JMenuItem(new AbstractAction("Quit") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.dispose();
+                dispose();
             }
         });
 
@@ -113,7 +112,7 @@ public class PoolGame {
         return gameMenu;
     }
 
-    private static JMenu createDebugMenu(JFrame frame, PoolPanel poolPanel) {
+    private JMenu createDebugMenu(PoolPanel poolPanel) {
         JMenu debugMenu = new JMenu("Debug");
         debugMenu.setMnemonic('D');
 
@@ -132,5 +131,9 @@ public class PoolGame {
         debugMenu.add(boundingBoxes);
 
         return debugMenu;
+    }
+
+    public static void main(String[] args) {
+        new PoolGame();
     }
 }

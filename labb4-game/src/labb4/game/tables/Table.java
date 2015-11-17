@@ -31,13 +31,14 @@ public abstract class Table {
     public final int outerBorderSize;
     public final int innerBorderSize;
 
+    // Info messages
+    private String topText;
+    private String bottomText;
+
     protected GameHandler handler;
 
     private final Player[] players;
     private int currentPlayerId;
-
-    private String turnText;
-    private String message;
 
     public Table(int width, int height, GameHandler handler, Player[] players) {
         this.handler = handler;
@@ -77,6 +78,14 @@ public abstract class Table {
         return false;
     }
 
+    public String getTopText() {
+        return topText;
+    }
+
+    public String getBottomText() {
+        return bottomText;
+    }
+
     public GameHandler getHandler() {
         return handler;
     }
@@ -108,20 +117,6 @@ public abstract class Table {
 
     public Player getCurrentPlayer() {
         return players[currentPlayerId];
-    }
-
-    public String getMessage() {
-        return message;
-    }
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public String getTurnText() {
-        return turnText;
-    }
-    public void setTurnText(String message) {
-        this.turnText = message;
     }
 
     public void draw(Graphics2D g) {

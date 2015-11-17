@@ -53,16 +53,6 @@ public abstract class GameHandler {
             o.addPoints(player, points);
     }
 
-    protected void notifyUpdateTopMessage(String text) {
-        for (GameObserver o : observers)
-            o.updateMessageTop(text);
-    }
-
-    protected void notifyUpdateBottomMessage(String text) {
-        for (GameObserver o : observers)
-            o.updateMessageBottom(text);
-    }
-
     protected void notifyPlacingBall(Placeable placeable) {
         for (GameObserver o : observers)
             o.startPlacing(placeable);

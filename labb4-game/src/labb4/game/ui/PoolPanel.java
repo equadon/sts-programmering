@@ -50,6 +50,8 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
     public void newGame(GameType type) {
         this.gameType = type;
 
+        frame.setTitle("STS Pool: " + Utility.splitCamelCase(gameType.name()));
+
         for (Player player : players) {
             player.reset();
         }
