@@ -20,8 +20,8 @@ public class NineBallTable extends Table {
         Integer[] numbers = new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9};
         Utility.shuffle(numbers);
 
-        Utility.moveNumber(numbers, 9, 4);
-        Utility.moveNumber(numbers, 1, 0);
+        //Utility.moveNumber(numbers, 9, 4);
+        //Utility.moveNumber(numbers, 1, 0);
 
         int radius = Config.BALL_RADIUS;
         int diameter = 2 * radius;
@@ -51,7 +51,7 @@ public class NineBallTable extends Table {
         }
 
         // Add cue ball
-        Vector2D cueBallPosition = new Vector2D(width / 2.0, Config.DEFAULT_Y_LINE * getPlayableBounds().getMaxY() + Config.LINE_SIZE);
+        Vector2D cueBallPosition = new Vector2D(Config.DEFAULT_X_LINE * getPlayableBounds().getMaxX() + Config.LINE_SIZE, height / 2.0);
         balls.add(new CueBall(this, cueBallPosition, Config.BALL_RADIUS));
 
         return balls;

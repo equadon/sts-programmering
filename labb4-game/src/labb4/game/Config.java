@@ -18,17 +18,17 @@ public class Config {
     public static final Color TABLE_OUTER_BORDER_COLOR = new Color(85, 58, 34);
     public static final Color TABLE_INNER_BORDER_COLOR = new Color(7, 116, 0);
 
-    public static final int DEFAULT_TABLE_WIDTH = (int) (127 * RESIZE_FACTOR);
-    public static final int DEFAULT_TABLE_HEIGHT = (int) (254 * RESIZE_FACTOR);
+    public static final int DEFAULT_TABLE_WIDTH = (int) (254 * RESIZE_FACTOR);
+    public static final int DEFAULT_TABLE_HEIGHT = (int) (127 * RESIZE_FACTOR);
 
     public static final int TABLE_OUTER_BORDER_SIZE = (int) (6 * RESIZE_FACTOR);
     public static final int TABLE_INNER_BORDER_SIZE = (int) (5 * RESIZE_FACTOR);
 
-    public static final int SNOOKER_TABLE_WIDTH = (int) (178 * RESIZE_FACTOR);
-    public static final int SNOOKER_TABLE_HEIGHT = (int) (356 * RESIZE_FACTOR);
+    public static final int SNOOKER_TABLE_WIDTH = (int) (356 * RESIZE_FACTOR);
+    public static final int SNOOKER_TABLE_HEIGHT = (int) (178 * RESIZE_FACTOR);
 
-    public static final double DEFAULT_Y_LINE = 3.0 / 4.0;
-    public static final double SNOOKER_Y_LINE = 4.0 / 5.0;
+    public static final double DEFAULT_X_LINE = 1.0 / 4.0;
+    public static final double SNOOKER_X_LINE = 1.0 / 5.0;
 
     public static final int LINE_SIZE = 3;
 

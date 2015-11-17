@@ -26,26 +26,26 @@ public class EightBallTable extends Table {
 
         Vector2D position;
 
-        double x = (getBounds().width / 2.0) - 4 * radius;
-        double y = height / 3.0;
+        double x = 2 * getBounds().width / 3.0;
+        double y = (getBounds().height / 2.0) - 4 * radius;
 
-        int row = 1;
-        int col = 0;
+        int col = 1;
+        int row = 0;
         for (int i = 0; i < 15; i++) {
             if (col == row) {
-                row++;
-                col = 0;
+                col++;
+                row = 0;
             }
 
             int number = numbers[i];
-            position = new Vector2D(x + (5 - row) * radius + col * diameter, y - row * (diameter - 0.25 * radius));
+            position = new Vector2D(x + col * (diameter - 0.25*radius), y + (5 - col) * radius + row * diameter);
             balls.add(BallFactory.createStandardBall(number, this, position, radius));
 
-            col++;
+            row++;
         }
 
         // Add cue ball
-        Vector2D cueBallPosition = new Vector2D(width / 2.0, Config.DEFAULT_Y_LINE * getPlayableBounds().getMaxY() + Config.LINE_SIZE);
+        Vector2D cueBallPosition = new Vector2D(Config.DEFAULT_X_LINE * getPlayableBounds().getMaxX() + Config.LINE_SIZE, height / 2.0);
         balls.add(new CueBall(this, cueBallPosition, Config.BALL_RADIUS));
 
         return balls;

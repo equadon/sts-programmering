@@ -180,29 +180,14 @@ public abstract class Table {
         pockets = new Pocket[Config.POCKET_COUNT];
         Vector2D position;
 
+        double width = playableBounds.width;
+        double height = playableBounds.height;
+
         for (int i = 0; i < pockets.length; i++) {
-            int row = i / 2;
-            int col = i % 2;
+            int row = i / 3;
+            int col = i % 3;
 
-            int xOffset = 0;
-            int yOffset = 0;
-            if (col == 0 && (row == 0 || row == 2)) {
-                xOffset = (int) (Config.DEFAULT_POCKET_RADIUS * 0.5);
-                yOffset = (int) (Config.DEFAULT_POCKET_RADIUS * 0.5);
-
-                if (row == 2) {
-                    yOffset *= -1;
-                }
-            } else if (col == 1&& (row == 0 || row == 2)) {
-                xOffset = -(int) (Config.DEFAULT_POCKET_RADIUS * 0.5);
-                yOffset = (int) (Config.DEFAULT_POCKET_RADIUS * 0.5);
-
-                if (row == 2) {
-                    yOffset *= -1;
-                }
-            }
-
-            position = new Vector2D(xOffset + playableBounds.x + col * playableBounds.width, yOffset + playableBounds.y + row * (playableBounds.height / 2.0));
+            position = new Vector2D(playableBounds.x + col * (width / 2.0), playableBounds.y + row * height);
 
             pockets[i] = new Pocket(this, position, Config.DEFAULT_POCKET_RADIUS);
         }

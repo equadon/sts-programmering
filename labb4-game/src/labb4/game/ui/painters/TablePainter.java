@@ -37,21 +37,21 @@ public class TablePainter {
         );
 
         // Line
-        double yLine = (table instanceof SnookerTable) ?
-                Config.SNOOKER_Y_LINE * playableBounds.getMaxY() :
-                Config.DEFAULT_Y_LINE * playableBounds.getMaxY();
+        double xLine = (table instanceof SnookerTable) ?
+                Config.SNOOKER_X_LINE * playableBounds.getMaxX() :
+                Config.DEFAULT_X_LINE * playableBounds.getMaxX();
 
         g.setColor(Config.TABLE_LINE_COLOR);
-        g.fillRect(playableBounds.x, (int) yLine, playableBounds.width, Config.LINE_SIZE);
+        g.fillRect((int) xLine, playableBounds.y, Config.LINE_SIZE, playableBounds.height);
 
         if (table.getTopText() != null) {
             //printCurrentPlayer(g, table.getTurnText(), playableBounds, yLine);
-            printTopText(g, PLAYER_FONT, FONT_COLOR, playableBounds, yLine, table.getTopText());
+            //printTopText(g, PLAYER_FONT, FONT_COLOR, playableBounds, xLine, table.getTopText());
         }
 
         if (table.getBottomText() != null) {
             //printMessage(g, table.getMessage(), playableBounds, yLine);
-            printBottomText(g, MESSAGE_FONT, MESSAGE_COLOR, playableBounds, yLine, table.getBottomText());
+            //printBottomText(g, MESSAGE_FONT, MESSAGE_COLOR, playableBounds, xLine, table.getBottomText());
         }
     }
 

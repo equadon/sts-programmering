@@ -24,20 +24,20 @@ public class SnookerTable extends Table {
 
         createRedBalls(balls, this, radius, diameter);
 
-        double yLine = Config.SNOOKER_Y_LINE * getPlayableBounds().getMaxY();
+        double xLine = Config.SNOOKER_X_LINE * getPlayableBounds().getMaxX();
 
         Vector2D center = new Vector2D(getPlayableBounds().getCenterX(), getPlayableBounds().getCenterY());
 
         // Yellow ball
-        Vector2D position = new Vector2D(center.x + 0.15 * width, yLine);
+        Vector2D position = new Vector2D(center.x + 0.15 * width, xLine);
         balls.add(BallFactory.createSnookerBall(2, this, position, radius));
 
         // Green ball
-        position = new Vector2D(center.x - 0.15 * width, yLine);
+        position = new Vector2D(center.x - 0.15 * width, xLine);
         balls.add(BallFactory.createSnookerBall(3, this, position, radius));
 
         // Brown ball
-        position = new Vector2D(center.x, yLine);
+        position = new Vector2D(center.x, xLine);
         balls.add(BallFactory.createSnookerBall(4, this, position, radius));
 
         // Blue ball
@@ -52,7 +52,7 @@ public class SnookerTable extends Table {
         position = new Vector2D(center.x, 0.125 * height);
         balls.add(BallFactory.createSnookerBall(7, this, position, radius));
 
-        Vector2D cueBallPosition = new Vector2D(width / 2.0, yLine + Config.LINE_SIZE + 5*Config.BALL_RADIUS);
+        Vector2D cueBallPosition = new Vector2D(width / 2.0, xLine + Config.LINE_SIZE + 5*Config.BALL_RADIUS);
         balls.add(new CueBall(this, cueBallPosition, Config.BALL_RADIUS));
 
         return balls;
