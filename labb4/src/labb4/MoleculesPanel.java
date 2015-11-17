@@ -23,7 +23,7 @@ class MoleculesPanel extends JPanel implements MouseListener, MouseMotionListene
 
     private static double INIT_INFECTED_PROB = 0.5;
 
-    private final int   WIDTH          = 1200;
+    private final int   WIDTH          = 600;
     private final int   HEIGHT         = 600;
     private final int   WALL_THICKNESS = 20;
     private final Color COLOR          = Color.green;
@@ -34,16 +34,10 @@ class MoleculesPanel extends JPanel implements MouseListener, MouseMotionListene
     private final Ball[] balls;
 
     MoleculesPanel() {
+        innerBounds = new Rectangle(getBounds().x + WALL_THICKNESS, getBounds().y + WALL_THICKNESS, WIDTH, HEIGHT);
 
         setPreferredSize(new Dimension(WIDTH + 2 * WALL_THICKNESS,
                 HEIGHT + 2 * WALL_THICKNESS));
-
-        innerBounds = new Rectangle(
-                getBounds().x + WALL_THICKNESS,
-                getBounds().y + WALL_THICKNESS,
-                WIDTH,
-                HEIGHT
-        );
 
         balls = new Ball[BALL_COUNT];
         createInitialBalls();
@@ -167,6 +161,7 @@ class MoleculesPanel extends JPanel implements MouseListener, MouseMotionListene
     @Override
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
+
         Graphics2D g2D = (Graphics2D) graphics;
         g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, // This makes the graphics smoother
                 RenderingHints.VALUE_ANTIALIAS_ON);
