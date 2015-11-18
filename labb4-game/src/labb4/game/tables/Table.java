@@ -31,10 +31,6 @@ public abstract class Table {
     public final int outerBorderSize;
     public final int innerBorderSize;
 
-    // Info messages
-    private String leftText;
-    private String rightText;
-
     private final Player[] players;
     private int currentPlayerId;
 
@@ -63,9 +59,6 @@ public abstract class Table {
 
         pockets = createPockets();
         balls = createBalls();
-
-        leftText = players[0].name + "'s turn!";
-        rightText = "Next ball: 5";
     }
 
     public boolean isUpdating() {
@@ -80,14 +73,6 @@ public abstract class Table {
 
     public Player[] getPlayers() {
         return players;
-    }
-
-    public String getLeftText() {
-        return leftText;
-    }
-
-    public String getRightText() {
-        return rightText;
     }
 
     public Rectangle getBounds() {
@@ -229,22 +214,22 @@ public abstract class Table {
 
     protected void notifyPlayerChange(Player newPlayer) {
         for (GameListener o : listeners)
-            o.changePlayer(newPlayer);
+            o.playerChanged(newPlayer);
     }
 
     protected void notifyAddPoints(Player player, int points) {
         for (GameListener o : listeners)
-            o.addPoints(player, points);
+            o.pointsAdded(player, points);
     }
 
     protected void notifyPlacingBall(Placeable placeable) {
         for (GameListener o : listeners)
-            o.startPlacing(placeable);
+            o.placeStarted(placeable);
     }
 
     protected void notifyGameOver(Player winner) {
         for (GameListener o : listeners)
-            o.gameOver(winner);
+            o.gameEnded(winner);
     }
 
     /**

@@ -14,27 +14,17 @@ public class PoolGameListener implements GameListener {
     }
 
     @Override
-    public void illegalMove(String reason) {
-        JOptionPane.showMessageDialog(panel, reason, "Invalid Move", JOptionPane.ERROR_MESSAGE);
-    }
+    public void illegalMove(String reason) {}
 
     @Override
-    public void changePlayer(Player newPlayer) {}
+    public void playerChanged(Player newPlayer) {}
 
     @Override
-    public void addPoints(Player player, int points) {
-        player.addPoints(points);
-    }
+    public void pointsAdded(Player player, int points) {}
 
     @Override
-    public void startPlacing(Placeable placeable) {
-        panel.startPlacing(placeable);
-    }
+    public void placeStarted(Placeable placeable) {}
 
     @Override
-    public void gameOver(Player winner) {
-        panel.repaint();
-
-        JOptionPane.showMessageDialog(panel, winner.name + " won the game!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
-    }
+    public void gameEnded(Player winner) {}
 }

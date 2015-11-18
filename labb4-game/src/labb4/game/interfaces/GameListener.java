@@ -4,8 +4,8 @@ import labb4.game.Player;
 
 public interface GameListener {
     void illegalMove(String reason);
-    void changePlayer(Player newPlayer);
-    void addPoints(Player player, int points);
-    void startPlacing(Placeable placeable);
-    void gameOver(Player winner);
+    void playerChanged(Player newPlayer);
+    void pointsAdded(Player player, int points);
+    void placeStarted(Placeable placeable);
+    void gameEnded(Player winner);
 }
