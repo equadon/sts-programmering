@@ -54,6 +54,7 @@ public class PoolBall extends Ball implements Placeable {
         if (table.getPlayableBounds().contains(getBounds()) && !collidesWithBall()) {
             velocity = new Vector2D(0, 0);
             placing = false;
+            show();
 
             return true;
         } else {
