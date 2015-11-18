@@ -5,6 +5,7 @@ import labb4.game.tables.Table;
 import labb4.game.Vector2D;
 import labb4.game.interfaces.Placeable;
 import labb4.game.ui.painters.BallPainter;
+import labb4.game.ui.painters.ObjectPainter;
 
 import java.awt.*;
 
@@ -15,6 +16,10 @@ public class Ball extends GameObject {
     private double radius;
 
     public Ball(Table table, Vector2D position, Color color, double radius, boolean striped) {
+        this(table, new BallPainter(), position, color, Config.DEFAULT_MASS, Config.DEFAULT_FRICTION, radius, striped);
+    }
+
+    public Ball(Table table, ObjectPainter painter, Vector2D position, Color color, double mass, double friction, double radius, boolean striped) {
         super(new BallPainter(), position, new Vector2D(0, 0), color, Config.DEFAULT_MASS, Config.DEFAULT_FRICTION);
 
         this.table = table;

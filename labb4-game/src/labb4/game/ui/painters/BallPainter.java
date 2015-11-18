@@ -6,6 +6,7 @@ import labb4.game.Vector2D;
 import labb4.game.interfaces.Aimable;
 import labb4.game.objects.Ball;
 import labb4.game.objects.GameObject;
+import labb4.game.objects.Pocket;
 import labb4.game.objects.PoolBall;
 
 import java.awt.*;
@@ -40,10 +41,13 @@ public class BallPainter extends ObjectPainter {
         }
 
         // Reflection
-        int reflectionRadius = (int) (ball.getRadius() / 3.5);
+        if (!(ball instanceof Pocket)) {
+            int reflectionRadius = (int) (ball.getRadius() / 3.5);
 
-        g.setColor(Config.BALL_WHITE_COLOR);
-        g.fillOval(x + reflectionRadius, y + reflectionRadius, 2*reflectionRadius, 2*reflectionRadius);
+            g.setColor(Config.BALL_WHITE_COLOR);
+            g.fillOval(x + reflectionRadius, y + reflectionRadius, 2*reflectionRadius, 2*reflectionRadius);
+        }
+
 
         // Draw aim line
         if (object instanceof Aimable) {

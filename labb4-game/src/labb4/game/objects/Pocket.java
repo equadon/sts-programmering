@@ -8,17 +8,11 @@ import labb4.game.ui.painters.PocketPainter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Pocket extends GameObject {
-    private final Table table;
-    private final double radius;
-
+public class Pocket extends Ball {
     private final List<PoolBall> balls;
 
     public Pocket(Table table, Vector2D position, double radius) {
-        super(new PocketPainter(), position, new Vector2D(0, 0), Config.DEFAULT_POCKET_COLOR, 0, 0);
-
-        this.table = table;
-        this.radius = radius;
+        super(table, new PocketPainter(), position, Config.DEFAULT_POCKET_COLOR, 0, 0, radius, false);
 
         balls = new ArrayList<>();
 
@@ -39,7 +33,7 @@ public class Pocket extends GameObject {
     }
 
     public boolean handleBallCollision(Ball ball) {
-        if (getPosition().distanceTo(ball.getPosition()) < radius) {
+        if (getPosition().distanceTo(ball.getPosition()) < getRadius()) {
             PoolBall poolBall = (PoolBall) ball;
 
             add(poolBall);
@@ -61,10 +55,10 @@ public class Pocket extends GameObject {
 
     @Override
     protected void updateBounds() {
-        bounds.x = getPosition().x - radius;
-        bounds.y = getPosition().y - radius;
-        bounds.width = 2 * radius;
-        bounds.height = 2 * radius;
+        bounds.x = getPosition().x - getRadius();
+        bounds.y = getPosition().y - getRadius();
+        bounds.width = 2 * getRadius();
+        bounds.height = 2 * getRadius();
     }
 
     @Override
