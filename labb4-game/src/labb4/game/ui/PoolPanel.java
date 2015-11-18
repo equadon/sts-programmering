@@ -29,13 +29,15 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
     private ContextMenuListener popUpListener;
     private PoolGameListener gameListener;
 
-    private List<Placeable> placeables; // list of objects being placed
+    private final List<Placeable> placeables; // list of objects being placed
 
     public PoolPanel(JFrame frame, Player[] players) {
         this.frame = frame;
         this.players = players;
 
         timer = new Timer((int) (1000.0 / Config.FRAMES_PER_SECOND), this);
+
+        placeables = new ArrayList<>();
 
         setFocusable(true);
 
@@ -55,7 +57,7 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
             player.reset();
         }
 
-        placeables = new ArrayList<>();
+        placeables.clear();
 
         table = Table.createTable(gameType, players);
 
@@ -195,10 +197,8 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
         Vector2D position = Vector2D.fromMouseEvent(e);
 
         if (SwingUtilities.isLeftMouseButton(e)) {
-            if (isPlacing()) {
-                if (!place(position)) {
-                    LOG.warning("Invalid placement position: " + position);
-                }
+            if (isPlacing() && !place(position)) {
+                LOG.warning("Invalid placement position: " + position);
             } else {
                 for (Aimable aimable : table.getAimable()) {
                     if (aimable.isAiming()) {
@@ -213,11 +213,9 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
                     }
                 }
             }
-        } else if (SwingUtilities.isMiddleMouseButton(e)) {
-            if (isPlacing()) {
-                if (!place(position)) {
-                    LOG.warning("Invalid placement position: " + position);
-                }
+        } else if (SwingUtilities.isMiddleMouseButton(e) && isPlacing()) {
+            if (!place(position)) {
+                LOG.warning("Invalid placement position: " + position);
             }
         }
     }
