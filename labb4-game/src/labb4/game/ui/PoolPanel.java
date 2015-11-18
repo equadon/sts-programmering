@@ -116,7 +116,7 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
         return placeables.size() > 0;
     }
 
-    private PoolBall getBall(Vector2D position) {
+    private PoolBall getBallAt(Vector2D position) {
         for (PoolBall ball : table.getBalls()) {
             if (ball.contains(position)) {
                 return ball;
@@ -126,7 +126,7 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
         return null;
     }
 
-    private Aimable getAimable(Vector2D position) {
+    private Aimable getAimableAt(Vector2D position) {
         for (PoolBall ball : table.getBalls()) {
             if (ball instanceof Aimable) {
                 if (ball.contains(position)) {
@@ -175,7 +175,7 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
 
         if (SwingUtilities.isLeftMouseButton(e)) {
             if (!isPlacing()) {
-                Aimable aimable = getAimable(position);
+                Aimable aimable = getAimableAt(position);
                 if (aimable != null) {
                     aimable.setAim(position);
                     repaint();
@@ -184,7 +184,7 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
         } else if (SwingUtilities.isMiddleMouseButton(e)) {
             if (!isPlacing()) {
                 // Start placing ball
-                PoolBall ball = getBall(position);
+                PoolBall ball = getBallAt(position);
                 if (ball != null) {
                     startPlacing(ball);
                 }
