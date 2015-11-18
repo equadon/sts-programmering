@@ -174,11 +174,28 @@ public abstract class Table {
         double width = playableBounds.width;
         double height = playableBounds.height;
 
+        int offset = (int) (Config.TABLE_INNER_BORDER_SIZE / 2.0);
+
         for (int i = 0; i < pockets.length; i++) {
             int row = i / 3;
             int col = i % 3;
 
-            position = new Vector2D(playableBounds.x + col * (width / 2.0), playableBounds.y + row * height);
+            int x = 0;
+            int y = 0;
+
+            if (row == 0 && col != 1) {
+                y += offset;
+            } else if (row == 1 && col != 1) {
+                y -= offset;
+            }
+
+            if (col == 0) {
+                x += offset;
+            } else if (col == 2) {
+                x -= offset;
+            }
+
+            position = new Vector2D(playableBounds.x + col * (width / 2.0) + x, playableBounds.y + row * height + y);
 
             pockets[i] = new Pocket(this, position, Config.DEFAULT_POCKET_RADIUS);
         }

@@ -103,11 +103,6 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
 
                 repaint();
 
-                // If more balls to place, restart placing process
-                //if (placeables.size() > 0) {
-                //    startPlacing(getPlaceable());
-                //}
-
                 return true;
             }
         }
