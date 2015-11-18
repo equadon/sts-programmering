@@ -81,6 +81,10 @@ public abstract class Table {
         return false;
     }
 
+    public Player[] getPlayers() {
+        return players;
+    }
+
     public String getLeftText() {
         return leftText;
     }

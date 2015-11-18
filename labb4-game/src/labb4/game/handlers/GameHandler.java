@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class that handles all game rules.
+ * Class that handle game rules.
  */
 public abstract class GameHandler {
     private final List<GameObserver> observers;

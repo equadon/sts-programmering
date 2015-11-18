@@ -1,6 +1,6 @@
 package labb4.game;
 
-public class Player {
+public class Player implements Comparable<Player> {
     public final String name;
 
     private int points;
@@ -19,6 +19,16 @@ public class Player {
 
     public void reset() {
         points = 0;
+    }
+
+    /**
+     * Compare players based on points.
+     */
+    @Override
+    public int compareTo(Player other) {
+        if (points == other.points)
+            return 0;
+        return points - other.points;
     }
 
     @Override

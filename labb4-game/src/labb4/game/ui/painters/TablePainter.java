@@ -1,17 +1,24 @@
 package labb4.game.ui.painters;
 
 import labb4.game.Config;
+import labb4.game.Player;
 import labb4.game.Vector2D;
 import labb4.game.tables.SnookerTable;
 import labb4.game.tables.Table;
 
 import java.awt.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class TablePainter {
     private static final Font PLAYER_FONT = new Font("Ubuntu", Font.BOLD, 24);
     private static final Font MESSAGE_FONT = new Font("Ubuntu", Font.BOLD, 18);
+    private static final Font SCORE_FONT = new Font("Ubuntu", Font.BOLD, 14);
+
     private static final Color FONT_COLOR = new Color(10, 134, 0);
     private static final Color MESSAGE_COLOR = new Color(10, 150, 0);
+    private static final Color SCORE_COLOR = new Color(10, 123, 0);
 
     public void draw(Graphics2D g, Table table) {
         Rectangle bounds = table.getBounds();
@@ -53,6 +60,26 @@ public class TablePainter {
 
         if (table.getRightText() != null) {
             printRightText(g, MESSAGE_FONT, MESSAGE_COLOR, playableBounds, xLine, table.getRightText());
+        }
+
+        printScoreTable(g, table, playableBounds);
+    }
+
+    private void printScoreTable(Graphics2D g, Table table, Rectangle bounds) {
+        float x = (float) bounds.getCenterX() + 30;
+        float y = (float) bounds.getY() + Config.TABLE_INNER_BORDER_SIZE;
+        FontMetrics metrics = g.getFontMetrics(SCORE_FONT);
+
+        // Sort players by points
+        List<Player> players = Arrays.asList(table.getPlayers());
+        Collections.sort(players, Collections.reverseOrder());
+
+        int n = 1;
+        for (Player player : players) {
+            String text = String.format("%d. %s  -  points: %d", n, player.name, player.getPoints());
+
+            g.drawString(text, x, y + (n-1) * metrics.getHeight());
+            n++;
         }
     }
 
