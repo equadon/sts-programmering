@@ -75,7 +75,7 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
         gameListener = new PoolGameListener(this);
         table.addListener(gameListener);
 
-        table.newGame();
+        table.newGame(table.getCurrentPlayer());
 
         repaint();
     }
@@ -212,7 +212,7 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
                         repaint();
 
                         timer.start();
-                        table.getHandler().beginTurn(table.getCurrentPlayer());
+                        table.beginTurn();
 
                         break;
                     }

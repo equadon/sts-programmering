@@ -4,9 +4,9 @@ import labb4.game.Config;
 import labb4.game.GameType;
 import labb4.game.Player;
 import labb4.game.Vector2D;
-import labb4.game.handlers.GameHandler;
 import labb4.game.interfaces.Aimable;
 import labb4.game.interfaces.GameListener;
+import labb4.game.interfaces.Placeable;
 import labb4.game.objects.Pocket;
 import labb4.game.objects.PoolBall;
 import labb4.game.ui.painters.TablePainter;
@@ -18,13 +18,13 @@ import java.util.List;
 public abstract class Table {
     private final TablePainter painter;
 
+    private final List<GameListener> listeners;
+
     private final Rectangle bounds;
     private final Rectangle playableBounds;
 
     protected List<PoolBall> balls;
     protected Pocket[] pockets;
-
-    protected final List<GameListener> listeners;
 
     public final int width;
     public final int height;
@@ -35,13 +35,10 @@ public abstract class Table {
     private String leftText;
     private String rightText;
 
-    protected GameHandler handler;
-
     private final Player[] players;
     private int currentPlayerId;
 
-    public Table(int width, int height, GameHandler handler, Player[] players) {
-        this.handler = handler;
+    public Table(int width, int height, Player[] players) {
         this.players = players;
 
         currentPlayerId = 0;
@@ -91,10 +88,6 @@ public abstract class Table {
 
     public String getRightText() {
         return rightText;
-    }
-
-    public GameHandler getHandler() {
-        return handler;
     }
 
     public Rectangle getBounds() {
@@ -154,15 +147,6 @@ public abstract class Table {
         }
     }
 
-    public void newGame() {
-        handler.newGame(getCurrentPlayer());
-    }
-
-    public void endTurn() {
-        nextPlayer();
-        handler.endTurn(getCurrentPlayer());
-    }
-
     protected void nextPlayer() {
         currentPlayerId = (currentPlayerId + 1) % players.length;
     }
@@ -202,11 +186,48 @@ public abstract class Table {
         return pockets;
     }
 
+    /**
+     * Observer pattern methods.
+     */
     public void addListener(GameListener listener) {
-        handler.addListener(listener);
+        listeners.add(listener);
     }
     public void removeListener(GameListener listener) {
-        handler.removeListener(listener);
+        listeners.remove(listener);
+    }
+
+    public abstract void newGame(Player starting);
+    public abstract void beginTurn();
+    public abstract void collision(PoolBall ball1, PoolBall ball2);
+    public abstract void pocketed(PoolBall ball, Pocket pocket);
+    public abstract void endTurn();
+
+    /**
+     * Notification methods.
+     */
+    protected void notifyIllegalMove(String reason) {
+        for (GameListener o : listeners)
+            o.illegalMove(reason);
+    }
+
+    protected void notifyPlayerChange(Player newPlayer) {
+        for (GameListener o : listeners)
+            o.changePlayer(newPlayer);
+    }
+
+    protected void notifyAddPoints(Player player, int points) {
+        for (GameListener o : listeners)
+            o.addPoints(player, points);
+    }
+
+    protected void notifyPlacingBall(Placeable placeable) {
+        for (GameListener o : listeners)
+            o.startPlacing(placeable);
+    }
+
+    protected void notifyGameOver(Player winner) {
+        for (GameListener o : listeners)
+            o.gameOver(winner);
     }
 
     /**

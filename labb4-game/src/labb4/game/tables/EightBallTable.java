@@ -1,8 +1,8 @@
 package labb4.game.tables;
 
 import labb4.game.*;
-import labb4.game.handlers.EightBallHandler;
 import labb4.game.objects.CueBall;
+import labb4.game.objects.Pocket;
 import labb4.game.objects.PoolBall;
 
 import java.util.ArrayList;
@@ -10,8 +10,23 @@ import java.util.List;
 
 public class EightBallTable extends Table {
     public EightBallTable(Player[] players) {
-        super(Config.DEFAULT_TABLE_WIDTH, Config.DEFAULT_TABLE_HEIGHT, new EightBallHandler(), players);
+        super(Config.DEFAULT_TABLE_WIDTH, Config.DEFAULT_TABLE_HEIGHT, players);
     }
+
+    @Override
+    public void newGame(Player starting) {}
+
+    @Override
+    public void beginTurn() {}
+
+    @Override
+    public void collision(PoolBall ball1, PoolBall ball2) {}
+
+    @Override
+    public void pocketed(PoolBall ball, Pocket pocket) {}
+
+    @Override
+    public void endTurn() {}
 
     @Override
     protected List<PoolBall> createBalls() {

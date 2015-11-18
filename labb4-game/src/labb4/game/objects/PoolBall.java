@@ -77,7 +77,7 @@ public class PoolBall extends Ball implements Placeable {
 
     @Override
     protected void collidedWith(Ball other) {
-        table.getHandler().collision(this, (PoolBall) other);
+        table.collision(this, (PoolBall) other);
     }
 
     @Override

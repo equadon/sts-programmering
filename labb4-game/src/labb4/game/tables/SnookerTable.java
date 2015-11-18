@@ -1,8 +1,8 @@
 package labb4.game.tables;
 
 import labb4.game.*;
-import labb4.game.handlers.SnookerHandler;
 import labb4.game.objects.CueBall;
+import labb4.game.objects.Pocket;
 import labb4.game.objects.PoolBall;
 
 import java.util.ArrayList;
@@ -12,8 +12,23 @@ public class SnookerTable extends Table {
     public static final int RED_BALL_COUNT = 15;
 
     public SnookerTable(Player[] players) {
-        super(Config.SNOOKER_TABLE_WIDTH, Config.SNOOKER_TABLE_HEIGHT, new SnookerHandler(), players);
+        super(Config.SNOOKER_TABLE_WIDTH, Config.SNOOKER_TABLE_HEIGHT, players);
     }
+
+    @Override
+    public void newGame(Player starting) {}
+
+    @Override
+    public void beginTurn() {}
+
+    @Override
+    public void collision(PoolBall ball1, PoolBall ball2) {}
+
+    @Override
+    public void pocketed(PoolBall ball, Pocket pocket) {}
+
+    @Override
+    public void endTurn() {}
 
     @Override
     protected List<PoolBall> createBalls() {
@@ -66,7 +81,7 @@ public class SnookerTable extends Table {
 
         int col = 1;
         int row = 0;
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < RED_BALL_COUNT; i++) {
             if (col == row) {
                 col++;
                 row = 0;
