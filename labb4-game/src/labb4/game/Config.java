@@ -15,6 +15,7 @@ public class Config {
      */
     public static final Color TABLE_COLOR = new Color(9, 226, 0);
     public static final Color TABLE_LINE_COLOR = new Color(9, 202, 0);
+    public static final Color TABLE_SPOT_COLOR = new Color(9, 175, 0);
     public static final Color TABLE_OUTER_BORDER_COLOR = new Color(85, 58, 34);
     public static final Color TABLE_INNER_BORDER_COLOR = new Color(7, 116, 0);
 

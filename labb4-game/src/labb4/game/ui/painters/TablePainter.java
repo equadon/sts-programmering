@@ -12,6 +12,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class TablePainter {
+    public static final int SPOT_RADIUS = 5;
+
     public void draw(Graphics2D g, Table table) {
         Rectangle bounds = table.getBounds();
         Rectangle playableBounds = table.getPlayableBounds();
@@ -39,7 +41,7 @@ public class TablePainter {
         // Lines
         double xLine;
         if (table instanceof SnookerTable) {
-            drawSnookerLines(g, playableBounds);
+            drawSnookerLines(g, playableBounds, bounds.width);
         } else {
             drawStandardLines(g, playableBounds);
         }
@@ -52,7 +54,7 @@ public class TablePainter {
         g.fillRect((int) xLine, bounds.y, Config.LINE_SIZE, bounds.height);
     }
 
-    private void drawSnookerLines(Graphics2D g, Rectangle bounds) {
+    private void drawSnookerLines(Graphics2D g, Rectangle bounds, int fullWidth) {
         int height = bounds.height;
 
         Vector2D center = new Vector2D(bounds.getCenterX(), bounds.getCenterY());
@@ -65,5 +67,27 @@ public class TablePainter {
 
         g.setStroke(new BasicStroke(Config.LINE_SIZE));
         g.drawArc((int) (xLine - arcDiameter / 2.0), (int) (center.y - arcDiameter / 2.0), (int) arcDiameter, (int) arcDiameter, 90, 180);
+
+        // Ball placement spots
+        g.setColor(Config.TABLE_SPOT_COLOR);
+
+        // Blue ball
+        g.fillOval((int) bounds.getCenterX() - SPOT_RADIUS, (int) bounds.getCenterY() - SPOT_RADIUS, 2 * SPOT_RADIUS, 2 * SPOT_RADIUS);
+
+        // Pink ball
+        g.fillOval(
+                (int) (2 * fullWidth / 3.0 - SPOT_RADIUS - Config.BALL_RADIUS / 4.0),
+                (int) bounds.getCenterY() - SPOT_RADIUS,
+                2 * SPOT_RADIUS,
+                2 * SPOT_RADIUS
+        );
+
+        // Black ball
+        g.fillOval(
+                (int) ((1-0.125) * fullWidth - SPOT_RADIUS),
+                (int) bounds.getCenterY() - SPOT_RADIUS,
+                2 * SPOT_RADIUS,
+                2 * SPOT_RADIUS
+        );
     }
 }

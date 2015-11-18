@@ -59,7 +59,6 @@ public class NineBallTable extends Table {
             }
 
             int number = numbers[i];
-            //position = new Vector2D(x + (5 - row) * radius + col * diameter, y - absRow * (diameter - 0.25 * radius));
             position = new Vector2D(x + absCol * (diameter - 0.25*radius), y + (5 - col) * radius + row * diameter);
             balls.add(BallFactory.createStandardBall(number, this, position, radius));
 

@@ -11,7 +11,8 @@ import labb4.game.objects.PoolBall;
 import java.awt.*;
 
 public class BallPainter extends ObjectPainter {
-    private static final Font NUMBER_FONT = new Font("Arial", Font.BOLD, 15);
+    private static final int FONT_SIZE = (int) (6 * Config.RESIZE_FACTOR - 3);
+    private static final Font NUMBER_FONT = new Font("Arial", Font.BOLD, FONT_SIZE);
     private static final double ANGLE = Math.toRadians(30);
 
     @Override
