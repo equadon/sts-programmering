@@ -1,5 +1,6 @@
 package labb4.game.handlers;
 
+import javafx.util.Pair;
 import labb4.game.Player;
 import labb4.game.interfaces.GameObserver;
 import labb4.game.interfaces.Placeable;
@@ -7,7 +8,9 @@ import labb4.game.objects.Pocket;
 import labb4.game.objects.PoolBall;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class that handle game rules.
@@ -15,11 +18,15 @@ import java.util.List;
 public abstract class GameHandler {
     private final List<GameObserver> observers;
 
-    protected List<PoolBall> pocketedBalls;
+    protected Map<PoolBall, Pocket> pocketedBalls;
 
     public GameHandler() {
         observers = new ArrayList<>();
-        pocketedBalls = new ArrayList<>();
+        pocketedBalls = new HashMap<>();
+    }
+
+    protected void add(PoolBall ball, Pocket pocket) {
+        pocketedBalls.put(ball, pocket);
     }
 
     public void addObserver(GameObserver observer) {

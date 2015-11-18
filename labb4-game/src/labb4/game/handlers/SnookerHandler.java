@@ -3,7 +3,6 @@ package labb4.game.handlers;
 import labb4.game.Player;
 import labb4.game.objects.Pocket;
 import labb4.game.objects.PoolBall;
-import labb4.game.tables.Table;
 
 /**
  * This class handle snooker rules.
