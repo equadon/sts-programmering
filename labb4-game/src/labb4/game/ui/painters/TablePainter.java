@@ -75,6 +75,7 @@ public class TablePainter {
         Collections.sort(players, Collections.reverseOrder());
 
         int n = 1;
+        g.setColor(SCORE_COLOR);
         for (Player player : players) {
             String text = String.format("%d. %s  -  points: %d", n, player.name, player.getPoints());
 
