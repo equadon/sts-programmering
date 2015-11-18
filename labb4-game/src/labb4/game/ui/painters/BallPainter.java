@@ -1,10 +1,10 @@
 package labb4.game.ui.painters;
 
 import labb4.game.Config;
+import labb4.game.Utility;
 import labb4.game.Vector2D;
 import labb4.game.interfaces.Aimable;
 import labb4.game.objects.Ball;
-import labb4.game.objects.CueBall;
 import labb4.game.objects.GameObject;
 import labb4.game.objects.PoolBall;
 
@@ -57,6 +57,23 @@ public class BallPainter extends ObjectPainter {
                 (int) Math.round(bounds.y + Config.BALL_BORDER_SIZE / 2.0),
                 width - 2 * Config.BALL_BORDER_SIZE,
                 height - 2 * Config.BALL_BORDER_SIZE);
+
+        if (Config.DISPLAY_VELOCITY_VECTORS && ball.isMoving()) {
+            drawVelocityVector(g, ball);
+        }
+    }
+
+    private void drawVelocityVector(Graphics2D g, Ball ball) {
+        Point start = new Point((int) Math.round(ball.getPosition().x), (int) Math.round(ball.getPosition().y));
+
+        Vector2D velocity = ball.getVelocity().clone();
+        double magnitude = velocity.length();
+        velocity.normalize().multiply(20 * magnitude);
+
+        Point end = new Point(start.x + (int) Math.round(velocity.x), start.y + (int) Math.round(velocity.y));
+
+        g.setColor(Utility.invertColor(ball.getColor()));
+        g.drawLine(start.x, start.y, end.x, end.y);
     }
 
     private void drawBall(Graphics2D g, Color color, int x, int y, int width, int height) {

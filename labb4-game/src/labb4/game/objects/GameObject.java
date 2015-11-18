@@ -21,7 +21,7 @@ public abstract class GameObject {
     protected double mass;
     protected double friction;
 
-    private double frictionPerUpdate;
+    public final double frictionPerUpdate;
 
     public GameObject(ObjectPainter painter, Vector2D position, Vector2D velocity, Color color, double mass, double friction) {
         this.painter = painter;

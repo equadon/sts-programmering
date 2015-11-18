@@ -134,25 +134,35 @@ public class PoolGame extends JFrame {
 
                 Config.HIDE_BALLS = item.isSelected();
                 if (Config.HIDE_BALLS) {
-                    for (Ball ball : poolPanel.getTable().getBalls()) {
+                    for (Ball ball : poolPanel.getTable().getBalls())
                         ball.hide();
-                    }
                 } else {
-                    for (Ball ball : poolPanel.getTable().getBalls()) {
+                    for (Ball ball : poolPanel.getTable().getBalls())
                         ball.show();
-                    }
                 }
                 poolPanel.repaint();
             }
         });
 
+        JMenuItem velocityVectors = new JCheckBoxMenuItem(new AbstractAction("Show velocity vectors") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JCheckBoxMenuItem item = (JCheckBoxMenuItem) e.getSource();
+
+                Config.DISPLAY_VELOCITY_VECTORS = item.isSelected();
+            }
+        });
+
         boundingBoxes.setMnemonic('B');
         hideBalls.setMnemonic('H');
+        velocityVectors.setMnemonic('V');
 
         boundingBoxes.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, Event.CTRL_MASK));
         hideBalls.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, Event.CTRL_MASK));
+        velocityVectors.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, Event.CTRL_MASK));
 
         debugMenu.add(boundingBoxes);
+        debugMenu.add(velocityVectors);
         debugMenu.add(hideBalls);
 
         return debugMenu;

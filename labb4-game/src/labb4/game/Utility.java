@@ -1,5 +1,6 @@
 package labb4.game;
 
+import java.awt.*;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -41,5 +42,11 @@ public class Utility {
                 ),
                 " "
         );
+    }
+
+    public static Color invertColor(Color color) {
+        int invertedRGB = 0xFFFFFF - color.getRGB();
+
+        return new Color(invertedRGB);
     }
 }
