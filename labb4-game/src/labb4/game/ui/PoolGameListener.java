@@ -1,15 +1,15 @@
 package labb4.game.ui;
 
 import labb4.game.Player;
-import labb4.game.interfaces.GameObserver;
+import labb4.game.interfaces.GameListener;
 import labb4.game.interfaces.Placeable;
 
 import javax.swing.*;
 
-public class PoolGameObserver implements GameObserver {
+public class PoolGameListener implements GameListener {
     private final PoolPanel panel;
 
-    public PoolGameObserver(PoolPanel panel) {
+    public PoolGameListener(PoolPanel panel) {
         this.panel = panel;
     }
 

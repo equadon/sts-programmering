@@ -1,8 +1,7 @@
 package labb4.game.handlers;
 
-import javafx.util.Pair;
 import labb4.game.Player;
-import labb4.game.interfaces.GameObserver;
+import labb4.game.interfaces.GameListener;
 import labb4.game.interfaces.Placeable;
 import labb4.game.objects.Pocket;
 import labb4.game.objects.PoolBall;
@@ -16,12 +15,12 @@ import java.util.Map;
  * Class that handle game rules.
  */
 public abstract class GameHandler {
-    private final List<GameObserver> observers;
+    private final List<GameListener> listeners;
 
     protected Map<PoolBall, Pocket> pocketedBalls;
 
     public GameHandler() {
-        observers = new ArrayList<>();
+        listeners = new ArrayList<>();
         pocketedBalls = new HashMap<>();
     }
 
@@ -29,11 +28,11 @@ public abstract class GameHandler {
         pocketedBalls.put(ball, pocket);
     }
 
-    public void addObserver(GameObserver observer) {
-        observers.add(observer);
+    public void addListener(GameListener listener) {
+        listeners.add(listener);
     }
-    public void removeObserver(GameObserver observer) {
-        observers.remove(observer);
+    public void removeListener(GameListener listener) {
+        listeners.remove(listener);
     }
 
     public abstract void newGame(Player starting);
@@ -46,27 +45,27 @@ public abstract class GameHandler {
      * Notification methods.
      */
     protected void notifyIllegalMove(String reason) {
-        for (GameObserver o : observers)
+        for (GameListener o : listeners)
             o.illegalMove(reason);
     }
 
     protected void notifyPlayerChange(Player newPlayer) {
-        for (GameObserver o : observers)
+        for (GameListener o : listeners)
             o.changePlayer(newPlayer);
     }
 
     protected void notifyAddPoints(Player player, int points) {
-        for (GameObserver o : observers)
+        for (GameListener o : listeners)
             o.addPoints(player, points);
     }
 
     protected void notifyPlacingBall(Placeable placeable) {
-        for (GameObserver o : observers)
+        for (GameListener o : listeners)
             o.startPlacing(placeable);
     }
 
     protected void notifyGameOver(Player winner) {
-        for (GameObserver o : observers)
+        for (GameListener o : listeners)
             o.gameOver(winner);
     }
 }

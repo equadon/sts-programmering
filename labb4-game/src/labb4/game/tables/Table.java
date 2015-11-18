@@ -6,7 +6,7 @@ import labb4.game.Player;
 import labb4.game.Vector2D;
 import labb4.game.handlers.GameHandler;
 import labb4.game.interfaces.Aimable;
-import labb4.game.interfaces.GameObserver;
+import labb4.game.interfaces.GameListener;
 import labb4.game.objects.Pocket;
 import labb4.game.objects.PoolBall;
 import labb4.game.ui.painters.TablePainter;
@@ -24,7 +24,7 @@ public abstract class Table {
     protected List<PoolBall> balls;
     protected Pocket[] pockets;
 
-    protected final List<GameObserver> listeners;
+    protected final List<GameListener> listeners;
 
     public final int width;
     public final int height;
@@ -202,11 +202,11 @@ public abstract class Table {
         return pockets;
     }
 
-    public void addObserver(GameObserver observer) {
-        handler.addObserver(observer);
+    public void addListener(GameListener listener) {
+        handler.addListener(listener);
     }
-    public void removeObserver(GameObserver observer) {
-        handler.removeObserver(observer);
+    public void removeListener(GameListener listener) {
+        handler.removeListener(listener);
     }
 
     /**

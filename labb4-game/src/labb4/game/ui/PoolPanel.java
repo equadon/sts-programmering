@@ -27,7 +27,7 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
     private GameType gameType;
 
     private ContextMenuListener popUpListener;
-    private PoolGameObserver gameObserver;
+    private PoolGameListener gameListener;
 
     private List<Placeable> placeables; // list of objects being placed
 
@@ -72,8 +72,8 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
         popUpListener = new ContextMenuListener(this, table);
         addMouseListener(popUpListener);
 
-        gameObserver = new PoolGameObserver(this);
-        table.addObserver(gameObserver);
+        gameListener = new PoolGameListener(this);
+        table.addListener(gameListener);
 
         table.newGame();
 
