@@ -16,6 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Table {
+    private static final double OUTER_BORDER_FACTOR = 43d / 587d;
+    private static final double INNER_BORDER_FACTOR = 26d / 587d;
+
+    private static final double OUTER_SNOOKER_BORDER_FACTOR = 43d / 683d;
+    private static final double INNER_SNOOKER_BORDER_FACTOR = 26d / 683d;
+
     private final TablePainter painter;
 
     private final List<GameListener> listeners;
@@ -34,13 +40,15 @@ public abstract class Table {
     private final Player[] players;
     private int currentPlayerId;
 
+    private Polygon[] collisionBounds;
+
     public Table(int width, int height, Player[] players) {
         this.players = players;
 
         currentPlayerId = 0;
 
-        outerBorderSize = Config.TABLE_OUTER_BORDER_SIZE;
-        innerBorderSize = Config.TABLE_INNER_BORDER_SIZE;
+        outerBorderSize = (int) (11 * Config.RESIZE_FACTOR + 1);
+        innerBorderSize = (int) (7 * Config.RESIZE_FACTOR);
 
         this.width = width + 2 * (outerBorderSize + innerBorderSize);
         this.height = height + 2 * (outerBorderSize + innerBorderSize);
@@ -59,6 +67,45 @@ public abstract class Table {
 
         pockets = createPockets();
         balls = createBalls();
+
+        updateCollisionBounds();
+    }
+
+    public Polygon[] getCollisionBounds() {
+        return collisionBounds;
+    }
+
+    protected void updateCollisionBounds() {
+        Rectangle playable = getPlayableBounds();
+        Point center = new Point((int) playable.getCenterX(), (int) playable.getCenterY());
+
+        collisionBounds = new Polygon[] {
+                new Polygon(
+                        new int[] {playable.x + 9, center.x - Config.DEFAULT_POCKET_RADIUS + 2, center.x - Config.DEFAULT_POCKET_RADIUS - 5, playable.x + 32},
+                        new int[] {playable.y - innerBorderSize, playable.y - innerBorderSize, playable.y, playable.y},
+                        4
+                ), new Polygon(
+                        new int[] {center.x + Config.DEFAULT_POCKET_RADIUS - 1, (int) playable.getMaxX() - 9, (int) playable.getMaxX() - 32, center.x + Config.DEFAULT_POCKET_RADIUS + 4},
+                        new int[] {playable.y - innerBorderSize, playable.y - innerBorderSize, playable.y, playable.y},
+                        4
+                ), new Polygon(
+                        new int[] {playable.x + 9, center.x - Config.DEFAULT_POCKET_RADIUS + 2, center.x - Config.DEFAULT_POCKET_RADIUS - 5, playable.x + 32},
+                        new int[] {(int) playable.getMaxY() + innerBorderSize, (int) playable.getMaxY() + innerBorderSize, (int) playable.getMaxY(), (int) playable.getMaxY()},
+                        4
+                ), new Polygon(
+                        new int[] {center.x + Config.DEFAULT_POCKET_RADIUS - 1, (int) playable.getMaxX() - 9, (int) playable.getMaxX() - 32, center.x + Config.DEFAULT_POCKET_RADIUS + 4},
+                        new int[] {(int) playable.getMaxY() + innerBorderSize, (int) playable.getMaxY() + innerBorderSize, (int) playable.getMaxY(), (int) playable.getMaxY()},
+                        4
+                ), new Polygon(
+                        new int[] {playable.x, playable.x - innerBorderSize, playable.x - innerBorderSize, playable.x},
+                        new int[] {playable.y + Config.DEFAULT_POCKET_RADIUS + 7, playable.y + Config.DEFAULT_POCKET_RADIUS - 12, (int) playable.getMaxY() - 8, (int) playable.getMaxY() - Config.DEFAULT_POCKET_RADIUS - 10},
+                        4
+                ), new Polygon(
+                        new int[] {(int) playable.getMaxX(), (int) playable.getMaxX() + innerBorderSize, (int) playable.getMaxX() + innerBorderSize, (int) playable.getMaxX()},
+                        new int[] {playable.y + Config.DEFAULT_POCKET_RADIUS + 7, playable.y + Config.DEFAULT_POCKET_RADIUS - 12, (int) playable.getMaxY() - 8, (int) playable.getMaxY() - Config.DEFAULT_POCKET_RADIUS - 10},
+                        4
+                ),
+        };
     }
 
     public boolean isUpdating() {
@@ -159,7 +206,7 @@ public abstract class Table {
         double width = playableBounds.width;
         double height = playableBounds.height;
 
-        int offset = (int) (Config.TABLE_INNER_BORDER_SIZE / 2.0);
+        int offset = (int) (innerBorderSize / 2.0);
 
         for (int i = 0; i < pockets.length; i++) {
             int row = i / 3;

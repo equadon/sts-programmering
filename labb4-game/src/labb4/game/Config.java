@@ -22,9 +22,6 @@ public class Config {
     public static final int DEFAULT_TABLE_WIDTH = (int) (254 * RESIZE_FACTOR);
     public static final int DEFAULT_TABLE_HEIGHT = (int) (127 * RESIZE_FACTOR);
 
-    public static final int TABLE_OUTER_BORDER_SIZE = 32;
-    public static final int TABLE_INNER_BORDER_SIZE = 26;
-
     public static final int SNOOKER_TABLE_WIDTH = (int) (356 * RESIZE_FACTOR);
     public static final int SNOOKER_TABLE_HEIGHT = (int) (178 * RESIZE_FACTOR);
 
