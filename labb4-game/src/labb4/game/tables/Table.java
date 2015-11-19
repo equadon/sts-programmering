@@ -319,56 +319,75 @@ public abstract class Table {
                 area3.intersect(new Area(ball.lowerLeftBounds));
                 area4.intersect(new Area(ball.lowerRightBounds));
 
-                if (area1.isEmpty() && !area2.isEmpty() && bounds.y > playableBounds.y - ball.getRadius()/2.0) {
+                if (area1.isEmpty() && !area2.isEmpty() && bounds.y > playableBounds.y - ball.getRadius()/2.0 && bounds.y < playableBounds.getCenterY()) {
                     // Top diag left
                     Vector2D newVelocity = calcDiagonalVelocity(ball, -1, -1);
                     ball.setVelocity(newVelocity.x, newVelocity.y);
                     System.out.println("top diag left");
-                } else if (!area1.isEmpty() && area2.isEmpty() && bounds.y > playableBounds.y - ball.getRadius()/2.0) {
+                    break;
+                } else if (!area1.isEmpty() && area2.isEmpty() && bounds.y > playableBounds.y - ball.getRadius()/2.0 && bounds.y < playableBounds.getCenterY()) {
                     // top diag right
                     Vector2D newVelocity = calcDiagonalVelocity(ball, 1, -1);
                     ball.setVelocity(newVelocity.x, newVelocity.y);
                     System.out.println("top diag right");
-                } else if (!area1.isEmpty() && !area2.isEmpty() && bounds.y > playableBounds.y - ball.getRadius()/2.0) {
+                    break;
+                } else if (!area1.isEmpty() && !area2.isEmpty() && bounds.y > playableBounds.y - ball.getRadius()/2.0 && bounds.y < playableBounds.getCenterY()) {
                     // clean top wall
                     handleTopWallCollision(ball);
                     System.out.println("top");
+                    break;
                 }
 
-                if (area3.isEmpty() && !area4.isEmpty() && bounds.getMaxY() > playableBounds.getMaxY() + ball.getRadius()/2.0) {
+                if (area3.isEmpty() && !area4.isEmpty() && bounds.getMaxY() > playableBounds.getMaxY() + ball.getRadius()/2.0 && bounds.y > playableBounds.getCenterY()) {
                     // bottom diag left
                     Vector2D newVelocity = calcDiagonalVelocity(ball, -1, 1);
                     ball.setVelocity(newVelocity.x, newVelocity.y);
-                } else if (!area3.isEmpty() && area4.isEmpty() && bounds.getMaxY() > playableBounds.getMaxY() + ball.getRadius()/2.0) {
+                    System.out.println("bottom diag left");
+                    break;
+                } else if (!area3.isEmpty() && area4.isEmpty() && bounds.getMaxY() > playableBounds.getMaxY() + ball.getRadius()/2.0 && bounds.y > playableBounds.getCenterY()) {
                     // bottom diag right
                     Vector2D newVelocity = calcDiagonalVelocity(ball, 1, 1);
                     ball.setVelocity(newVelocity.x, newVelocity.y);
-                } else if (!area3.isEmpty() && !area4.isEmpty() && bounds.getMaxY() < playableBounds.getMaxY() + ball.getRadius()/2.0) {
+                    System.out.println("bottom diag right");
+                    break;
+                } else if (!area3.isEmpty() && !area4.isEmpty() && bounds.getMaxY() < playableBounds.getMaxY() + ball.getRadius()/2.0 && bounds.y > playableBounds.getCenterY()) {
                     // clean bottom wall
                     handleBottomWallCollision(ball);
-                }/* else if (area1.isEmpty() && !area3.isEmpty() && bounds.x > playableBounds.x - ball.getRadius()/2.0) {
+                    System.out.println("bottom");
+                    break;
+                }
+
+                if (area1.isEmpty() && !area3.isEmpty() && bounds.x > playableBounds.x - ball.getRadius()/2.0 && bounds.x < playableBounds.getCenterX()) {
                     // left diag up
                     Vector2D newVelocity = calcDiagonalVelocity(ball, -1, -1);
                     ball.setVelocity(newVelocity.x, newVelocity.y);
-                } else if (!area1.isEmpty() && area3.isEmpty() && bounds.x > playableBounds.x - ball.getRadius()/2.0) {
+                    break;
+                } else if (!area1.isEmpty() && area3.isEmpty() && bounds.x > playableBounds.x - ball.getRadius()/2.0 && bounds.x < playableBounds.getCenterX()) {
                     // left diag down
                     Vector2D newVelocity = calcDiagonalVelocity(ball, -1, 1);
                     ball.setVelocity(newVelocity.x, newVelocity.y);
-                } else if (!area1.isEmpty() && !area3.isEmpty() && bounds.x > playableBounds.x - ball.getRadius()/2.0) {
+                    break;
+                } else if (!area1.isEmpty() && !area3.isEmpty() && bounds.x > playableBounds.x - ball.getRadius()/2.0 && bounds.x < playableBounds.getCenterX()) {
                     // clean left wall
                     handleLeftWallCollision(ball);
-                } else if (area2.isEmpty() && !area4.isEmpty() && bounds.getMaxX() < playableBounds.getMaxX() + ball.getRadius()/2.0) {
+                    break;
+                }
+
+                if (area2.isEmpty() && !area4.isEmpty() && bounds.getMaxX() < playableBounds.getMaxX() + ball.getRadius()/2.0 && bounds.x > playableBounds.getCenterX()) {
                     // right diag up
                     Vector2D newVelocity = calcDiagonalVelocity(ball, 1, -1);
                     ball.setVelocity(newVelocity.x, newVelocity.y);
-                } else if (!area2.isEmpty() && area4.isEmpty() && bounds.getMaxX() < playableBounds.getMaxX() + ball.getRadius()/2.0) {
+                    break;
+                } else if (!area2.isEmpty() && area4.isEmpty() && bounds.getMaxX() < playableBounds.getMaxX() + ball.getRadius()/2.0 && bounds.x > playableBounds.getCenterX()) {
                     // right diag down
                     Vector2D newVelocity = calcDiagonalVelocity(ball, 1, 1);
                     ball.setVelocity(newVelocity.x, newVelocity.y);
-                } else if (!area2.isEmpty() && !area4.isEmpty() && bounds.getMaxX() < playableBounds.getMaxX() + ball.getRadius()/2.0) {
+                    break;
+                } else if (!area2.isEmpty() && !area4.isEmpty() && bounds.getMaxX() < playableBounds.getMaxX() + ball.getRadius()/2.0 && bounds.x > playableBounds.getCenterX()) {
                     // clean right wall
                     handleRightWallCollision(ball);
-                }*/
+                    break;
+                }
             }
         }
 
