@@ -26,6 +26,8 @@ public class TablePainter {
     }
 
     public void draw(Graphics2D g, Table table) {
+        Rectangle bounds = table.getPlayableBounds();
+
         if (table instanceof SnookerTable) {
             g.drawImage(snookerTableImage, 0, 0, table.width, table.height, null);
         } else {
@@ -34,9 +36,14 @@ public class TablePainter {
 
         g.setColor(Config.TABLE_LINE_COLOR);
         if (table instanceof SnookerTable) {
-            drawSnookerLines(g, table.getPlayableBounds(), table.getPlayableBounds().width);
+            drawSnookerLines(g, bounds, bounds.width);
         } else {
-            drawStandardLines(g, table.getPlayableBounds());
+            drawStandardLines(g, bounds);
+        }
+
+        if (Config.DISPLAY_BOUNDING_BOXES) {
+            g.setColor(new Color(1f, 0, 0, 0.3f));
+            g.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
         }
     }
 

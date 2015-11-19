@@ -8,7 +8,7 @@ import java.awt.*;
 public class PocketPainter extends ObjectPainter {
     @Override
     public void draw(Graphics2D g, GameObject object) {
-        Rectangle.Double bounds = object.getBounds();
+/*        Rectangle.Double bounds = object.getBounds();
 
         if (Config.DISPLAY_BOUNDING_BOXES) {
             g.setColor(Config.BALL_BLACK_COLOR);
@@ -17,6 +17,6 @@ public class PocketPainter extends ObjectPainter {
         }
 
         g.setColor(Config.DEFAULT_POCKET_COLOR);
-        g.fillOval((int) bounds.x, (int) bounds.y, (int) bounds.width, (int) bounds.height);
+        g.fillOval((int) bounds.x, (int) bounds.y, (int) bounds.width, (int) bounds.height);*/
     }
 }

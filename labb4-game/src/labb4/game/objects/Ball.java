@@ -20,7 +20,7 @@ public class Ball extends GameObject {
     }
 
     public Ball(Table table, ObjectPainter painter, Vector2D position, Color color, double mass, double friction, double radius, boolean striped) {
-        super(new BallPainter(), position, new Vector2D(0, 0), color, Config.DEFAULT_MASS, Config.DEFAULT_FRICTION);
+        super(painter, position, new Vector2D(0, 0), color, Config.DEFAULT_MASS, Config.DEFAULT_FRICTION);
 
         this.table = table;
         this.striped = striped;

@@ -22,7 +22,7 @@ public class Config {
     public static final int DEFAULT_TABLE_WIDTH = (int) (254 * RESIZE_FACTOR);
     public static final int DEFAULT_TABLE_HEIGHT = (int) (127 * RESIZE_FACTOR);
 
-    public static final int TABLE_OUTER_BORDER_SIZE = 43;
+    public static final int TABLE_OUTER_BORDER_SIZE = 32;
     public static final int TABLE_INNER_BORDER_SIZE = 26;
 
     public static final int SNOOKER_TABLE_WIDTH = (int) (356 * RESIZE_FACTOR);
@@ -63,7 +63,7 @@ public class Config {
     /**
      * Debugging constants.
      */
-    public static boolean DISPLAY_BOUNDING_BOXES = false;
+    public static boolean DISPLAY_BOUNDING_BOXES = true;
     public static boolean DISPLAY_VELOCITY_VECTORS = false;
     public static boolean HIDE_BALLS = false;
 }
