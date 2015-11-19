@@ -3,33 +3,32 @@ package labb4;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.font.FontRenderContext;
 
 /**
  * ****************************************************************************************
  * Table
  *
  * The table has some constants and instance variables relating to the graphics and
- * the balls. When simulating the balls it starts a timer
+ * the balls. When simulating the molecules it starts a timer
  * which fires UPDATE_FREQUENCY times per second. Each time the timer is
  * activated one step of the simulation is performed. The table reacts to
  * events to accomplish repaints and to stop or start the timer.
  *
  */
 class MoleculesPanel extends JPanel implements MouseListener, MouseMotionListener, ActionListener {
-    public static int BALL_COUNT = 400;
+    public static int BALL_COUNT = 500;
     private static double FRICTION = 0;
     private static double RADIUS = 7;
 
-    private final int   WIDTH          = 1200;
-    private final int   HEIGHT         = 600;
+    public final int   WIDTH          = 900;
+    public final int   HEIGHT         = 600;
     private final int   WALL_THICKNESS = 20;
     private final Color COLOR          = Color.green;
     private final Color WALL_COLOR     = Color.black;
     private final Timer simulationTimer;
 
     public final Rectangle innerBounds;
-    private final Ball[] balls;
+    private final Molecule[] molecules;
 
     MoleculesPanel() {
         innerBounds = new Rectangle(getBounds().x + WALL_THICKNESS, getBounds().y + WALL_THICKNESS, WIDTH, HEIGHT);
@@ -37,7 +36,7 @@ class MoleculesPanel extends JPanel implements MouseListener, MouseMotionListene
         setPreferredSize(new Dimension(WIDTH + 2 * WALL_THICKNESS,
                 HEIGHT + 2 * WALL_THICKNESS));
 
-        balls = new Ball[BALL_COUNT];
+        molecules = new Molecule[BALL_COUNT];
         createInitialBalls();
 
         addMouseListener(this);
@@ -47,13 +46,32 @@ class MoleculesPanel extends JPanel implements MouseListener, MouseMotionListene
         simulationTimer.start();
     }
 
+    public void start() {
+        simulationTimer.start();
+    }
+
+    public void pause() {
+        simulationTimer.stop();
+    }
+
+    public int countDead() {
+        int deadCount = 0;
+        for (Molecule molecule : molecules) {
+            if (molecule.isDead()) {
+                deadCount++;
+            }
+        }
+
+        return deadCount;
+    }
+
     private void createInitialBalls(){
-        for (int i = 0; i < balls.length; i++) {
-            balls[i] = createRandomBall(i);
+        for (int i = 0; i < molecules.length; i++) {
+            molecules[i] = createRandomMolecule(i);
         }
     }
 
-    private Ball createRandomBall(int index) {
+    private Molecule createRandomMolecule(int index) {
         int radius = 15;
 
         double width = WIDTH - 2 * radius;
@@ -74,10 +92,10 @@ class MoleculesPanel extends JPanel implements MouseListener, MouseMotionListene
             Coord position = new Coord(x, y);
             Coord velocity = new Coord(interval * Math.random() - interval/2, interval * Math.random() - interval/2);
 
-            molecule = new Molecule(innerBounds, position, velocity, FRICTION, RADIUS, Math.random() < Molecule.INIT_INFECTED_PROB);
+            molecule = new Molecule(this, position, velocity, FRICTION, RADIUS, Math.random() < Molecule.INIT_INFECTED_PROB);
 
             for (int i = 0; i < index; i++) {
-                if (molecule.getBounds().intersects(balls[i].getBounds())) {
+                if (molecule.getBounds().intersects(molecules[i].getBounds())) {
                     foundCollision = true;
                     break;
                 }
@@ -88,22 +106,22 @@ class MoleculesPanel extends JPanel implements MouseListener, MouseMotionListene
     }
 
     public void actionPerformed(ActionEvent e) {          // Timer event
-        for (Ball ball : balls) {
+        for (Ball ball : molecules) {
             if (ball.isVisible()) {
                 ball.move();
             }
         }
 
-        for (Ball ball : balls) {
+        for (Ball ball : molecules) {
             if (ball.isVisible()) {
-                ball.checkCollisions(balls);
+                ball.checkCollisions(molecules);
             }
         }
 
         repaint();
 
         boolean hasMovingBalls = false;
-        for (Ball ball : balls) {
+        for (Ball ball : molecules) {
             if (ball.isVisible() && ball.isMoving()) {
                 hasMovingBalls = true;
             }
@@ -117,7 +135,7 @@ class MoleculesPanel extends JPanel implements MouseListener, MouseMotionListene
     public void mousePressed(MouseEvent event) {
         Coord mousePosition = new Coord(event);
 
-        for (Ball ball : balls) {
+        for (Ball ball : molecules) {
             if (ball.isVisible()) {
                 ball.setAimPosition(mousePosition);
             }
@@ -127,7 +145,7 @@ class MoleculesPanel extends JPanel implements MouseListener, MouseMotionListene
     }
 
     public void mouseReleased(MouseEvent e) {
-        for (Ball ball : balls) {
+        for (Ball ball : molecules) {
             if (ball.isVisible()) {
                 ball.shoot();
             }
@@ -141,7 +159,7 @@ class MoleculesPanel extends JPanel implements MouseListener, MouseMotionListene
     public void mouseDragged(MouseEvent event) {
         Coord mousePosition = new Coord(event);
 
-        for (Ball ball : balls) {
+        for (Ball ball : molecules) {
             if (ball.isVisible()) {
                 ball.updateAimPosition(mousePosition);
             }
@@ -170,7 +188,7 @@ class MoleculesPanel extends JPanel implements MouseListener, MouseMotionListene
         g2D.setColor(COLOR);
         g2D.fillRect(WALL_THICKNESS, WALL_THICKNESS, WIDTH, HEIGHT);
 
-        for (Ball ball : balls) {
+        for (Ball ball : molecules) {
             if (ball.isVisible()) {
                 ball.paint(g2D);
             }
