@@ -189,7 +189,7 @@ public class SnookerTable extends Table {
         int radius = Config.BALL_RADIUS;
         int diameter = 2 * radius;
 
-        //createRedBalls(balls, radius, diameter);
+        createRedBalls(balls, radius, diameter);
 
         double xLine = Config.SNOOKER_X_LINE * getPlayableBounds().getMaxX();
 
