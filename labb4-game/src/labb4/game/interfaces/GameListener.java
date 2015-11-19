@@ -7,5 +7,6 @@ public interface GameListener {
     void playerChanged(Player newPlayer);
     void pointsAdded(Player player, int points);
     void placeStarted(Placeable placeable);
+    void nextBall(String next);
     void gameEnded(Player winner);
 }

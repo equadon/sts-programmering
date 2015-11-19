@@ -26,7 +26,10 @@ public class NineBallTable extends Table {
     }
 
     @Override
-    public void newGame(Player starting) {}
+    public void newGame(Player starting) {
+        notifyPlayerChange(getCurrentPlayer());
+        notifyNextBall("#" + findLowestBall().number);
+    }
 
     @Override
     public void beginTurn() {
@@ -34,7 +37,6 @@ public class NineBallTable extends Table {
         firstHit = null;
         pocketedBalls.clear();
         lowestBall = findLowestBall();
-        System.out.println("begin turn (lowest ball = #" + lowestBall.number + ")");
     }
 
     @Override
@@ -52,33 +54,42 @@ public class NineBallTable extends Table {
     @Override
     public void endTurn() {
         boolean validMove = false;
+        boolean gameOver = false;
 
         int points = countPoints();
 
         if (isCueBallPocketed()) {
             notifyIllegalMove("Cue ball pocketed.");
+            changePlayer();
             placeAllPocketedBalls();
         } else if (firstHit == null) {
-            System.out.println("No balls hit, change player.");
-            nextPlayer();
-            notifyPlayerChange(getCurrentPlayer());
+            changePlayer();
         } else if (firstHit != lowestBall) {
             notifyIllegalMove("Must hit the lowest ball first.");
+            changePlayer();
             placeAllPocketedBalls();
         } else if (isBallPocketed(9)) {
+            gameOver = true;
+            notifyNextBall("-");
             notifyGameOver(getCurrentPlayer());
         } else if (pocketedBalls.size() == 0) {
-            System.out.println("Failed to pocket a ball, change player.");
-            nextPlayer();
-            notifyPlayerChange(getCurrentPlayer());
+            changePlayer();
         } else {
-            System.out.println("OK, keep playing.");
             validMove = true;
         }
 
         if (validMove && points > 0) {
             notifyAddPoints(player, points);
         }
+
+        if (!gameOver) {
+            notifyNextBall("#" + findLowestBall().number);
+        }
+    }
+
+    private void changePlayer() {
+        nextPlayer();
+        notifyPlayerChange(getCurrentPlayer());
     }
 
     private int countPoints() {

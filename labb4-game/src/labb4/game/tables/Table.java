@@ -239,50 +239,6 @@ public abstract class Table {
     }
 
     /**
-     * Observer pattern methods.
-     */
-    public void addListener(GameListener listener) {
-        listeners.add(listener);
-    }
-    public void removeListener(GameListener listener) {
-        listeners.remove(listener);
-    }
-
-    public abstract void newGame(Player starting);
-    public abstract void beginTurn();
-    public abstract void collision(PoolBall ball1, PoolBall ball2);
-    public abstract void pocketed(PoolBall ball, Pocket pocket);
-    public abstract void endTurn();
-
-    /**
-     * Notification methods.
-     */
-    protected void notifyIllegalMove(String reason) {
-        for (GameListener o : listeners)
-            o.illegalMove(reason);
-    }
-
-    protected void notifyPlayerChange(Player newPlayer) {
-        for (GameListener o : listeners)
-            o.playerChanged(newPlayer);
-    }
-
-    protected void notifyAddPoints(Player player, int points) {
-        for (GameListener o : listeners)
-            o.pointsAdded(player, points);
-    }
-
-    protected void notifyPlacingBall(Placeable placeable) {
-        for (GameListener o : listeners)
-            o.placeStarted(placeable);
-    }
-
-    protected void notifyGameOver(Player winner) {
-        for (GameListener o : listeners)
-            o.gameEnded(winner);
-    }
-
-    /**
      * Helper method to create a Table object based on chosen game type.
      */
     public static Table createTable(GameType type, Player[] players) {
@@ -471,5 +427,54 @@ public abstract class Table {
         ball.getPosition().y -= ball.getBounds().getMaxY() - playableBounds.getMaxY();
         Vector2D velocity = ball.getVelocity();
         ball.setVelocity(velocity.x, -velocity.y);
+    }
+
+    /**
+     * Observer pattern methods.
+     */
+    public void addListener(GameListener listener) {
+        listeners.add(listener);
+    }
+    public void removeListener(GameListener listener) {
+        listeners.remove(listener);
+    }
+
+    public abstract void newGame(Player starting);
+    public abstract void beginTurn();
+    public abstract void collision(PoolBall ball1, PoolBall ball2);
+    public abstract void pocketed(PoolBall ball, Pocket pocket);
+    public abstract void endTurn();
+
+    /**
+     * Notification methods.
+     */
+    protected void notifyIllegalMove(String reason) {
+        for (GameListener o : listeners)
+            o.illegalMove(reason);
+    }
+
+    protected void notifyPlayerChange(Player newPlayer) {
+        for (GameListener o : listeners)
+            o.playerChanged(newPlayer);
+    }
+
+    protected void notifyAddPoints(Player player, int points) {
+        for (GameListener o : listeners)
+            o.pointsAdded(player, points);
+    }
+
+    protected void notifyPlacingBall(Placeable placeable) {
+        for (GameListener o : listeners)
+            o.placeStarted(placeable);
+    }
+
+    protected void notifyNextBall(String next) {
+        for (GameListener o : listeners)
+            o.nextBall(next);
+    }
+
+    protected void notifyGameOver(Player winner) {
+        for (GameListener o : listeners)
+            o.gameEnded(winner);
     }
 }
