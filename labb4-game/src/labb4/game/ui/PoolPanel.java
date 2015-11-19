@@ -41,7 +41,7 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
 
         setFocusable(true);
 
-        newGame(GameType.EightBall);
+        newGame(GameType.NineBall);
 
         addKeyListener(this);
         addMouseListener(this);

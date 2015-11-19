@@ -6,27 +6,66 @@ import labb4.game.objects.Pocket;
 import labb4.game.objects.PoolBall;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
 
 public class NineBallTable extends Table {
+    private static final Logger LOG = Logger.getLogger(NineBallTable.class.getName());
+
+    private PoolBall firstHit;
+    private Map<PoolBall, Pocket> pocketedBalls;
+
     public NineBallTable(Player[] players) {
         super(Config.DEFAULT_TABLE_WIDTH, Config.DEFAULT_TABLE_HEIGHT, players);
+
+        pocketedBalls = new HashMap<>();
     }
 
     @Override
     public void newGame(Player starting) {}
 
     @Override
-    public void beginTurn() {}
+    public void beginTurn() {
+        firstHit = null;
+        pocketedBalls.clear();
+        LOG.info("begin turn");
+    }
 
     @Override
-    public void collision(PoolBall ball1, PoolBall ball2) {}
+    public void collision(PoolBall ball1, PoolBall ball2) {
+        if (firstHit == null) {
+            firstHit = (ball1 instanceof CueBall) ? ball2 : ball1;
+        }
+    }
 
     @Override
-    public void pocketed(PoolBall ball, Pocket pocket) {}
+    public void pocketed(PoolBall ball, Pocket pocket) {
+        pocketedBalls.put(ball, pocket);
+        LOG.info("pocketed " + ball.number);
+    }
 
     @Override
-    public void endTurn() {}
+    public void endTurn() {
+        if (firstHit == findLowestBall()) {
+            // Valid move
+        } else {
+            LOG.info("Invalid move.");
+        }
+
+        LOG.info("Turn ended:\n   first hit: " + ((firstHit == null) ? "none" : firstHit.number));
+    }
+
+    private PoolBall findLowestBall() {
+        PoolBall lowest = getBalls()[0];
+        for (PoolBall ball : getBalls()) {
+            if (ball.number < lowest.number) {
+                lowest = ball;
+            }
+        }
+        return lowest;
+    }
 
     @Override
     protected List<PoolBall> createBalls() {
