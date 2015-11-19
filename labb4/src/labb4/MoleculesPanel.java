@@ -91,7 +91,7 @@ class MoleculesPanel extends JPanel implements MouseListener, ActionListener {
             Coord position = new Coord(x, y);
             Coord velocity = new Coord(interval * Math.random() - interval/2, interval * Math.random() - interval/2);
 
-            molecule = new Molecule(this, position, velocity, FRICTION, RADIUS, Math.random() < Molecule.INIT_INFECTED_PROB);
+            molecule = new Molecule(innerBounds, position, velocity, FRICTION, RADIUS, Math.random() < Molecule.INIT_INFECTED_PROB);
 
             for (int i = 0; i < index; i++) {
                 if (molecule.getBounds().intersects(molecules[i].getBounds())) {

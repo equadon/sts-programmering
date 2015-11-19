@@ -3,6 +3,9 @@ package labb4;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Uppgift 2, labb 4: Karin Melin och Niklas Persson
+ */
 public class DiseaseSimulator {
     final static int UPDATE_FREQUENCY = 100;    // Global constant: fps, ie times per second to simulate
 

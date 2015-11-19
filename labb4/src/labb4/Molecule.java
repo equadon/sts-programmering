@@ -3,9 +3,9 @@ package labb4;
 import java.awt.*;
 
 public class Molecule extends Ball {
-    public static double INIT_INFECTED_PROB = 0.1;
-    private static final double INFECTED_PROB = 0.5;
-    private static final double DEAD_PROB = 0.005;
+    public static double INIT_INFECTED_PROB = 0.3;
+    private static final double INFECTED_PROB = 0.2;
+    private static final double DEAD_PROB = 0.001;
 
     private static final double HEALTH_TIMER_MIN = 2.0; // seconds
     private static final double HEALTH_TIMER_MAX = 4.0; // seconds
@@ -21,12 +21,9 @@ public class Molecule extends Ball {
     private boolean sick;
     private boolean dead;
 
-    private final MoleculesPanel panel;
+    public Molecule(Rectangle innerBounds, Coord initialPosition, Coord velocity, double friction, double radius, boolean sick) {
+        super(innerBounds, initialPosition, velocity, friction, radius);
 
-    public Molecule(MoleculesPanel panel, Coord initialPosition, Coord velocity, double friction, double radius, boolean sick) {
-        super(panel.innerBounds, initialPosition, velocity, friction, radius);
-
-        this.panel = panel;
         this.sick = sick;
         dead = false;
 
