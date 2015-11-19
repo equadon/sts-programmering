@@ -337,16 +337,16 @@ public abstract class Table {
                     break;
                 }
 
-                if (handleTopSide(ball, area1, area2))
+                if (handleTopSide(ball, area1, area2, area3, area4))
                     break;
 
-                if (handleBottomSide(ball, area3, area4))
+                if (handleBottomSide(ball, area1, area2, area3, area4))
                     break;
 
-                if (handleLeftSide(ball, area1, area3))
+                if (handleLeftSide(ball, area1, area2, area3, area4))
                     break;
 
-                if (handleRightSide(ball, area2, area4))
+                if (handleRightSide(ball, area1, area2, area3, area4))
                     break;
             }
         }
@@ -354,8 +354,8 @@ public abstract class Table {
         return false;
     }
 
-    private boolean handleRightSide(Ball ball, Area area2, Area area4) {
-        if (ball.getVelocity().x < 0)
+    private boolean handleRightSide(Ball ball, Area area1, Area area2, Area area3, Area area4) {
+        if (ball.getVelocity().x < 0 || (!area1.isEmpty() || !area3.isEmpty()))
             return false;
 
         Rectangle.Double bBounds = ball.getBounds();
@@ -377,8 +377,8 @@ public abstract class Table {
         return false;
     }
 
-    private boolean handleLeftSide(Ball ball, Area area1, Area area3) {
-        if (ball.getVelocity().x > 0)
+    private boolean handleLeftSide(Ball ball, Area area1, Area area2, Area area3, Area area4) {
+        if (ball.getVelocity().x > 0 || (!area2.isEmpty() || !area4.isEmpty()))
             return false;
 
         Rectangle.Double bBounds = ball.getBounds();
@@ -401,8 +401,8 @@ public abstract class Table {
         return false;
     }
 
-    private boolean handleBottomSide(Ball ball, Area area3, Area area4) {
-        if (ball.getVelocity().y < 0)
+    private boolean handleBottomSide(Ball ball, Area area1, Area area2, Area area3, Area area4) {
+        if (ball.getVelocity().y < 0 || (!area1.isEmpty() || !area2.isEmpty()))
             return false;
 
         Rectangle.Double bBounds = ball.getBounds();
@@ -424,8 +424,8 @@ public abstract class Table {
         return false;
     }
 
-    private boolean handleTopSide(Ball ball, Area area1, Area area2) {
-        if (ball.getVelocity().y > 0)
+    private boolean handleTopSide(Ball ball, Area area1, Area area2, Area area3, Area area4) {
+        if (ball.getVelocity().y > 0 || (!area3.isEmpty() || !area4.isEmpty()))
             return false;
 
         Rectangle.Double bBounds = ball.getBounds();
