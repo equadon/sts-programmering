@@ -21,9 +21,7 @@ class MoleculesPanel extends JPanel implements MouseListener, MouseMotionListene
     private static double FRICTION = 0;
     private static double RADIUS = 7;
 
-    private static double INIT_INFECTED_PROB = 0.5;
-
-    private final int   WIDTH          = 900;
+    private final int   WIDTH          = 1200;
     private final int   HEIGHT         = 600;
     private final int   WALL_THICKNESS = 20;
     private final Color COLOR          = Color.green;
@@ -76,7 +74,7 @@ class MoleculesPanel extends JPanel implements MouseListener, MouseMotionListene
             Coord position = new Coord(x, y);
             Coord velocity = new Coord(interval * Math.random() - interval/2, interval * Math.random() - interval/2);
 
-            molecule = new Molecule(innerBounds, position, velocity, FRICTION, RADIUS, Math.random() < INIT_INFECTED_PROB);
+            molecule = new Molecule(innerBounds, position, velocity, FRICTION, RADIUS, Math.random() < Molecule.INIT_INFECTED_PROB);
 
             for (int i = 0; i < index; i++) {
                 if (molecule.getBounds().intersects(balls[i].getBounds())) {
