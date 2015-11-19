@@ -65,7 +65,7 @@ public class Molecule extends Ball {
         dead = true;
     }
 
-    public void becomeSick(Molecule victim) {
+    public void infect(Molecule victim) {
         if (Math.random() < INFECTED_PROB) {
             victim.becomeSick();
         }
@@ -76,9 +76,9 @@ public class Molecule extends Ball {
         Molecule other = (Molecule) ballB;
 
         if (!isSick() && other.isSick()) {
-            other.becomeSick(this);
+            other.infect(this);
         } else if (isSick() && !other.isSick()) {
-            becomeSick(other);
+            infect(other);
         }
     }
 

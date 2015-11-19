@@ -20,7 +20,7 @@ class Ball {
     private final double FRICTION_PER_UPDATE;
 
     private Rectangle2D tableBounds;
-    private Coord position;
+    Coord position;
 
     private Coord lastPosition;
     private Coord velocity;

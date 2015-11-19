@@ -15,7 +15,7 @@ import java.awt.event.*;
  * events to accomplish repaints and to stop or start the timer.
  *
  */
-class MoleculesPanel extends JPanel implements MouseListener, MouseMotionListener, ActionListener {
+class MoleculesPanel extends JPanel implements MouseListener, ActionListener {
     public static int BALL_COUNT = 500;
     private static double FRICTION = 0;
     private static double RADIUS = 7;
@@ -40,7 +40,6 @@ class MoleculesPanel extends JPanel implements MouseListener, MouseMotionListene
         createInitialBalls();
 
         addMouseListener(this);
-        addMouseMotionListener(this);
 
         simulationTimer = new Timer((int) (1000.0 / DiseaseSimulator.UPDATE_FREQUENCY), this);
         simulationTimer.start();
@@ -132,48 +131,6 @@ class MoleculesPanel extends JPanel implements MouseListener, MouseMotionListene
         }
     }
 
-    public void mousePressed(MouseEvent event) {
-        Coord mousePosition = new Coord(event);
-
-        for (Ball ball : molecules) {
-            if (ball.isVisible()) {
-                ball.setAimPosition(mousePosition);
-            }
-        }
-
-        repaint();                          //  To show aiming line
-    }
-
-    public void mouseReleased(MouseEvent e) {
-        for (Ball ball : molecules) {
-            if (ball.isVisible()) {
-                ball.shoot();
-            }
-        }
-
-        if (!simulationTimer.isRunning()) {
-            simulationTimer.start();
-        }
-    }
-
-    public void mouseDragged(MouseEvent event) {
-        Coord mousePosition = new Coord(event);
-
-        for (Ball ball : molecules) {
-            if (ball.isVisible()) {
-                ball.updateAimPosition(mousePosition);
-            }
-        }
-
-        repaint();
-    }
-
-    // Obligatory empty listener methods
-    public void mouseClicked(MouseEvent e) {}
-    public void mouseEntered(MouseEvent e) {}
-    public void mouseExited(MouseEvent e) {}
-    public void mouseMoved(MouseEvent e) {}
-
     @Override
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
@@ -194,4 +151,32 @@ class MoleculesPanel extends JPanel implements MouseListener, MouseMotionListene
             }
         }
     }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if (!simulationTimer.isRunning()) {
+            Coord position = new Coord(e);
+
+            for (Molecule molecule : molecules) {
+                double distance = Coord.distance(position, molecule.position);
+
+                if (distance < molecule.radius) {
+                    molecule.becomeSick();
+                    repaint();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {}
+
+    @Override
+    public void mouseReleased(MouseEvent e) {}
+
+    @Override
+    public void mouseEntered(MouseEvent e) {}
+
+    @Override
+    public void mouseExited(MouseEvent e) {}
 }  // end class Table
