@@ -3,32 +3,47 @@ package labb4;
 import java.awt.*;
 
 public class Molecule extends Ball {
-    private static final double INFECTED_PROB = 0.1;
+    private static final double INFECTED_PROB = 0.0;
+    private static final double HEALTH_TIMER_START = 2.0; // seconds
+    private static final double SECONDS_PER_FRAME = 1d / DiseaseSimulator.UPDATE_FREQUENCY;
 
-    private boolean infected;
+    private static final Color HEALTHY_COLOR = Color.WHITE;
+    private static final Color INFECTED_COLOR = Color.RED;
 
-    Molecule(Rectangle tableBounds, Coord initialPosition, Coord velocity, double friction, double radius, boolean infected) {
+    private double healthTimer;
+    private boolean sick;
+
+    public Molecule(Rectangle tableBounds, Coord initialPosition, Coord velocity, double friction, double radius, boolean sick) {
         super(tableBounds, initialPosition, velocity, friction, radius);
 
-        this.infected = infected;
+        this.sick = sick;
 
-        if (infected) {
-            color = Color.RED;
+        if (sick) {
+            becomeSick();
+        } else {
+            becomeHealthy();
         }
     }
 
-    public boolean isInfected() {
-        return infected;
+    public boolean isSick() {
+        return sick;
     }
 
-    private void infect() {
-        infected = true;
-        color = Color.RED;
+    private void becomeSick() {
+        sick = true;
+        healthTimer = HEALTH_TIMER_START;
+        color = INFECTED_COLOR;
     }
 
-    public void infect(Molecule victim) {
+    private void becomeHealthy() {
+        sick = false;
+        healthTimer = 0;
+        color = HEALTHY_COLOR;
+    }
+
+    public void becomeSick(Molecule victim) {
         if (Math.random() < INFECTED_PROB) {
-            victim.infect();
+            victim.becomeSick();
         }
     }
 
@@ -36,10 +51,23 @@ public class Molecule extends Ball {
     protected void collidedWith(Ball ballB) {
         Molecule other = (Molecule) ballB;
 
-        if (!isInfected() && other.isInfected()) {
-            other.infect(this);
-        } else if (isInfected() && !other.isInfected()) {
-            infect(other);
+        if (!isSick() && other.isSick()) {
+            other.becomeSick(this);
+        } else if (isSick() && !other.isSick()) {
+            becomeSick(other);
+        }
+    }
+
+    @Override
+    void move() {
+        super.move();
+
+        if (isSick()) {
+            healthTimer -= SECONDS_PER_FRAME;
+
+            if (healthTimer <= 0) {
+                becomeHealthy();
+            }
         }
     }
 }

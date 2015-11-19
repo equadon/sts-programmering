@@ -23,7 +23,7 @@ class MoleculesPanel extends JPanel implements MouseListener, MouseMotionListene
 
     private static double INIT_INFECTED_PROB = 0.5;
 
-    private final int   WIDTH          = 600;
+    private final int   WIDTH          = 900;
     private final int   HEIGHT         = 600;
     private final int   WALL_THICKNESS = 20;
     private final Color COLOR          = Color.green;
@@ -45,7 +45,7 @@ class MoleculesPanel extends JPanel implements MouseListener, MouseMotionListene
         addMouseListener(this);
         addMouseMotionListener(this);
 
-        simulationTimer = new Timer((int) (1000.0 / Pool.UPDATE_FREQUENCY), this);
+        simulationTimer = new Timer((int) (1000.0 / DiseaseSimulator.UPDATE_FREQUENCY), this);
         simulationTimer.start();
     }
 
