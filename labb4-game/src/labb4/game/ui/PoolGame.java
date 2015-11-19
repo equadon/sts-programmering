@@ -19,14 +19,18 @@ public class PoolGame extends JFrame {
 
         Player[] players = createPlayers();
 
-        PoolPanel poolPanel = new PoolPanel(this, players);
+        GamePanel gamePanel = new GamePanel(this, players);
+        InfoPanel infoPanel = new InfoPanel(gamePanel);
+        gamePanel.getTable().newGame(gamePanel.getTable().getCurrentPlayer());
 
-        setJMenuBar(createMenuBar(poolPanel));
+        setJMenuBar(createMenuBar(gamePanel));
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
-        add(poolPanel, BorderLayout.CENTER);
+        add(gamePanel, BorderLayout.CENTER);
+        add(infoPanel, BorderLayout.EAST);
         pack();
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 
@@ -52,11 +56,11 @@ public class PoolGame extends JFrame {
         return players.toArray(new Player[players.size()]);
     }
 
-    private JMenuBar createMenuBar(PoolPanel poolPanel) {
+    private JMenuBar createMenuBar(GamePanel gamePanel) {
         JMenuBar menuBar = new JMenuBar();
 
-        JMenu gameMenu = createGameMenu(poolPanel);
-        JMenu debugMenu = createDebugMenu(poolPanel);
+        JMenu gameMenu = createGameMenu(gamePanel);
+        JMenu debugMenu = createDebugMenu(gamePanel);
 
         menuBar.add(gameMenu);
         menuBar.add(debugMenu);
@@ -64,26 +68,26 @@ public class PoolGame extends JFrame {
         return menuBar;
     }
 
-    private JMenu createGameMenu(PoolPanel poolPanel) {
+    private JMenu createGameMenu(GamePanel gamePanel) {
         JMenu gameMenu = new JMenu("Game");
         gameMenu.setMnemonic('G');
 
         JMenuItem eightBall = new JMenuItem(new AbstractAction("Eight ball") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                poolPanel.newGame(GameType.EightBall);
+                gamePanel.newGame(GameType.EightBall);
             }
         });
         JMenuItem nineBall = new JMenuItem(new AbstractAction("Nine ball") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                poolPanel.newGame(GameType.NineBall);
+                gamePanel.newGame(GameType.NineBall);
             }
         });
         JMenuItem snooker = new JMenuItem(new AbstractAction("Snooker") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                poolPanel.newGame(GameType.Snooker);
+                gamePanel.newGame(GameType.Snooker);
             }
         });
 
@@ -113,7 +117,7 @@ public class PoolGame extends JFrame {
         return gameMenu;
     }
 
-    private JMenu createDebugMenu(PoolPanel poolPanel) {
+    private JMenu createDebugMenu(GamePanel gamePanel) {
         JMenu debugMenu = new JMenu("Debug");
         debugMenu.setMnemonic('D');
 
@@ -123,7 +127,7 @@ public class PoolGame extends JFrame {
                 JCheckBoxMenuItem item = (JCheckBoxMenuItem) e.getSource();
 
                 Config.DISPLAY_BOUNDING_BOXES = item.isSelected();
-                poolPanel.repaint();
+                gamePanel.repaint();
             }
         });
 
@@ -134,13 +138,13 @@ public class PoolGame extends JFrame {
 
                 Config.HIDE_BALLS = item.isSelected();
                 if (Config.HIDE_BALLS) {
-                    for (Ball ball : poolPanel.getTable().getBalls())
+                    for (Ball ball : gamePanel.getTable().getBalls())
                         ball.hide();
                 } else {
-                    for (Ball ball : poolPanel.getTable().getBalls())
+                    for (Ball ball : gamePanel.getTable().getBalls())
                         ball.show();
                 }
-                poolPanel.repaint();
+                gamePanel.repaint();
             }
         });
 

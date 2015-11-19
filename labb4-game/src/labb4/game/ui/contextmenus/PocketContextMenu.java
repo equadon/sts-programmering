@@ -1,15 +1,14 @@
 package labb4.game.ui.contextmenus;
 
-import labb4.game.objects.CueBall;
 import labb4.game.objects.Pocket;
 import labb4.game.objects.PoolBall;
-import labb4.game.ui.PoolPanel;
+import labb4.game.ui.GamePanel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 public class PocketContextMenu extends JPopupMenu {
-    public PocketContextMenu(PoolPanel panel, Pocket pocket) {
+    public PocketContextMenu(GamePanel panel, Pocket pocket) {
         super();
 
         PoolBall[] balls = pocket.getBalls();

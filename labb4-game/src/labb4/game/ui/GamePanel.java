@@ -2,6 +2,7 @@ package labb4.game.ui;
 
 import labb4.game.*;
 import labb4.game.interfaces.Aimable;
+import labb4.game.interfaces.GameListener;
 import labb4.game.interfaces.Placeable;
 import labb4.game.objects.Ball;
 import labb4.game.objects.PoolBall;
@@ -15,8 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class PoolPanel extends JPanel implements ActionListener, KeyListener, MouseListener, MouseMotionListener {
-    private static final Logger LOG = Logger.getLogger(PoolPanel.class.getName());
+public class GamePanel extends JPanel implements ActionListener, KeyListener, GameListener, MouseListener, MouseMotionListener {
+    private static final Logger LOG = Logger.getLogger(GamePanel.class.getName());
 
     private final Timer timer;
     private final JFrame frame;
@@ -27,11 +28,10 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
     private GameType gameType;
 
     private ContextMenuListener popUpListener;
-    private PoolGameListener gameListener;
 
     private final List<Placeable> placeables; // list of objects being placed
 
-    public PoolPanel(JFrame frame, Player[] players) {
+    public GamePanel(JFrame frame, Player[] players) {
         this.frame = frame;
         this.players = players;
 
@@ -41,7 +41,7 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
 
         setFocusable(true);
 
-        newGame(GameType.EightBall);
+        newGame(GameType.NineBall);
 
         addKeyListener(this);
         addMouseListener(this);
@@ -74,10 +74,7 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
         popUpListener = new ContextMenuListener(this, table);
         addMouseListener(popUpListener);
 
-        gameListener = new PoolGameListener(this);
-        table.addListener(gameListener);
-
-        table.newGame(table.getCurrentPlayer());
+        table.addListener(this);
 
         repaint();
     }
@@ -257,10 +254,24 @@ public class PoolPanel extends JPanel implements ActionListener, KeyListener, Mo
 
     @Override
     public void keyTyped(KeyEvent e) {}
-
     @Override
     public void keyPressed(KeyEvent e) {}
-
     @Override
     public void keyReleased(KeyEvent e) {}
+    @Override
+    public void illegalMove(String reason) {}
+    @Override
+    public void playerChanged(Player newPlayer) {}
+    @Override
+    public void pointsAdded(Player player, int points) {}
+
+    @Override
+    public void placeStarted(Placeable placeable) {
+        startPlacing(placeable);
+    }
+
+    @Override
+    public void nextBall(String next) {}
+    @Override
+    public void gameEnded(Player winner) {}
 }

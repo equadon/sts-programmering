@@ -2,13 +2,13 @@ package labb4.game.ui.contextmenus;
 
 import labb4.game.objects.CueBall;
 import labb4.game.objects.PoolBall;
-import labb4.game.ui.PoolPanel;
+import labb4.game.ui.GamePanel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 public class PoolBallContextMenu extends JPopupMenu {
-    public PoolBallContextMenu(PoolPanel panel, PoolBall ball) {
+    public PoolBallContextMenu(GamePanel panel, PoolBall ball) {
         super();
 
         String name = ball.toString();

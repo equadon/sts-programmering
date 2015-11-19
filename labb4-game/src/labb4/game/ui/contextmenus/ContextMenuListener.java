@@ -4,16 +4,16 @@ import labb4.game.tables.Table;
 import labb4.game.Vector2D;
 import labb4.game.objects.Pocket;
 import labb4.game.objects.PoolBall;
-import labb4.game.ui.PoolPanel;
+import labb4.game.ui.GamePanel;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class ContextMenuListener extends MouseAdapter {
-    private final PoolPanel panel;
+    private final GamePanel panel;
     private final Table table;
 
-    public ContextMenuListener(PoolPanel panel, Table table) {
+    public ContextMenuListener(GamePanel panel, Table table) {
         this.panel = panel;
         this.table = table;
     }

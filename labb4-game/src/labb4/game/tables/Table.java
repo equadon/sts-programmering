@@ -15,8 +15,6 @@ import labb4.game.ui.painters.TablePainter;
 
 import java.awt.*;
 import java.awt.geom.Area;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.PathIterator;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -241,6 +239,197 @@ public abstract class Table {
     }
 
     /**
+     * Helper method to create a Table object based on chosen game type.
+     */
+    public static Table createTable(GameType type, Player[] players) {
+        switch (type) {
+            case EightBall:
+                return new EightBallTable(players);
+
+            case NineBall:
+                return new NineBallTable(players);
+
+            case Snooker:
+                return new SnookerTable(players);
+        }
+
+        return null;
+    }
+
+    public boolean checkCollision(Ball ball) {
+        Rectangle.Double bBounds = ball.getBounds();
+
+        if (bBounds.y < playableBounds.y ||
+                bBounds.getMaxY() > playableBounds.getMaxY() ||
+                bBounds.x < playableBounds.x ||
+                bBounds.getMaxX() > playableBounds.getMaxX()) {
+            for (Polygon polygon : collisionBounds) {
+                Area area1 = new Area(polygon);
+                Area area2 = new Area(polygon);
+                Area area3 = new Area(polygon);
+                Area area4 = new Area(polygon);
+                area1.intersect(new Area(ball.upperLeftBounds));
+                area2.intersect(new Area(ball.upperRightBounds));
+                area3.intersect(new Area(ball.lowerLeftBounds));
+                area4.intersect(new Area(ball.lowerRightBounds));
+
+                // Check pocket collisions
+                if (bBounds.x < playableBounds.x && bBounds.y < playableBounds.y) {
+                    pockets[0].add((PoolBall) ball);
+                    break;
+                } else if (bBounds.getMaxX() > playableBounds.getMaxX() && bBounds.y < playableBounds.y) {
+                    pockets[2].add((PoolBall) ball);
+                    break;
+                } else if (bBounds.getCenterX() > playableBounds.x && bBounds.getCenterX() < playableBounds.getMaxX() && bBounds.getCenterY() < playableBounds.y) {
+                    pockets[1].add((PoolBall) ball);
+                    break;
+                } else if (bBounds.x < playableBounds.x && bBounds.getCenterY() > playableBounds.getMaxY()) {
+                    pockets[3].add((PoolBall) ball);
+                } else if (bBounds.getMaxX() > playableBounds.getMaxX() && bBounds.getCenterY() > playableBounds.getMaxY()) {
+                    pockets[5].add((PoolBall) ball);
+                    break;
+                } else if (bBounds.getCenterX() > playableBounds.x && bBounds.getCenterX() < playableBounds.getMaxX() && bBounds.getCenterY() > playableBounds.getMaxY()) {
+                    pockets[4].add((PoolBall) ball);
+                    break;
+                }
+
+                if (handleTopSide(ball, area1, area2, area3, area4))
+                    break;
+
+                if (handleBottomSide(ball, area1, area2, area3, area4))
+                    break;
+
+                if (handleLeftSide(ball, area1, area2, area3, area4))
+                    break;
+
+                if (handleRightSide(ball, area1, area2, area3, area4))
+                    break;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean handleRightSide(Ball ball, Area area1, Area area2, Area area3, Area area4) {
+        if (ball.getVelocity().x < 0 || (!area1.isEmpty() || !area3.isEmpty()))
+            return false;
+
+        Rectangle.Double bBounds = ball.getBounds();
+        if (area2.isEmpty() && !area4.isEmpty()) {
+            // right diag up
+            Vector2D newVelocity = calcDiagonalVelocity(ball, 1, -1);
+            ball.setVelocity(newVelocity.x, newVelocity.y);
+            return true;
+        } else if (!area2.isEmpty() && area4.isEmpty()) {
+            // right diag down
+            Vector2D newVelocity = calcDiagonalVelocity(ball, 1, 1);
+            ball.setVelocity(newVelocity.x, newVelocity.y);
+            return true;
+        } else if (!area2.isEmpty() && !area4.isEmpty()) {
+            // clean right wall
+            handleRightWallCollision(ball);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean handleLeftSide(Ball ball, Area area1, Area area2, Area area3, Area area4) {
+        if (ball.getVelocity().x > 0 || (!area2.isEmpty() || !area4.isEmpty()))
+            return false;
+
+        Rectangle.Double bBounds = ball.getBounds();
+        if (area1.isEmpty() && !area3.isEmpty()) {
+            // left diag up
+            Vector2D newVelocity = calcDiagonalVelocity(ball, -1, -1);
+            ball.setVelocity(newVelocity.x, newVelocity.y);
+            return true;
+        } else if (!area1.isEmpty() && area3.isEmpty()) {
+            // left diag down
+            Vector2D newVelocity = calcDiagonalVelocity(ball, -1, 1);
+            ball.setVelocity(newVelocity.x, newVelocity.y);
+            return true;
+        } else if (!area1.isEmpty() && !area3.isEmpty()) {
+            // clean left wall
+            handleLeftWallCollision(ball);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean handleBottomSide(Ball ball, Area area1, Area area2, Area area3, Area area4) {
+        if (ball.getVelocity().y < 0 || (!area1.isEmpty() || !area2.isEmpty()))
+            return false;
+
+        Rectangle.Double bBounds = ball.getBounds();
+        if (area3.isEmpty() && !area4.isEmpty()) {
+            // bottom diag left
+            Vector2D newVelocity = calcDiagonalVelocity(ball, -1, 1);
+            ball.setVelocity(newVelocity.x, newVelocity.y);
+            return true;
+        } else if (!area3.isEmpty() && area4.isEmpty()) {
+            // bottom diag right
+            Vector2D newVelocity = calcDiagonalVelocity(ball, 1, 1);
+            ball.setVelocity(newVelocity.x, newVelocity.y);
+            return true;
+        } else if (!area3.isEmpty() && !area4.isEmpty()) {
+            // clean bottom wall
+            handleBottomWallCollision(ball);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean handleTopSide(Ball ball, Area area1, Area area2, Area area3, Area area4) {
+        if (ball.getVelocity().y > 0 || (!area3.isEmpty() || !area4.isEmpty()))
+            return false;
+
+        Rectangle.Double bBounds = ball.getBounds();
+        if (area1.isEmpty() && !area2.isEmpty()) {
+            // Top diag left
+            Vector2D newVelocity = calcDiagonalVelocity(ball, -1, -1);
+            ball.setVelocity(newVelocity.x, newVelocity.y);
+            return true;
+        } else if (!area1.isEmpty() && area2.isEmpty()) {
+            // top diag right
+            Vector2D newVelocity = calcDiagonalVelocity(ball, 1, -1);
+            ball.setVelocity(newVelocity.x, newVelocity.y);
+            return true;
+        } else if (!area1.isEmpty() && !area2.isEmpty()) {
+            // clean top wall
+            handleTopWallCollision(ball);
+            return true;
+        }
+        return false;
+    }
+
+    private Vector2D calcDiagonalVelocity(Ball ball, double x, double y) {
+        Vector2D velocity = ball.getVelocity();
+        Vector2D newVelocity = new Vector2D(x, y).normalize().multiply(velocity.length());
+
+        return newVelocity;
+    }
+
+    private void handleLeftWallCollision(Ball ball) {
+        ball.getPosition().x += playableBounds.getX() - ball.getBounds().x;
+        Vector2D velocity = ball.getVelocity();
+        ball.setVelocity(-velocity.x, velocity.y);
+    }
+    private void handleRightWallCollision(Ball ball) {
+        Vector2D velocity = ball.getVelocity();
+        ball.setVelocity(-velocity.x, velocity.y);
+    }
+    private void handleTopWallCollision(Ball ball) {
+        ball.getPosition().y = playableBounds.getY() + ball.getRadius();
+        Vector2D velocity = ball.getVelocity();
+        ball.setVelocity(velocity.x, -velocity.y);
+    }
+    private void handleBottomWallCollision(Ball ball) {
+        ball.getPosition().y -= ball.getBounds().getMaxY() - playableBounds.getMaxY();
+        Vector2D velocity = ball.getVelocity();
+        ball.setVelocity(velocity.x, -velocity.y);
+    }
+
+    /**
      * Observer pattern methods.
      */
     public void addListener(GameListener listener) {
@@ -279,188 +468,13 @@ public abstract class Table {
             o.placeStarted(placeable);
     }
 
+    protected void notifyNextBall(String next) {
+        for (GameListener o : listeners)
+            o.nextBall(next);
+    }
+
     protected void notifyGameOver(Player winner) {
         for (GameListener o : listeners)
             o.gameEnded(winner);
-    }
-
-    /**
-     * Helper method to create a Table object based on chosen game type.
-     */
-    public static Table createTable(GameType type, Player[] players) {
-        switch (type) {
-            case EightBall:
-                return new EightBallTable(players);
-
-            case NineBall:
-                return new NineBallTable(players);
-
-            case Snooker:
-                return new SnookerTable(players);
-        }
-
-        return null;
-    }
-
-    public boolean checkCollision(Ball ball) {
-        Rectangle.Double bBounds = ball.getBounds();
-
-        if (bBounds.y < playableBounds.y ||
-                bBounds.getMaxY() > playableBounds.getMaxY() ||
-                bBounds.x < playableBounds.x ||
-                bBounds.getMaxX() > playableBounds.getMaxX()) {
-            for (Polygon polygon : collisionBounds) {
-                Area area1 = new Area(polygon);
-                Area area2 = new Area(polygon);
-                Area area3 = new Area(polygon);
-                Area area4 = new Area(polygon);
-                area1.intersect(new Area(ball.upperLeftBounds));
-                area2.intersect(new Area(ball.upperRightBounds));
-                area3.intersect(new Area(ball.lowerLeftBounds));
-                area4.intersect(new Area(ball.lowerRightBounds));
-
-                // Check pocket collisions
-                // Top left
-                if (bBounds.x < playableBounds.x && bBounds.y < playableBounds.y) {
-                    pockets[0].add((PoolBall) ball);
-                    break;
-                } else if (bBounds.getMaxX() > playableBounds.getMaxX() && bBounds.y < playableBounds.y) {
-                    pockets[2].add((PoolBall) ball);
-                    break;
-                } else if (bBounds.getCenterX() > playableBounds.x && bBounds.getCenterX() < playableBounds.getMaxX() && bBounds.getCenterY() < playableBounds.y) {
-                    pockets[1].add((PoolBall) ball);
-                    break;
-                } else if (bBounds.x < playableBounds.x && bBounds.getCenterY() > playableBounds.getMaxY()) {
-                    pockets[3].add((PoolBall) ball);
-                } else if (bBounds.getMaxX() > playableBounds.getMaxX() && bBounds.getCenterY() > playableBounds.getMaxY()) {
-                    pockets[5].add((PoolBall) ball);
-                    break;
-                } else if (bBounds.getCenterX() > playableBounds.x && bBounds.getCenterX() < playableBounds.getMaxX() && bBounds.getCenterY() > playableBounds.getMaxY()) {
-                    pockets[4].add((PoolBall) ball);
-                    break;
-                }
-
-                if (handleTopSide(ball, area1, area2))
-                    break;
-
-                if (handleBottomSide(ball, area3, area4))
-                    break;
-
-                if (handleLeftSide(ball, area1, area3))
-                    break;
-
-                if (handleRightSide(ball, area2, area4))
-                    break;
-            }
-        }
-
-        return false;
-    }
-
-    private boolean handleRightSide(Ball ball, Area area2, Area area4) {
-        Rectangle.Double bBounds = ball.getBounds();
-        if (area2.isEmpty() && !area4.isEmpty() && bBounds.getMaxX() < playableBounds.getMaxX() + ball.getRadius()/2.0 && bBounds.x > playableBounds.getCenterX()) {
-            // right diag up
-            Vector2D newVelocity = calcDiagonalVelocity(ball, 1, -1);
-            ball.setVelocity(newVelocity.x, newVelocity.y);
-            return true;
-        } else if (!area2.isEmpty() && area4.isEmpty() && bBounds.getMaxX() < playableBounds.getMaxX() + ball.getRadius()/2.0 && bBounds.x > playableBounds.getCenterX()) {
-            // right diag down
-            Vector2D newVelocity = calcDiagonalVelocity(ball, 1, 1);
-            ball.setVelocity(newVelocity.x, newVelocity.y);
-            return true;
-        } else if (!area2.isEmpty() && !area4.isEmpty() && bBounds.getMaxX() < playableBounds.getMaxX() + ball.getRadius()/2.0 && bBounds.x > playableBounds.getCenterX()) {
-            // clean right wall
-            handleRightWallCollision(ball);
-            return true;
-        }
-        return false;
-    }
-
-    private boolean handleLeftSide(Ball ball, Area area1, Area area3) {
-        Rectangle.Double bBounds = ball.getBounds();
-        if (area1.isEmpty() && !area3.isEmpty() && bBounds.x > playableBounds.x - ball.getRadius()/2.0 && bBounds.x < playableBounds.getCenterX()) {
-            // left diag up
-            Vector2D newVelocity = calcDiagonalVelocity(ball, -1, -1);
-            ball.setVelocity(newVelocity.x, newVelocity.y);
-            return true;
-        } else if (!area1.isEmpty() && area3.isEmpty() && bBounds.x > playableBounds.x - ball.getRadius()/2.0 && bBounds.x < playableBounds.getCenterX()) {
-            // left diag down
-            Vector2D newVelocity = calcDiagonalVelocity(ball, -1, 1);
-            ball.setVelocity(newVelocity.x, newVelocity.y);
-            return true;
-        } else if (!area1.isEmpty() && !area3.isEmpty() && bBounds.x > playableBounds.x - ball.getRadius()/2.0 && bBounds.x < playableBounds.getCenterX()) {
-            // clean left wall
-            handleLeftWallCollision(ball);
-            return true;
-        }
-        return false;
-    }
-
-    private boolean handleBottomSide(Ball ball, Area area3, Area area4) {
-        Rectangle.Double bBounds = ball.getBounds();
-        if (area3.isEmpty() && !area4.isEmpty() && bBounds.getMaxY() > playableBounds.getMaxY() + ball.getRadius()/2.0 && bBounds.y > playableBounds.getCenterY()) {
-            // bottom diag left
-            Vector2D newVelocity = calcDiagonalVelocity(ball, -1, 1);
-            ball.setVelocity(newVelocity.x, newVelocity.y);
-            return true;
-        } else if (!area3.isEmpty() && area4.isEmpty() && bBounds.getMaxY() > playableBounds.getMaxY() + ball.getRadius()/2.0 && bBounds.y > playableBounds.getCenterY()) {
-            // bottom diag right
-            Vector2D newVelocity = calcDiagonalVelocity(ball, 1, 1);
-            ball.setVelocity(newVelocity.x, newVelocity.y);
-            return true;
-        } else if (!area3.isEmpty() && !area4.isEmpty() && bBounds.getMaxY() < playableBounds.getMaxY() + ball.getRadius()/2.0 && bBounds.y > playableBounds.getCenterY()) {
-            // clean bottom wall
-            handleBottomWallCollision(ball);
-            return true;
-        }
-        return false;
-    }
-
-    private boolean handleTopSide(Ball ball, Area area1, Area area2) {
-        Rectangle.Double bBounds = ball.getBounds();
-        if (area1.isEmpty() && !area2.isEmpty() && bBounds.y > playableBounds.y - ball.getRadius()/2.0 && bBounds.y < playableBounds.getCenterY()) {
-            // Top diag left
-            Vector2D newVelocity = calcDiagonalVelocity(ball, -1, -1);
-            ball.setVelocity(newVelocity.x, newVelocity.y);
-            return true;
-        } else if (!area1.isEmpty() && area2.isEmpty() && bBounds.y > playableBounds.y - ball.getRadius()/2.0 && bBounds.y < playableBounds.getCenterY()) {
-            // top diag right
-            Vector2D newVelocity = calcDiagonalVelocity(ball, 1, -1);
-            ball.setVelocity(newVelocity.x, newVelocity.y);
-            return true;
-        } else if (!area1.isEmpty() && !area2.isEmpty() && bBounds.y > playableBounds.y - ball.getRadius()/2.0 && bBounds.y < playableBounds.getCenterY()) {
-            // clean top wall
-            handleTopWallCollision(ball);
-            return true;
-        }
-        return false;
-    }
-
-    private Vector2D calcDiagonalVelocity(Ball ball, double x, double y) {
-        Vector2D velocity = ball.getVelocity();
-        Vector2D newVelocity = new Vector2D(x, y).normalize().multiply(velocity.length());
-
-        return newVelocity;
-    }
-
-    private void handleLeftWallCollision(Ball ball) {
-        ball.getPosition().x += playableBounds.getX() - ball.getBounds().x;
-        Vector2D velocity = ball.getVelocity();
-        ball.setVelocity(-velocity.x, velocity.y);
-    }
-    private void handleRightWallCollision(Ball ball) {
-        Vector2D velocity = ball.getVelocity();
-        ball.setVelocity(-velocity.x, velocity.y);
-    }
-    private void handleTopWallCollision(Ball ball) {
-        ball.getPosition().y = playableBounds.getY() + ball.getRadius();
-        Vector2D velocity = ball.getVelocity();
-        ball.setVelocity(velocity.x, -velocity.y);
-    }
-    private void handleBottomWallCollision(Ball ball) {
-        ball.getPosition().y -= ball.getBounds().getMaxY() - playableBounds.getMaxY();
-        Vector2D velocity = ball.getVelocity();
-        ball.setVelocity(velocity.x, -velocity.y);
     }
 }
