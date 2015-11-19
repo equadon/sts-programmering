@@ -79,6 +79,7 @@ public class NineBallTable extends Table {
         }
 
         if (validMove && points > 0) {
+            player.addPoints(points);
             notifyAddPoints(player, points);
         }
 
