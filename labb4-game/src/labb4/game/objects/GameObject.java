@@ -55,6 +55,11 @@ public abstract class GameObject {
         return velocity;
     }
 
+    public void setVelocity(double x, double y) {
+        velocity.x = x;
+        velocity.y = y;
+    }
+
     public Color getColor() {
         return color;
     }

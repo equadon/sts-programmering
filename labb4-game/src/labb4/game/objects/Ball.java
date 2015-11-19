@@ -46,7 +46,7 @@ public class Ball extends GameObject {
     }
 
     public boolean handleCollisions() {
-        return isVisible() && (collisionWithWalls() || collisionWithBalls() || collisionWithHoles());
+        return isVisible() && (collisionWithTable() || collisionWithBalls() || collisionWithHoles());
     }
 
     private boolean collisionWithHoles() {
@@ -69,6 +69,10 @@ public class Ball extends GameObject {
     /**
      * Collision detection.
      */
+    private boolean collisionWithTable() {
+        return table.checkCollision(this);
+    }
+
     private boolean collisionWithWalls() {
         Rectangle tableBounds = table.getPlayableBounds();
         boolean collision = false;

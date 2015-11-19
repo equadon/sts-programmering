@@ -33,13 +33,13 @@ public class Pocket extends Ball {
     }
 
     public boolean handleBallCollision(Ball ball) {
-        if (getPosition().distanceTo(ball.getPosition()) < getRadius()) {
+/*        if (getPosition().distanceTo(ball.getPosition()) < getRadius()) {
             PoolBall poolBall = (PoolBall) ball;
 
             add(poolBall);
 
             return true;
-        }
+        }*/
 
         return false;
     }

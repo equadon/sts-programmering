@@ -66,6 +66,11 @@ public class BallPainter extends ObjectPainter {
         if (Config.DISPLAY_VELOCITY_VECTORS && ball.isMoving()) {
             drawVelocityVector(g, ball);
         }
+
+        if (TablePainter.area != null) {
+            g.setColor(Color.GREEN);
+            g.fill(TablePainter.area);
+        }
     }
 
     private void drawVelocityVector(Graphics2D g, Ball ball) {

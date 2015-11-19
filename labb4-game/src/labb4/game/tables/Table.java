@@ -7,11 +7,13 @@ import labb4.game.Vector2D;
 import labb4.game.interfaces.Aimable;
 import labb4.game.interfaces.GameListener;
 import labb4.game.interfaces.Placeable;
+import labb4.game.objects.Ball;
 import labb4.game.objects.Pocket;
 import labb4.game.objects.PoolBall;
 import labb4.game.ui.painters.TablePainter;
 
 import java.awt.*;
+import java.awt.geom.Area;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -295,5 +297,58 @@ public abstract class Table {
         }
 
         return null;
+    }
+
+    public boolean checkCollision(Ball ball) {
+        Rectangle.Double bounds = ball.getBounds();
+
+        if (bounds.y < playableBounds.y ||
+                bounds.getMaxY() > playableBounds.getMaxY() ||
+                bounds.x < playableBounds.x ||
+                bounds.getMaxX() > playableBounds.getMaxX()) {
+            for (Polygon polygon : collisionBounds) {
+                Area area = new Area(polygon);
+                area.intersect(new Area(ball.getBounds()));
+                if (!area.isEmpty()) {
+                    TablePainter.area = area;
+                    if (area.isRectangular()) {
+                        if (bounds.x < playableBounds.x) {
+                            handleLeftWallCollision(ball);
+                        } else if (bounds.getMaxX() > playableBounds.getMaxX()) {
+                            handleRightWallCollision(ball);
+                        }
+
+                        if (bounds.y < playableBounds.y) {
+                            handleTopWallCollision(ball);
+                        } else if (bounds.getMaxY() > playableBounds.getMaxY()) {
+                            handleBottomWallCollision(ball);
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private void handleLeftWallCollision(Ball ball) {
+        ball.getPosition().x += playableBounds.getX() - ball.getBounds().x;
+        Vector2D velocity = ball.getVelocity();
+        ball.setVelocity(-velocity.x, velocity.y);
+    }
+    private void handleRightWallCollision(Ball ball) {
+        ball.getPosition().x -= ball.getBounds().getMaxX() - playableBounds.getMaxX();
+        Vector2D velocity = ball.getVelocity();
+        ball.setVelocity(-velocity.x, velocity.y);
+    }
+    private void handleTopWallCollision(Ball ball) {
+        ball.getPosition().y += playableBounds.getY() - ball.getBounds().y;
+        Vector2D velocity = ball.getVelocity();
+        ball.setVelocity(velocity.x, -velocity.y);
+    }
+    private void handleBottomWallCollision(Ball ball) {
+        ball.getPosition().y -= ball.getBounds().getMaxY() - playableBounds.getMaxY();
+        Vector2D velocity = ball.getVelocity();
+        ball.setVelocity(velocity.x, -velocity.y);
     }
 }

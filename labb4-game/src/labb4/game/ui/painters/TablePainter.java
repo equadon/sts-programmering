@@ -7,6 +7,7 @@ import labb4.game.tables.Table;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.geom.Area;
 import java.io.File;
 import java.io.IOException;
 
@@ -15,6 +16,8 @@ public class TablePainter {
 
     private Image poolTableImage;
     private Image snookerTableImage;
+
+    public static Area area;
 
     public TablePainter() {
         try {
@@ -44,6 +47,11 @@ public class TablePainter {
         if (Config.DISPLAY_BOUNDING_BOXES) {
             g.setColor(new Color(1f, 0, 0, 0.3f));
             g.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
+
+            g.setColor(new Color(255, 0, 0, 138));
+            for (Polygon polygon : table.getCollisionBounds()) {
+                g.fillPolygon(polygon);
+            }
         }
     }
 
