@@ -41,7 +41,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Ga
 
         setFocusable(true);
 
-        newGame(GameType.EightBall, false);
+        newGame(GameType.Snooker, false);
 
         addKeyListener(this);
         addMouseListener(this);

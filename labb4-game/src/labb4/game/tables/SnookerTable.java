@@ -6,29 +6,181 @@ import labb4.game.objects.Pocket;
 import labb4.game.objects.PoolBall;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SnookerTable extends Table {
     public static final int RED_BALL_COUNT = 15;
+
+    private Player player;
+    private Map.Entry<PoolBall, Pocket> firstPocketed;
+    private boolean nextRed;
+    private PoolBall lowestBall;
 
     public SnookerTable(Player[] players) {
         super(Config.SNOOKER_TABLE_WIDTH, Config.SNOOKER_TABLE_HEIGHT, players);
     }
 
     @Override
-    public void newGame(Player starting) {}
+    public void newGame(Player starting) {
+        notifyPlayerChange(starting);
+        notifyNextBall("Red");
+        nextRed = true;
+    }
 
     @Override
-    public void beginTurn() {}
+    public void beginTurn() {
+        pocketedBalls.clear();
+        firstPocketed = null;
+        player = getCurrentPlayer();
+
+        if (countRedBalls() == 0) {
+            lowestBall = findLowestBall();
+        }
+    }
 
     @Override
     public void collision(PoolBall ball1, PoolBall ball2) {}
 
     @Override
-    public void pocketed(PoolBall ball, Pocket pocket) {}
+    public void pocketed(PoolBall ball, Pocket pocket) {
+        pocketedBalls.put(ball, pocket);
+
+        if (firstPocketed == null) {
+            firstPocketed = new HashMap.SimpleEntry<>(ball, pocket);
+        }
+    }
 
     @Override
-    public void endTurn() {}
+    public void endTurn() {
+        boolean gameOver = false;
+        boolean validMove = false;
+
+        PoolBall firstBall = (firstPocketed == null) ? null : firstPocketed.getKey();
+
+        int redCount = countRedBalls();
+
+        if (isCueBallPocketed()) {
+            notifyIllegalMove("Not allowed to pocket the cue ball");
+            changePlayer();
+            placeAllPocketedBalls();
+            nextRed = true;
+        } else if (firstBall != null && lowestBall != null && firstBall != lowestBall) {
+            notifyIllegalMove(firstBall.number + " is not the lowest ball.");
+            changePlayer();
+            placeAllNonRedPocketedBalls();
+            nextRed = true;
+        } else if (firstBall != null && redCount != 0 && ((nextRed && firstBall.number != 1) || (!nextRed && firstBall.number == 1))) {
+            notifyIllegalMove("Incorrect ball type pocketed.");
+            changePlayer();
+            placeAllNonRedPocketedBalls();
+            nextRed = true;
+        } else if (redCount == 0 && isBallPocketed(7)) {
+            int points = countPoints();
+            player.addPoints(points);
+            notifyAddPoints(player, points);
+
+            notifyGameOver(findWinner());
+            validMove = true;
+            gameOver = true;
+        } else if (redCount > 0 && !nextRed && firstBall != null && firstBall.number > 1) {
+            placeAllNonRedPocketedBalls();
+            validMove = true;
+        } else if (pocketedBalls.size() == 0) {
+            changePlayer();
+            nextRed = true;
+        } else {
+            validMove = true;
+        }
+
+        if (!gameOver && validMove) {
+            nextRed = !nextRed;
+
+            int points = countPoints();
+            player.addPoints(points);
+            notifyAddPoints(player, points);
+        }
+
+        if (gameOver) {
+            notifyNextBall("-");
+        } else {
+            String nextBall;
+            if (countRedBalls() == 0)
+                nextBall = "#" + findLowestBall().number;
+            else
+                nextBall = nextRed ? "Red" : "Colored";
+            notifyNextBall(nextBall);
+        }
+    }
+
+    private Player findWinner() {
+        Player winner = null;
+
+        for (Player player : getPlayers()) {
+            if (winner == null) {
+                winner = player;
+            } else if (player.getPoints() > winner.getPoints()) {
+                winner = player;
+            }
+        }
+
+        return winner;
+    }
+
+    private int countPoints() {
+        int points = 0;
+        for (Map.Entry<PoolBall, Pocket> entry : pocketedBalls.entrySet()) {
+            points += entry.getKey().number;
+        }
+
+        return points;
+    }
+
+    private PoolBall findLowestBall() {
+        PoolBall lowest = null;
+        for (PoolBall ball : balls) {
+            if (ball.number > 1) {
+                if (lowest == null)
+                    lowest = ball;
+                else if (ball.number < lowest.number)
+                    lowest = ball;
+            }
+        }
+
+        return lowest;
+    }
+
+    private int countRedBalls() {
+        int count = 0;
+        for (PoolBall ball : balls) {
+            if (!(ball instanceof CueBall) && ball.number == 1) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    private void changePlayer() {
+        nextRed = true;
+        nextPlayer();
+        notifyPlayerChange(getCurrentPlayer());
+    }
+
+    protected void placeAllNonRedPocketedBalls() {
+        for (Map.Entry<PoolBall, Pocket> entry : pocketedBalls.entrySet()) {
+            PoolBall ball = entry.getKey();
+            Pocket pocket = entry.getValue();
+
+            if (ball.number == 1)
+                continue;
+
+            pocket.remove(ball);
+
+            notifyPlacingBall(ball);
+        }
+    }
 
     @Override
     protected List<PoolBall> createBalls() {
@@ -37,7 +189,7 @@ public class SnookerTable extends Table {
         int radius = Config.BALL_RADIUS;
         int diameter = 2 * radius;
 
-        createRedBalls(balls, radius, diameter);
+        //createRedBalls(balls, radius, diameter);
 
         double xLine = Config.SNOOKER_X_LINE * getPlayableBounds().getMaxX();
 

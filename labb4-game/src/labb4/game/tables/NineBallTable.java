@@ -61,7 +61,7 @@ public class NineBallTable extends Table {
         int points = countPoints();
 
         if (isCueBallPocketed()) {
-            notifyIllegalMove("Cue ball pocketed.");
+            notifyIllegalMove("Not allowed to pocket the cue ball.");
             changePlayer();
             placeAllPocketedBalls();
         } else if (firstHit == null) {
