@@ -41,14 +41,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Ga
 
         setFocusable(true);
 
-        newGame(GameType.NineBall);
+        newGame(GameType.EightBall, false);
 
         addKeyListener(this);
         addMouseListener(this);
         addMouseMotionListener(this);
     }
 
-    public void newGame(GameType type) {
+    public void newGame(GameType type, boolean sendEvent) {
         this.gameType = type;
 
         frame.setTitle("STS Pool Project: " + Utility.splitCamelCase(gameType.name()));
@@ -75,6 +75,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Ga
         addMouseListener(popUpListener);
 
         table.addListener(this);
+
+        if (sendEvent)
+            getTable().newGame(getTable().getCurrentPlayer());
 
         repaint();
     }
