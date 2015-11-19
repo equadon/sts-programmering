@@ -14,17 +14,27 @@ public class PoolGameListener implements GameListener {
     }
 
     @Override
-    public void illegalMove(String reason) {}
+    public void illegalMove(String reason) {
+        System.out.println("Illegal move: " + reason);
+    }
 
     @Override
-    public void playerChanged(Player newPlayer) {}
+    public void playerChanged(Player newPlayer) {
+        System.out.println("Player change. New player: " + newPlayer.name);
+    }
 
     @Override
-    public void pointsAdded(Player player, int points) {}
+    public void pointsAdded(Player player, int points) {
+        System.out.println(player.name + " received " + points + " point(s).");
+    }
 
     @Override
-    public void placeStarted(Placeable placeable) {}
+    public void placeStarted(Placeable placeable) {
+        panel.startPlacing(placeable);
+    }
 
     @Override
-    public void gameEnded(Player winner) {}
+    public void gameEnded(Player winner) {
+        System.out.println("Game Over! " + winner.name + " won.");
+    }
 }

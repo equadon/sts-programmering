@@ -14,7 +14,9 @@ import java.util.logging.Logger;
 public class NineBallTable extends Table {
     private static final Logger LOG = Logger.getLogger(NineBallTable.class.getName());
 
+    private Player player;
     private PoolBall firstHit;
+    private PoolBall lowestBall;
     private Map<PoolBall, Pocket> pocketedBalls;
 
     public NineBallTable(Player[] players) {
@@ -28,9 +30,11 @@ public class NineBallTable extends Table {
 
     @Override
     public void beginTurn() {
+        player = getCurrentPlayer();
         firstHit = null;
         pocketedBalls.clear();
-        LOG.info("begin turn");
+        lowestBall = findLowestBall();
+        System.out.println("begin turn (lowest ball = #" + lowestBall.number + ")");
     }
 
     @Override
@@ -43,28 +47,86 @@ public class NineBallTable extends Table {
     @Override
     public void pocketed(PoolBall ball, Pocket pocket) {
         pocketedBalls.put(ball, pocket);
-        LOG.info("pocketed " + ball.number);
     }
 
     @Override
     public void endTurn() {
-        if (firstHit == findLowestBall()) {
-            // Valid move
+        boolean validMove = false;
+
+        int points = countPoints();
+
+        if (isCueBallPocketed()) {
+            notifyIllegalMove("Cue ball pocketed.");
+            placeAllPocketedBalls();
+        } else if (firstHit == null) {
+            System.out.println("No balls hit, change player.");
+            nextPlayer();
+            notifyPlayerChange(getCurrentPlayer());
+        } else if (firstHit != lowestBall) {
+            notifyIllegalMove("Must hit the lowest ball first.");
+            placeAllPocketedBalls();
+        } else if (isBallPocketed(9)) {
+            notifyGameOver(getCurrentPlayer());
+        } else if (pocketedBalls.size() == 0) {
+            System.out.println("Failed to pocket a ball, change player.");
+            nextPlayer();
+            notifyPlayerChange(getCurrentPlayer());
         } else {
-            LOG.info("Invalid move.");
+            System.out.println("OK, keep playing.");
+            validMove = true;
         }
 
-        LOG.info("Turn ended:\n   first hit: " + ((firstHit == null) ? "none" : firstHit.number));
+        if (validMove && points > 0) {
+            notifyAddPoints(player, points);
+        }
+    }
+
+    private int countPoints() {
+        int points = 0;
+        for (Map.Entry<PoolBall, Pocket> entry : pocketedBalls.entrySet()) {
+            points += entry.getKey().number;
+        }
+
+        return points;
+    }
+
+    private void placeAllPocketedBalls() {
+        for (Map.Entry<PoolBall, Pocket> entry : pocketedBalls.entrySet()) {
+            PoolBall ball = entry.getKey();
+            Pocket pocket = entry.getValue();
+
+            pocket.remove(ball);
+
+            notifyPlacingBall(ball);
+        }
     }
 
     private PoolBall findLowestBall() {
         PoolBall lowest = getBalls()[0];
         for (PoolBall ball : getBalls()) {
-            if (ball.number < lowest.number) {
+            if (!(ball instanceof CueBall) && ball.number < lowest.number) {
                 lowest = ball;
             }
         }
         return lowest;
+    }
+
+    private boolean isCueBallPocketed() {
+        for (Map.Entry<PoolBall, Pocket> entry : pocketedBalls.entrySet()) {
+            if (entry.getKey() instanceof CueBall) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isBallPocketed(int number) {
+        for (Map.Entry<PoolBall, Pocket> entry : pocketedBalls.entrySet()) {
+            if (entry.getKey().number == number) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

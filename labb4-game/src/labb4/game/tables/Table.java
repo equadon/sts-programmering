@@ -394,7 +394,6 @@ public abstract class Table {
             return true;
         } else if (!area1.isEmpty() && !area3.isEmpty()) {
             // clean left wall
-            System.out.println("left");
             handleLeftWallCollision(ball);
             return true;
         }
