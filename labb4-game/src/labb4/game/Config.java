@@ -14,16 +14,16 @@ public class Config {
      * Table constants.
      */
     public static final Color TABLE_COLOR = new Color(9, 226, 0);
-    public static final Color TABLE_LINE_COLOR = new Color(9, 202, 0);
-    public static final Color TABLE_SPOT_COLOR = new Color(9, 175, 0);
+    public static final Color TABLE_LINE_COLOR = new Color(0, 173, 104);
+    public static final Color TABLE_SPOT_COLOR = new Color(0, 173, 104);
     public static final Color TABLE_OUTER_BORDER_COLOR = new Color(85, 58, 34);
     public static final Color TABLE_INNER_BORDER_COLOR = new Color(7, 116, 0);
 
     public static final int DEFAULT_TABLE_WIDTH = (int) (254 * RESIZE_FACTOR);
     public static final int DEFAULT_TABLE_HEIGHT = (int) (127 * RESIZE_FACTOR);
 
-    public static final int TABLE_OUTER_BORDER_SIZE = (int) (6 * RESIZE_FACTOR);
-    public static final int TABLE_INNER_BORDER_SIZE = (int) (5 * RESIZE_FACTOR);
+    public static final int TABLE_OUTER_BORDER_SIZE = 43;
+    public static final int TABLE_INNER_BORDER_SIZE = 26;
 
     public static final int SNOOKER_TABLE_WIDTH = (int) (356 * RESIZE_FACTOR);
     public static final int SNOOKER_TABLE_HEIGHT = (int) (178 * RESIZE_FACTOR);

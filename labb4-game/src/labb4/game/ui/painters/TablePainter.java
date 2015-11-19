@@ -1,20 +1,46 @@
 package labb4.game.ui.painters;
 
 import labb4.game.Config;
-import labb4.game.Player;
 import labb4.game.Vector2D;
 import labb4.game.tables.SnookerTable;
 import labb4.game.tables.Table;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
 
 public class TablePainter {
     public static final int SPOT_RADIUS = 5;
 
+    private Image poolTableImage;
+    private Image snookerTableImage;
+
+    public TablePainter() {
+        try {
+            poolTableImage = ImageIO.read(new File("gfx/PoolTable.png"));
+            snookerTableImage = ImageIO.read(new File("gfx/SnookerTable.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void draw(Graphics2D g, Table table) {
+        if (table instanceof SnookerTable) {
+            g.drawImage(snookerTableImage, 0, 0, table.width, table.height, null);
+        } else {
+            g.drawImage(poolTableImage, 0, 0, table.width, table.height, null);
+        }
+
+        g.setColor(Config.TABLE_LINE_COLOR);
+        if (table instanceof SnookerTable) {
+            drawSnookerLines(g, table.getPlayableBounds(), table.getPlayableBounds().width);
+        } else {
+            drawStandardLines(g, table.getPlayableBounds());
+        }
+    }
+
+    public void draw2(Graphics2D g, Table table) {
         Rectangle bounds = table.getBounds();
         Rectangle playableBounds = table.getPlayableBounds();
 
