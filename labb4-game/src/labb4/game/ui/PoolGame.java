@@ -27,6 +27,7 @@ public class PoolGame extends JFrame {
         setResizable(false);
         add(poolPanel, BorderLayout.CENTER);
         pack();
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 
