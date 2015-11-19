@@ -9,6 +9,7 @@ import labb4.game.interfaces.Aimable;
 import labb4.game.interfaces.GameListener;
 import labb4.game.interfaces.Placeable;
 import labb4.game.objects.Ball;
+import labb4.game.objects.CueBall;
 import labb4.game.objects.Pocket;
 import labb4.game.objects.PoolBall;
 import labb4.game.ui.painters.TablePainter;
@@ -16,7 +17,9 @@ import labb4.game.ui.painters.TablePainter;
 import java.awt.*;
 import java.awt.geom.Area;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public abstract class Table {
     private final TablePainter painter;
@@ -41,6 +44,9 @@ public abstract class Table {
 
     public final int topLeft1CollisionX;
     public final int topRight1CollisionX;
+
+    // Observer fields
+    protected Map<PoolBall, Pocket> pocketedBalls;
 
     public Table(int width, int height, Player[] players) {
         this.players = players;
@@ -67,6 +73,8 @@ public abstract class Table {
 
         pockets = createPockets();
         balls = createBalls();
+
+        pocketedBalls = new HashMap<>();
 
         topLeft1CollisionX = playableBounds.x + 32;
         topRight1CollisionX = (int) playableBounds.getCenterX() - Config.DEFAULT_POCKET_RADIUS - 5;
@@ -476,5 +484,34 @@ public abstract class Table {
     protected void notifyGameOver(Player winner) {
         for (GameListener o : listeners)
             o.gameEnded(winner);
+    }
+
+    protected boolean isCueBallPocketed() {
+        for (Map.Entry<PoolBall, Pocket> entry : pocketedBalls.entrySet()) {
+            if (entry.getKey() instanceof CueBall) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected boolean isBallPocketed(int number) {
+        for (Map.Entry<PoolBall, Pocket> entry : pocketedBalls.entrySet()) {
+            if (entry.getKey().number == number) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected void placeAllPocketedBalls() {
+        for (Map.Entry<PoolBall, Pocket> entry : pocketedBalls.entrySet()) {
+            PoolBall ball = entry.getKey();
+            Pocket pocket = entry.getValue();
+
+            pocket.remove(ball);
+
+            notifyPlacingBall(ball);
+        }
     }
 }

@@ -6,27 +6,191 @@ import labb4.game.objects.Pocket;
 import labb4.game.objects.PoolBall;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EightBallTable extends Table {
+    private Player player;
+    private Player stripedBalls;
+    private PoolBall firstPocketed;
+
     public EightBallTable(Player[] players) {
         super(Config.DEFAULT_TABLE_WIDTH, Config.DEFAULT_TABLE_HEIGHT, players);
+
+        pocketedBalls = new HashMap<>();
     }
 
     @Override
-    public void newGame(Player starting) {}
+    public void newGame(Player starting) {
+        player = null;
+        stripedBalls = null;
+        firstPocketed = null;
+
+        for (Player player : getPlayers())
+            player.reset();
+
+        notifyPlayerChange(starting);
+
+        notifyNextBall("Any");
+    }
 
     @Override
-    public void beginTurn() {}
+    public void beginTurn() {
+        player = getCurrentPlayer();
+        firstPocketed = null;
+        pocketedBalls.clear();
+    }
 
     @Override
     public void collision(PoolBall ball1, PoolBall ball2) {}
 
     @Override
-    public void pocketed(PoolBall ball, Pocket pocket) {}
+    public void pocketed(PoolBall ball, Pocket pocket) {
+        if (firstPocketed == null) {
+            firstPocketed = ball;
+        }
+
+        pocketedBalls.put(ball, pocket);
+    }
 
     @Override
-    public void endTurn() {}
+    public void endTurn() {
+        boolean gameOver = false;
+        boolean validMove = false;
+
+        if (isCueBallPocketed()) {
+            notifyIllegalMove("Not allowed to pocket the cue ball.");
+            placeAllPocketedBalls();
+        } else if (isBallPocketed(8) && hasBallsLeft(player)) {
+            notifyIllegalMove("Can't pocket 8 ball until all own balls are pocketed.");
+            placeAllPocketedBalls();
+            changePlayer();
+        } else if (firstPocketed != null && stripedBalls == null) {
+            stripedBalls = (firstPocketed.striped) ? player : getOtherPlayer();
+
+            System.out.println("Striped balls now belong to: " + stripedBalls.name);
+        } else if (isBallPocketed(8)) {
+            gameOver = true;
+            validMove = true;
+            notifyGameOver(player);
+        } else if (countOwnPocketedBalls(player) <= 0) {
+            changePlayer();
+        } else {
+            validMove = true;
+        }
+
+        int points = calculatePoints();
+
+        int count = countOwnBalls(getCurrentPlayer());
+
+        if (getCurrentPlayer() == stripedBalls) {
+            notifyNextBall((count == 0) ? "Eight ball" : "Striped color");
+        } else if (stripedBalls != null) {
+            notifyNextBall((count == 0) ? "Eight ball" : "Solid color");
+        }
+
+        if (validMove && points > 0) {
+            player.addPoints(points);
+            notifyAddPoints(player, points);
+        }
+    }
+
+    private void changePlayer() {
+        nextPlayer();
+        notifyPlayerChange(getCurrentPlayer());
+    }
+
+    private boolean isStriped() {
+        return player == stripedBalls;
+    }
+
+    private int calculatePoints() {
+        if (stripedBalls == null)
+            return 0;
+
+        int points = 0;
+
+        for (Map.Entry<PoolBall, Pocket> entry : pocketedBalls.entrySet()) {
+            PoolBall ball = entry.getKey();
+            if (ball instanceof CueBall)
+                continue;
+
+            if (isStriped() && ball.striped) {
+                points += ball.number;
+            } else if (!isStriped() && !ball.striped) {
+                points += ball.number;
+            }
+        }
+
+        return points;
+    }
+
+    private int countOwnPocketedBalls(Player currentPlayer) {
+        if (stripedBalls == null)
+            return 0;
+
+        int count = 0;
+        boolean isStriped = currentPlayer == stripedBalls;
+
+        for (Map.Entry<PoolBall, Pocket> entry : pocketedBalls.entrySet()) {
+            PoolBall ball = entry.getKey();
+            if (ball.number == 8 || ball instanceof CueBall)
+                continue;
+
+            if ((isStriped&& ball.striped) || (!isStriped && !ball.striped)) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    private int countOwnBalls(Player currentPlayer) {
+        if (stripedBalls == null)
+            return 0;
+
+        int count = 0;
+
+        boolean isStriped = currentPlayer == stripedBalls;
+
+        for (PoolBall ball : balls) {
+            if (ball.number == 8 || ball instanceof CueBall)
+                continue;
+
+            if ((isStriped && ball.striped) || (!isStriped && !ball.striped)) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    private boolean hasBallsLeft(Player currentPlayer) {
+        if (stripedBalls == null)
+            return true;
+
+        boolean isStriped = currentPlayer == stripedBalls;
+
+        for (PoolBall ball : balls) {
+            if (ball.number == 8 || ball instanceof CueBall)
+                continue;
+
+            if ((isStriped && ball.striped) || (!isStriped && !ball.striped))
+                return true;
+        }
+        return false;
+    }
+
+    private Player getOtherPlayer() {
+        for (Player player : getPlayers()) {
+            if (this.player != player) {
+                return player;
+            }
+        }
+
+        return null;
+    }
 
     @Override
     protected List<PoolBall> createBalls() {

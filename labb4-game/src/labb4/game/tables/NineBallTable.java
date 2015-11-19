@@ -17,17 +17,19 @@ public class NineBallTable extends Table {
     private Player player;
     private PoolBall firstHit;
     private PoolBall lowestBall;
-    private Map<PoolBall, Pocket> pocketedBalls;
 
     public NineBallTable(Player[] players) {
         super(Config.DEFAULT_TABLE_WIDTH, Config.DEFAULT_TABLE_HEIGHT, players);
-
-        pocketedBalls = new HashMap<>();
     }
 
     @Override
     public void newGame(Player starting) {
-        notifyPlayerChange(getCurrentPlayer());
+
+        player = null;
+        firstHit = null;
+        lowestBall = null;
+
+        notifyPlayerChange(starting);
         notifyNextBall("#" + findLowestBall().number);
     }
 
@@ -102,17 +104,6 @@ public class NineBallTable extends Table {
         return points;
     }
 
-    private void placeAllPocketedBalls() {
-        for (Map.Entry<PoolBall, Pocket> entry : pocketedBalls.entrySet()) {
-            PoolBall ball = entry.getKey();
-            Pocket pocket = entry.getValue();
-
-            pocket.remove(ball);
-
-            notifyPlacingBall(ball);
-        }
-    }
-
     private PoolBall findLowestBall() {
         PoolBall lowest = getBalls()[0];
         for (PoolBall ball : getBalls()) {
@@ -121,24 +112,6 @@ public class NineBallTable extends Table {
             }
         }
         return lowest;
-    }
-
-    private boolean isCueBallPocketed() {
-        for (Map.Entry<PoolBall, Pocket> entry : pocketedBalls.entrySet()) {
-            if (entry.getKey() instanceof CueBall) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean isBallPocketed(int number) {
-        for (Map.Entry<PoolBall, Pocket> entry : pocketedBalls.entrySet()) {
-            if (entry.getKey().number == number) {
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override

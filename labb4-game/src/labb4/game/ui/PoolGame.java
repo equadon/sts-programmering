@@ -23,7 +23,7 @@ public class PoolGame extends JFrame {
         InfoPanel infoPanel = new InfoPanel(gamePanel);
         gamePanel.getTable().newGame(gamePanel.getTable().getCurrentPlayer());
 
-        setJMenuBar(createMenuBar(gamePanel));
+        setJMenuBar(createMenuBar(gamePanel, infoPanel));
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
@@ -56,10 +56,10 @@ public class PoolGame extends JFrame {
         return players.toArray(new Player[players.size()]);
     }
 
-    private JMenuBar createMenuBar(GamePanel gamePanel) {
+    private JMenuBar createMenuBar(GamePanel gamePanel, InfoPanel infoPanel) {
         JMenuBar menuBar = new JMenuBar();
 
-        JMenu gameMenu = createGameMenu(gamePanel);
+        JMenu gameMenu = createGameMenu(gamePanel, infoPanel);
         JMenu debugMenu = createDebugMenu(gamePanel);
 
         menuBar.add(gameMenu);
@@ -68,26 +68,29 @@ public class PoolGame extends JFrame {
         return menuBar;
     }
 
-    private JMenu createGameMenu(GamePanel gamePanel) {
+    private JMenu createGameMenu(GamePanel gamePanel, InfoPanel infoPanel) {
         JMenu gameMenu = new JMenu("Game");
         gameMenu.setMnemonic('G');
 
         JMenuItem eightBall = new JMenuItem(new AbstractAction("Eight ball") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                gamePanel.newGame(GameType.EightBall);
+                gamePanel.newGame(GameType.EightBall, true);
+                infoPanel.setTable(gamePanel.getTable());
             }
         });
         JMenuItem nineBall = new JMenuItem(new AbstractAction("Nine ball") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                gamePanel.newGame(GameType.NineBall);
+                gamePanel.newGame(GameType.NineBall, true);
+                infoPanel.setTable(gamePanel.getTable());
             }
         });
         JMenuItem snooker = new JMenuItem(new AbstractAction("Snooker") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                gamePanel.newGame(GameType.Snooker);
+                gamePanel.newGame(GameType.Snooker, true);
+                infoPanel.setTable(gamePanel.getTable());
             }
         });
 

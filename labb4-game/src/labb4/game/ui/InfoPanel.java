@@ -18,7 +18,7 @@ public class InfoPanel extends JPanel implements ActionListener, GameListener {
     private static final Font TITLE_FONT = new Font("Arial", Font.BOLD, 18);
 
     private final GamePanel gamePanel;
-    private final Table table;
+    private Table table;
 
     private JLabel turn;
     private JLabel scores;
@@ -63,6 +63,12 @@ public class InfoPanel extends JPanel implements ActionListener, GameListener {
         updateScores();
     }
 
+    public void setTable(Table table) {
+        this.table = table;
+        table.addListener(this);
+        updateScores();
+    }
+
     private void updateScores() {
         StringBuilder sb = new StringBuilder();
 
@@ -89,7 +95,8 @@ public class InfoPanel extends JPanel implements ActionListener, GameListener {
     @Override
     public void playerChanged(Player newPlayer) {
         turn.setText(newPlayer.name);
-        JOptionPane.showMessageDialog(this, "It's " + newPlayer.name + " turn.", "Change Player", JOptionPane.INFORMATION_MESSAGE);
+        //JOptionPane.showMessageDialog(this, "It's " + newPlayer.name + " turn.", "Change Player", JOptionPane.INFORMATION_MESSAGE);
+        updateScores();
     }
 
     @Override
