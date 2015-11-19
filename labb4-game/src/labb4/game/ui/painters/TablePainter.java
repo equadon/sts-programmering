@@ -17,7 +17,7 @@ public class TablePainter {
     private Image poolTableImage;
     private Image snookerTableImage;
 
-    public static Area area;
+    public static Shape area;
 
     public TablePainter() {
         try {

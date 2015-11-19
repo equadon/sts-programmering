@@ -15,6 +15,11 @@ public class Ball extends GameObject {
     protected final Table table;
     private double radius;
 
+    public Rectangle.Double upperLeftBounds;
+    public Rectangle.Double upperRightBounds;
+    public Rectangle.Double lowerLeftBounds;
+    public Rectangle.Double lowerRightBounds;
+
     public Ball(Table table, Vector2D position, Color color, double radius, boolean striped) {
         this(table, new BallPainter(), position, color, Config.DEFAULT_MASS, Config.DEFAULT_FRICTION, radius, striped);
     }
@@ -43,6 +48,11 @@ public class Ball extends GameObject {
         bounds.y = getPosition().y - radius;
         bounds.width = getDiameter();
         bounds.height = getDiameter();
+
+        upperLeftBounds = new Rectangle.Double(bounds.x, bounds.y, radius, radius);
+        upperRightBounds = new Rectangle.Double(bounds.x + radius, bounds.y, radius, radius);
+        lowerLeftBounds = new Rectangle.Double(bounds.x, bounds.y + radius, radius, radius);
+        lowerRightBounds = new Rectangle.Double(bounds.x + radius, bounds.y + radius, radius, radius);
     }
 
     public boolean handleCollisions() {

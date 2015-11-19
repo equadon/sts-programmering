@@ -26,7 +26,7 @@ public class BallPainter extends ObjectPainter {
         int width = (int) Math.round(bounds.width);
         int height = (int) Math.round(bounds.height);
 
-        drawBall(g, ball.getColor(), x, y, width, height);
+        drawBall(g, ball.getColor(), x, y, width, height, ball);
 
         if (ball instanceof PoolBall) {
             PoolBall poolBall = (PoolBall) ball;
@@ -86,14 +86,14 @@ public class BallPainter extends ObjectPainter {
         g.drawLine(start.x, start.y, end.x, end.y);
     }
 
-    private void drawBall(Graphics2D g, Color color, int x, int y, int width, int height) {
+    private void drawBall(Graphics2D g, Color color, int x, int y, int width, int height, Ball ball) {
         if (Config.DISPLAY_BOUNDING_BOXES) {
             //g.setStroke(new BasicStroke(Config.BALL_BORDER_SIZE));
             //g.setColor(Config.BALL_BLACK_COLOR);
             //g.drawRect(x, y, width - Config.BALL_BORDER_SIZE, height - Config.BALL_BORDER_SIZE);
 
             g.setColor(Utility.invertColor(color));
-            g.fillRect(x, y, width, height);
+            g.fillRect((int) ball.upperLeftBounds.x, (int) ball.upperLeftBounds.y, (int) ball.upperLeftBounds.width, (int) ball.upperLeftBounds.height);
         }
 
         // Background

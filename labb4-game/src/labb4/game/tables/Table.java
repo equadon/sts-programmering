@@ -1,5 +1,6 @@
 package labb4.game.tables;
 
+import javafx.scene.shape.Circle;
 import labb4.game.Config;
 import labb4.game.GameType;
 import labb4.game.Player;
@@ -14,16 +15,12 @@ import labb4.game.ui.painters.TablePainter;
 
 import java.awt.*;
 import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.PathIterator;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Table {
-    private static final double OUTER_BORDER_FACTOR = 43d / 587d;
-    private static final double INNER_BORDER_FACTOR = 26d / 587d;
-
-    private static final double OUTER_SNOOKER_BORDER_FACTOR = 43d / 683d;
-    private static final double INNER_SNOOKER_BORDER_FACTOR = 26d / 683d;
-
     private final TablePainter painter;
 
     private final List<GameListener> listeners;
@@ -43,6 +40,9 @@ public abstract class Table {
     private int currentPlayerId;
 
     private Polygon[] collisionBounds;
+
+    public final int topLeft1CollisionX;
+    public final int topRight1CollisionX;
 
     public Table(int width, int height, Player[] players) {
         this.players = players;
@@ -70,6 +70,9 @@ public abstract class Table {
         pockets = createPockets();
         balls = createBalls();
 
+        topLeft1CollisionX = playableBounds.x + 32;
+        topRight1CollisionX = (int) playableBounds.getCenterX() - Config.DEFAULT_POCKET_RADIUS - 5;
+
         updateCollisionBounds();
     }
 
@@ -83,7 +86,7 @@ public abstract class Table {
 
         collisionBounds = new Polygon[] {
                 new Polygon(
-                        new int[] {playable.x + 9, center.x - Config.DEFAULT_POCKET_RADIUS + 2, center.x - Config.DEFAULT_POCKET_RADIUS - 5, playable.x + 32},
+                        new int[] {playable.x + 9, center.x - Config.DEFAULT_POCKET_RADIUS + 2, center.x - Config.DEFAULT_POCKET_RADIUS - 5, topLeft1CollisionX},
                         new int[] {playable.y - innerBorderSize, playable.y - innerBorderSize, playable.y, playable.y},
                         4
                 ), new Polygon(
@@ -307,28 +310,42 @@ public abstract class Table {
                 bounds.x < playableBounds.x ||
                 bounds.getMaxX() > playableBounds.getMaxX()) {
             for (Polygon polygon : collisionBounds) {
-                Area area = new Area(polygon);
-                area.intersect(new Area(ball.getBounds()));
-                if (!area.isEmpty()) {
-                    TablePainter.area = area;
-                    if (area.isRectangular()) {
-                        if (bounds.x < playableBounds.x) {
-                            handleLeftWallCollision(ball);
-                        } else if (bounds.getMaxX() > playableBounds.getMaxX()) {
-                            handleRightWallCollision(ball);
-                        }
+                Area area1 = new Area(polygon);
+                Area area2 = new Area(polygon);
+                Area area3 = new Area(polygon);
+                Area area4 = new Area(polygon);
+                area1.intersect(new Area(ball.upperLeftBounds));
+                area2.intersect(new Area(ball.upperRightBounds));
+                area3.intersect(new Area(ball.lowerLeftBounds));
+                area4.intersect(new Area(ball.lowerRightBounds));
 
-                        if (bounds.y < playableBounds.y) {
-                            handleTopWallCollision(ball);
-                        } else if (bounds.getMaxY() > playableBounds.getMaxY()) {
-                            handleBottomWallCollision(ball);
-                        }
-                    }
+                if (area1.isEmpty() && !area2.isEmpty() && bounds.y > playableBounds.y - ball.getRadius()/2.0) {
+                    Vector2D newVelocity = calcDiagonalVelocity(ball, -1, -1);
+                    ball.setVelocity(newVelocity.x, newVelocity.y);
+                } else if (!area1.isEmpty() && area2.isEmpty() && bounds.y > playableBounds.y - ball.getRadius()/2.0) {
+                    Vector2D newVelocity = calcDiagonalVelocity(ball, 1, -1);
+                    ball.setVelocity(newVelocity.x, newVelocity.y);
+                } else if (!area1.isEmpty() && !area2.isEmpty() && bounds.y > playableBounds.y - ball.getRadius()/2.0) {
+                    // clean top wall
+                    handleTopWallCollision(ball);
+                } else if (!area3.isEmpty() && !area4.isEmpty() && bounds.getMaxY() < playableBounds.getMaxY() + ball.getRadius()/2.0) {
+                    handleBottomWallCollision(ball);
+                } else if (!area1.isEmpty() && !area3.isEmpty() && bounds.x > playableBounds.x - ball.getRadius()/2.0) {
+                    handleLeftWallCollision(ball);
+                } else if (!area2.isEmpty() && !area4.isEmpty() && bounds.getMaxX() < playableBounds.getMaxX() + ball.getRadius()/2.0) {
+                    handleRightWallCollision(ball);
                 }
             }
         }
 
         return false;
+    }
+
+    private Vector2D calcDiagonalVelocity(Ball ball, double x, double y) {
+        Vector2D velocity = ball.getVelocity();
+        Vector2D newVelocity = new Vector2D(x, y).normalize().multiply(velocity.length());
+
+        return newVelocity;
     }
 
     private void handleLeftWallCollision(Ball ball) {
@@ -337,12 +354,11 @@ public abstract class Table {
         ball.setVelocity(-velocity.x, velocity.y);
     }
     private void handleRightWallCollision(Ball ball) {
-        ball.getPosition().x -= ball.getBounds().getMaxX() - playableBounds.getMaxX();
         Vector2D velocity = ball.getVelocity();
         ball.setVelocity(-velocity.x, velocity.y);
     }
     private void handleTopWallCollision(Ball ball) {
-        ball.getPosition().y += playableBounds.getY() - ball.getBounds().y;
+        ball.getPosition().y = playableBounds.getY() + ball.getRadius();
         Vector2D velocity = ball.getVelocity();
         ball.setVelocity(velocity.x, -velocity.y);
     }
