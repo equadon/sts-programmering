@@ -38,8 +38,6 @@ public class SnookerTable extends Table {
         if (countRedBalls() == 0) {
             lowestBall = findLowestBall();
         }
-
-        System.out.println("Being player: " + player.name);
     }
 
     @Override
@@ -109,8 +107,6 @@ public class SnookerTable extends Table {
                 nextBall = nextRed ? "Red" : "Colored";
             notifyNextBall(nextBall);
         }
-
-        System.out.println("Current player: " + getCurrentPlayer().name);
     }
 
     private void calcPoints() {
