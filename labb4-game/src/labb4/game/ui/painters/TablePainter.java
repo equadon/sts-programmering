@@ -39,7 +39,7 @@ public class TablePainter {
 
         g.setColor(Config.TABLE_LINE_COLOR);
         if (table instanceof SnookerTable) {
-            drawSnookerLines(g, bounds, bounds.width);
+            drawSnookerLines(g, bounds, table);
         } else {
             drawStandardLines(g, bounds);
         }
@@ -80,9 +80,8 @@ public class TablePainter {
         );
 
         // Lines
-        double xLine;
         if (table instanceof SnookerTable) {
-            drawSnookerLines(g, playableBounds, bounds.width);
+            drawSnookerLines(g, playableBounds, table);
         } else {
             drawStandardLines(g, playableBounds);
         }
@@ -95,7 +94,7 @@ public class TablePainter {
         g.fillRect((int) xLine, bounds.y, Config.LINE_SIZE, bounds.height);
     }
 
-    private void drawSnookerLines(Graphics2D g, Rectangle bounds, int fullWidth) {
+    private void drawSnookerLines(Graphics2D g, Rectangle bounds, Table table) {
         int height = bounds.height;
 
         Vector2D center = new Vector2D(bounds.getCenterX(), bounds.getCenterY());
@@ -113,19 +112,19 @@ public class TablePainter {
         g.setColor(Config.TABLE_SPOT_COLOR);
 
         // Blue ball
-        g.fillOval((int) bounds.getCenterX() - SPOT_RADIUS, (int) bounds.getCenterY() - SPOT_RADIUS, 2 * SPOT_RADIUS, 2 * SPOT_RADIUS);
+        g.fillOval((int) table.getBounds().getCenterX() - SPOT_RADIUS, (int) table.getBounds().getCenterY() - SPOT_RADIUS, 2 * SPOT_RADIUS, 2 * SPOT_RADIUS);
 
         // Pink ball
         g.fillOval(
-                (int) (2 * fullWidth / 3.0 - SPOT_RADIUS - Config.BALL_RADIUS / 4.0),
-                (int) bounds.getCenterY() - SPOT_RADIUS,
+                (int) (2 * table.width / 3.0 - SPOT_RADIUS - Config.BALL_RADIUS / 4.0),
+                (int) table.getBounds().getCenterY() - SPOT_RADIUS,
                 2 * SPOT_RADIUS,
                 2 * SPOT_RADIUS
         );
 
         // Black ball
         g.fillOval(
-                (int) ((1-0.125) * fullWidth - SPOT_RADIUS),
+                (int) ((1-0.125) * table.width - SPOT_RADIUS),
                 (int) bounds.getCenterY() - SPOT_RADIUS,
                 2 * SPOT_RADIUS,
                 2 * SPOT_RADIUS

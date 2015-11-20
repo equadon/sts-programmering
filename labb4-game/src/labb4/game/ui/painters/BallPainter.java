@@ -93,7 +93,7 @@ public class BallPainter extends ObjectPainter {
             //g.drawRect(x, y, width - Config.BALL_BORDER_SIZE, height - Config.BALL_BORDER_SIZE);
 
             g.setColor(Utility.invertColor(color));
-            g.fillRect((int) ball.upperLeftBounds.x, (int) ball.upperLeftBounds.y, (int) ball.upperLeftBounds.width, (int) ball.upperLeftBounds.height);
+            g.fillRect((int) ball.getBounds().x, (int) ball.getBounds().y, (int) ball.getBounds().width, (int) ball.getBounds().height);
         }
 
         // Background
