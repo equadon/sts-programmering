@@ -42,11 +42,13 @@ public class ContextMenuListener extends MouseAdapter {
 
     private void holePopUp(MouseEvent e, Pocket pocket){
         PocketContextMenu menu = new PocketContextMenu(panel, pocket);
-        menu.show(e.getComponent(), e.getX(), e.getY());
+        //menu.show(e.getComponent(), e.getX(), e.getY());
+        panel.setComponentPopupMenu(menu);
     }
 
     private void ballPopUp(MouseEvent e, PoolBall ball){
         PoolBallContextMenu menu = new PoolBallContextMenu(panel, ball);
-        menu.show(e.getComponent(), e.getX(), e.getY());
+        //menu.show(e.getComponent(), e.getX(), e.getY());
+        panel.setComponentPopupMenu(menu);
     }
 }
