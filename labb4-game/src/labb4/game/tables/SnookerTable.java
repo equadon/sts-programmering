@@ -38,6 +38,8 @@ public class SnookerTable extends Table {
         if (countRedBalls() == 0) {
             lowestBall = findLowestBall();
         }
+
+        System.out.println("Being player: " + player.name);
     }
 
     @Override
@@ -77,10 +79,9 @@ public class SnookerTable extends Table {
             placeAllNonRedPocketedBalls();
             nextRed = true;
         } else if (redCount == 0 && isBallPocketed(7)) {
-            int points = countPoints();
-            player.addPoints(points);
-            notifyAddPoints(player, points);
+            calcPoints();
 
+            notifyNextBall("-");
             notifyGameOver(findWinner());
             validMove = true;
             gameOver = true;
@@ -97,14 +98,10 @@ public class SnookerTable extends Table {
         if (!gameOver && validMove) {
             nextRed = !nextRed;
 
-            int points = countPoints();
-            player.addPoints(points);
-            notifyAddPoints(player, points);
+            calcPoints();
         }
 
-        if (gameOver) {
-            notifyNextBall("-");
-        } else {
+        if (!gameOver) {
             String nextBall;
             if (countRedBalls() == 0)
                 nextBall = "#" + findLowestBall().number;
@@ -113,7 +110,13 @@ public class SnookerTable extends Table {
             notifyNextBall(nextBall);
         }
 
-        notifyPlayerChange(getCurrentPlayer());
+        System.out.println("Current player: " + getCurrentPlayer().name);
+    }
+
+    private void calcPoints() {
+        int points = countPoints();
+        player.addPoints(points);
+        notifyAddPoints(player, points);
     }
 
     private Player findWinner() {

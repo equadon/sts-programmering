@@ -208,7 +208,7 @@ public abstract class Table {
 
     protected List<PoolBall> createBalls() {
         return new ArrayList<>();
-    };
+    }
 
     protected Pocket[] createPockets() {
         pockets = new Pocket[Config.POCKET_COUNT];

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Collections;
 
 public class InfoPanel extends JPanel implements ActionListener, GameListener {
-    private static final int WIDTH = 250;
+    private static final int WIDTH = 190;
     private static final Font TITLE_FONT = new Font("Arial", Font.BOLD, 18);
 
     private final GamePanel gamePanel;
@@ -39,16 +39,6 @@ public class InfoPanel extends JPanel implements ActionListener, GameListener {
         turn.setPreferredSize(new Dimension(WIDTH, 30));
         add(turn);
 
-        JLabel pointsTitle = new JLabel("Points:");
-        pointsTitle.setFont(TITLE_FONT);
-        pointsTitle.setPreferredSize(new Dimension(WIDTH, 30));
-        add(pointsTitle);
-
-        scores = new JLabel("");
-        scores.setFont(new Font("Arial", Font.PLAIN, 12));
-        scores.setPreferredSize(new Dimension(WIDTH, 30));
-        add(scores);
-
         JLabel nextBallTitle = new JLabel("Next ball:");
         nextBallTitle.setFont(TITLE_FONT);
         nextBallTitle.setPreferredSize(new Dimension(WIDTH, 30));
@@ -57,6 +47,18 @@ public class InfoPanel extends JPanel implements ActionListener, GameListener {
         nextBall = new JLabel("?");
         nextBall.setPreferredSize(new Dimension(WIDTH, 30));
         add(nextBall);
+
+        JLabel pointsTitle = new JLabel("Points:");
+        pointsTitle.setFont(TITLE_FONT);
+        pointsTitle.setPreferredSize(new Dimension(WIDTH, 30));
+
+        add(pointsTitle);
+
+        scores = new JLabel("");
+        scores.setFont(new Font("Arial", Font.PLAIN, 12));
+        scores.setPreferredSize(new Dimension(WIDTH, 300));
+        scores.setVerticalAlignment(SwingConstants.TOP);
+        add(scores);
 
         table.addListener(this);
 
@@ -68,13 +70,14 @@ public class InfoPanel extends JPanel implements ActionListener, GameListener {
         table.addListener(this);
         updateScores();
         playerChanged(table.getCurrentPlayer());
+        nextBall("-");
     }
 
     private void updateScores() {
         StringBuilder sb = new StringBuilder();
 
-        List<Player> players = Arrays.asList(table.getPlayers());
-        Collections.sort(players, Collections.reverseOrder());
+        Player[] players = Arrays.copyOf(table.getPlayers(), table.getPlayers().length);
+        Arrays.sort(players, Collections.reverseOrder());
 
         int n = 1;
         for (Player player : players) {

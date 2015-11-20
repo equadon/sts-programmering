@@ -35,7 +35,7 @@ public class Player implements Comparable<Player> {
     public String toString() {
         return "Player[" +
                 "name='" + name + '\'' +
-                ", number=" + points +
+                ", points=" + points +
                 ']';
     }
 }
