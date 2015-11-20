@@ -5,7 +5,7 @@ import java.awt.*;
 public class Config {
     public static int FRAMES_PER_SECOND = 100;
 
-    public static final double RESIZE_FACTOR = 3; // resize table/ball/hole size
+    public static final double RESIZE_FACTOR = 2.8; // resize table/ball/hole size
 
     public static final double DEFAULT_FRICTION = 0.015;
     public static final double DEFAULT_MASS = 1.0;

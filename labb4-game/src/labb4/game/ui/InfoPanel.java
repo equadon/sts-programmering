@@ -1,5 +1,6 @@
 package labb4.game.ui;
 
+import labb4.game.GameType;
 import labb4.game.Player;
 import labb4.game.interfaces.GameListener;
 import labb4.game.interfaces.Placeable;
@@ -29,6 +30,31 @@ public class InfoPanel extends JPanel implements ActionListener, GameListener {
         this.table = gamePanel.getTable();
 
         setPreferredSize(new Dimension(WIDTH, 200));
+
+        add(new JButton(new AbstractAction("Eight Ball") {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                gamePanel.newGame(GameType.EightBall, true);
+                setTable(gamePanel.getTable());
+            }
+        }));
+
+        add(new JButton(new AbstractAction("Nine Ball") {
+
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                gamePanel.newGame(GameType.NineBall, true);
+                setTable(gamePanel.getTable());
+            }
+        }));
+
+        add(new JButton(new AbstractAction("Snooker") {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                gamePanel.newGame(GameType.Snooker, true);
+                setTable(gamePanel.getTable());
+            }
+        }));
 
         JLabel turnTitle = new JLabel("Turn:");
         turnTitle.setFont(TITLE_FONT);

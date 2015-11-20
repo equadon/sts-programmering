@@ -1,6 +1,5 @@
 package labb4.game.tables;
 
-import javafx.scene.shape.Circle;
 import labb4.game.Config;
 import labb4.game.GameType;
 import labb4.game.Player;
