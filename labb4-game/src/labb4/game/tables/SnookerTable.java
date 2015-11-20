@@ -84,12 +84,12 @@ public class SnookerTable extends Table {
             notifyGameOver(findWinner());
             validMove = true;
             gameOver = true;
-        } else if (redCount > 0 && !nextRed && firstBall != null && firstBall.number > 1) {
-            placeAllNonRedPocketedBalls();
-            validMove = true;
         } else if (pocketedBalls.size() == 0) {
             changePlayer();
             nextRed = true;
+        } else if (redCount > 0 && !nextRed && firstBall != null && firstBall.number > 1) {
+            placeAllNonRedPocketedBalls();
+            validMove = true;
         } else {
             validMove = true;
         }
@@ -112,6 +112,8 @@ public class SnookerTable extends Table {
                 nextBall = nextRed ? "Red" : "Colored";
             notifyNextBall(nextBall);
         }
+
+        notifyPlayerChange(getCurrentPlayer());
     }
 
     private Player findWinner() {

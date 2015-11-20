@@ -67,6 +67,7 @@ public class InfoPanel extends JPanel implements ActionListener, GameListener {
         this.table = table;
         table.addListener(this);
         updateScores();
+        playerChanged(table.getCurrentPlayer());
     }
 
     private void updateScores() {
