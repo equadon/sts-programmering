@@ -12,6 +12,7 @@ public class ChatGUI extends JFrame implements ActionListener, ObjectStreamListe
     private final JButton sendButton;
 
     private ChatClient client;
+    private ChatServer server;
 
     public ChatGUI() {
         inputArea = new JTextArea();
@@ -46,10 +47,11 @@ public class ChatGUI extends JFrame implements ActionListener, ObjectStreamListe
 
         try {
             if (answer == 1) {
-                client = new ChatClient(this, new Socket("130.243.203.108", ChatServer.DEFAULT_PORT));
+                //client = new ChatClient(this, new Socket("130.243.203.108", ChatServer.DEFAULT_PORT));
+                client = new ChatClient(this, new Socket("localhost", ChatServer.DEFAULT_PORT));
                 new Thread(client).start();
             } else if (answer == 0) {
-                ChatServer server = new ChatServer(ChatServer.DEFAULT_PORT);
+                server = new ChatServer(this, ChatServer.DEFAULT_PORT);
                 new Thread(server).start();
             } else {
                 // quit
@@ -65,14 +67,16 @@ public class ChatGUI extends JFrame implements ActionListener, ObjectStreamListe
         outputArea.append("Jag: " + message + "\n");
         inputArea.setText("");
 
-        if (client != null) {
+        if (server != null && server.testClient != null) {
+            server.testClient.send(message);
+        } else if (client != null) {
             client.send(message);
         }
     }
 
     @Override
     public void objectReceived(Object object) {
-        outputArea.append("Fred: " + object + "\n");
+        outputArea.append("Server: " + object + "\n");
     }
 
     @Override

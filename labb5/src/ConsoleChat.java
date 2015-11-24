@@ -1,6 +1,6 @@
 public class ConsoleChat {
     public ConsoleChat() {
-        ChatServer server = new ChatServer(ChatServer.DEFAULT_PORT);
+        ChatServer server = new ChatServer(null, ChatServer.DEFAULT_PORT);
         new Thread(server).start();
     }
 

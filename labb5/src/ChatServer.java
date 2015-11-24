@@ -5,12 +5,16 @@ import java.net.Socket;
 public class ChatServer implements Runnable {
     public static final int DEFAULT_PORT = 30123;
 
+    private final ObjectStreamListener listener;
     private final int port;
     private ServerSocket serverSocket;
 
+    public ChatClient testClient;
+
     private boolean running;
 
-    public ChatServer(int port) {
+    public ChatServer(ObjectStreamListener listener, int port) {
+        this.listener = listener;
         this.port = port;
     }
 
@@ -22,11 +26,10 @@ public class ChatServer implements Runnable {
 
             while (running) {
                 System.out.println("Väntar på klient...");
-                ChatClient client = new ChatClient(null, serverSocket.accept());
+                testClient = new ChatClient(listener, serverSocket.accept());
                 System.out.println("Någon har anslutit");
-                new Thread(client).start();
-                client.send("Hej");
-                System.out.println("Skickade 'Hej'");
+                new Thread(testClient).start();
+                testClient.send("Hej");
             }
         } catch (IOException e) {
             e.printStackTrace();
