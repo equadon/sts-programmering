@@ -7,17 +7,15 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class ChatGUI extends JFrame implements ActionListener, ObjectStreamListener {
-    private final TextArea inputArea;
-    private final TextArea outputArea;
+    private final JTextArea inputArea;
+    private final JTextArea outputArea;
     private final JButton sendButton;
 
     private ChatClient client;
 
     public ChatGUI() {
-        setLayout(new BorderLayout());
-
-        inputArea = new TextArea();
-        outputArea = new TextArea();
+        inputArea = new JTextArea();
+        outputArea = new JTextArea();
 
         sendButton = new JButton("Skicka");
         sendButton.addActionListener(this);
@@ -36,7 +34,6 @@ public class ChatGUI extends JFrame implements ActionListener, ObjectStreamListe
         inputPanel.add(sendButton, BorderLayout.EAST);
         add(inputPanel, BorderLayout.SOUTH);
 
-        //setTitle("Chat");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         pack();
         setVisible(true);

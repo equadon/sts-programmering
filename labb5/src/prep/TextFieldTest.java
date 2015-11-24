@@ -3,8 +3,9 @@ package prep;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class TextFieldTest extends JPanel {
+public class TextFieldTest extends JPanel implements ActionListener {
     private final JTextArea area;
     private final JTextField input;
     private final JButton button;
@@ -30,6 +31,14 @@ public class TextFieldTest extends JPanel {
         add(area);
         add(input);
         add(button);
+
+        input.addActionListener(this);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        area.append(input.getText() + "\n");
+        input.setText("");
     }
 
     public static void main(String[] args) {
