@@ -3,3 +3,5 @@
 /labb2/dist/
 
 *.class
+/labb4-game/nbproject/private/
+/labb4-game/build/

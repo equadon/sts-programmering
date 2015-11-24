@@ -41,8 +41,8 @@ public class PoolGame extends JFrame {
 
         boolean continueAsking = true;
         String name;
-        while (n < 3) {// || continueAsking) {
-            name = "Player " + n; //JOptionPane.showInputDialog("Enter name for player " + n);
+        while (n < 2 || continueAsking) {
+            name = /*"Player " + n;*/ JOptionPane.showInputDialog("Enter name for player " + n);
 
             if (name == null || name.trim().equals("")) {
                 continueAsking = false;
