@@ -28,14 +28,19 @@ public class ChatServer implements Runnable {
                 ChatClient client = createClient(socket);
                 System.out.println("Någon har anslutit");
                 new Thread(client).start();
-                client.send("Hej");
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            close();
         }
     }
 
     protected ChatClient createClient(Socket socket) {
         return new ChatClient(null, socket);
+    }
+
+    public void close() {
+        running = false;
     }
 }

@@ -3,10 +3,10 @@ package chat;
 import java.net.Socket;
 
 public class SingleClientChatServer extends ChatServer {
-    private final ObjectStreamListener listener;
+    private final ChatListener listener;
     private ChatClient client;
 
-    public SingleClientChatServer(int port, ObjectStreamListener listener) {
+    public SingleClientChatServer(int port, ChatListener listener) {
         super(port);
 
         this.listener = listener;
@@ -22,5 +22,16 @@ public class SingleClientChatServer extends ChatServer {
         if (client != null) {
             client.send(message);
         }
+    }
+
+    @Override
+    public void close() {
+        super.close();
+
+        if (client != null) {
+            client.close();
+        }
+
+        listener.disconnected();
     }
 }
