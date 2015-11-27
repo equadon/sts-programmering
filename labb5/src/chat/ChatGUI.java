@@ -105,6 +105,7 @@ public class ChatGUI extends JFrame implements ActionListener, ChatListener {
     }
 
     private ChatClient createClient() throws IOException {
+        String name = "Fred";
         String address;
         int port;
 
@@ -116,15 +117,16 @@ public class ChatGUI extends JFrame implements ActionListener, ChatListener {
                 port = Integer.parseInt(JOptionPane.showInputDialog(this, "Port:", ChatServer.DEFAULT_PORT));
             } else {
                 String[] values = getFavorite().split(":");
+                name = values[0].trim();
                 address = values[1].trim();
-                port = Integer.parseInt(values[2]);
+                port = Integer.parseInt(values[2].trim());
             }
         } else {
             address = JOptionPane.showInputDialog(this, "IP Adress:", "130.243.182.97");
             port = Integer.parseInt(JOptionPane.showInputDialog(this, "Port:", ChatServer.DEFAULT_PORT));
         }
 
-        return new ChatClient(this, new Socket(address, port));
+        return new ChatClient(this, name, new Socket(address, port));
     }
 
     private String getFavorite() {
@@ -132,7 +134,7 @@ public class ChatGUI extends JFrame implements ActionListener, ChatListener {
         if (favoriteList == null) {
             return null;
         }
-        
+
         String[] favorites = favoriteList.toArray(new String[favoriteList.size()]);
 
         return (String) JOptionPane.showInputDialog(this, "Välj favorit", "Favoriter", JOptionPane.QUESTION_MESSAGE, null, favorites, favorites[0]);
@@ -191,8 +193,8 @@ public class ChatGUI extends JFrame implements ActionListener, ChatListener {
     }
 
     @Override
-    public void messageReceived(String message) {
-        outputArea.append("Server: " + message + "\n");
+    public void messageReceived(String name, String message) {
+        outputArea.append(name + ": " + message + "\n");
     }
 
     @Override

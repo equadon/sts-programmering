@@ -14,7 +14,7 @@ public class SingleClientChatServer extends ChatServer {
 
     @Override
     protected ChatClient createClient(Socket socket) {
-        client = new ChatClient(listener, socket);
+        client = new ChatClient(listener, ChatClient.DEFAULT_NAME, socket);
         return client;
     }
 

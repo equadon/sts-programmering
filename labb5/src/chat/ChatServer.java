@@ -37,7 +37,7 @@ public class ChatServer implements Runnable {
     }
 
     protected ChatClient createClient(Socket socket) {
-        return new ChatClient(null, socket);
+        return new ChatClient(null, ChatClient.DEFAULT_NAME, socket);
     }
 
     public void close() {

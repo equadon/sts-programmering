@@ -7,6 +7,10 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class ChatClient implements Runnable {
+    public static final String DEFAULT_NAME = "Fred";
+
+    public final String name;
+
     private final ChatListener listener;
     private Socket socket;
     private ObjectOutputStream output;
@@ -14,8 +18,9 @@ public class ChatClient implements Runnable {
 
     private boolean running;
 
-    public ChatClient(ChatListener listener, Socket socket) {
+    public ChatClient(ChatListener listener, String name, Socket socket) {
         this.listener = listener;
+        this.name = name;
         this.socket = socket;
 
         try {
@@ -39,7 +44,7 @@ public class ChatClient implements Runnable {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    listener.messageReceived((String) object);
+                    listener.messageReceived(name, (String) object);
                 }
             });
         }
