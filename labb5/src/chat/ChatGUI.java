@@ -1,3 +1,5 @@
+package chat;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -12,7 +14,7 @@ public class ChatGUI extends JFrame implements ActionListener, ObjectStreamListe
     private final JButton sendButton;
 
     private ChatClient client;
-    private ChatServer server;
+    private SingleClientChatServer server;
 
     public ChatGUI() {
         inputArea = new JTextArea();
@@ -42,16 +44,20 @@ public class ChatGUI extends JFrame implements ActionListener, ObjectStreamListe
         askIfServer();
     }
 
+    public boolean isServer() {
+        return server != null;
+    }
+
     private void askIfServer() {
         int answer = JOptionPane.showConfirmDialog(this, "Vill du vara server?");
 
         try {
             if (answer == 1) {
-                //client = new ChatClient(this, new Socket("130.243.203.108", ChatServer.DEFAULT_PORT));
-                client = new ChatClient(this, new Socket("localhost", ChatServer.DEFAULT_PORT));
+                client = new ChatClient(this, new Socket("130.243.182.97", ChatServer.DEFAULT_PORT));
+                //client = new ChatClient(this, new Socket("localhost", ChatServer.DEFAULT_PORT));
                 new Thread(client).start();
             } else if (answer == 0) {
-                server = new ChatServer(this, ChatServer.DEFAULT_PORT);
+                server = new SingleClientChatServer(ChatServer.DEFAULT_PORT, this);
                 new Thread(server).start();
             } else {
                 // quit
@@ -67,9 +73,9 @@ public class ChatGUI extends JFrame implements ActionListener, ObjectStreamListe
         outputArea.append("Jag: " + message + "\n");
         inputArea.setText("");
 
-        if (server != null && server.testClient != null) {
-            server.testClient.send(message);
-        } else if (client != null) {
+        if (isServer()) {
+            server.send(message);
+        } else {
             client.send(message);
         }
     }
