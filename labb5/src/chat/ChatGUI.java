@@ -1,5 +1,8 @@
 package chat;
 
+import chat.packets.LoginPacket;
+import chat.packets.UserListPacket;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -10,7 +13,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChatGUI extends JFrame implements ActionListener, OldChatListener {
+public class ChatGUI extends JFrame implements ActionListener, ChatListener {
     private static final boolean SELECT_FAVORITE = true;
 
     private final JTextField inputArea;
@@ -196,6 +199,9 @@ public class ChatGUI extends JFrame implements ActionListener, OldChatListener {
     }
 
     @Override
+    public void userListUpdated(UserListPacket packet) {}
+
+    @Override
     public void connected(ChatClient client) {
         if (this.client == null) {
             this.client = client;
@@ -218,7 +224,10 @@ public class ChatGUI extends JFrame implements ActionListener, OldChatListener {
     }
 
     @Override
-    public void exceptionReceieved(Exception exception) {}
+    public void loggedIn(ChatClient client, LoginPacket packet) {}
+
+    @Override
+    public void exceptionReceived(Exception exception) {}
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {

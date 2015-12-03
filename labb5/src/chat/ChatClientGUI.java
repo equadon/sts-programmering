@@ -1,5 +1,9 @@
 package chat;
 
+import chat.packets.LoginPacket;
+import chat.packets.MessagePacket;
+import chat.packets.UserListPacket;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -16,6 +20,7 @@ public class ChatClientGUI extends JFrame implements ActionListener, ChatListene
     private final JTextField inputArea;
     private final JTextArea outputArea;
     private final JButton sendButton;
+    private final JList<String> userList;
 
     private ChatClient client;
 
@@ -34,11 +39,16 @@ public class ChatClientGUI extends JFrame implements ActionListener, ChatListene
         sendButton = new JButton("Skicka");
         sendButton.addActionListener(this);
 
+        userList = new JList<>();
+        JScrollPane userScroll = new JScrollPane(userList);
+        userScroll.setPreferredSize(new Dimension(150, 200));
+
         JScrollPane outputScroll = new JScrollPane(outputArea);
 
         outputScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         add(outputScroll, BorderLayout.CENTER);
+        add(userScroll, BorderLayout.EAST);
 
         JPanel inputPanel = new JPanel(new BorderLayout());
         inputPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -164,7 +174,7 @@ public class ChatClientGUI extends JFrame implements ActionListener, ChatListene
         outputArea.append("Jag: " + message + "\n");
         inputArea.setText("");
 
-        client.send(message);
+        client.send(new MessagePacket(client.getName(), message));
     }
 
     @Override
@@ -173,12 +183,26 @@ public class ChatClientGUI extends JFrame implements ActionListener, ChatListene
     }
 
     @Override
+    public void userListUpdated(UserListPacket packet) {
+        userList.setListData(packet.users);
+    }
+
+    @Override
     public void connected(ChatClient client) {
         if (this.client == null) {
             this.client = client;
         }
 
-        outputArea.append("Ansluten till servern.");
+        outputArea.append("Ansluten till servern.\n");
+
+        askLogin();
+    }
+
+    private void askLogin() {
+        String username = JOptionPane.showInputDialog("Användarnamn:");
+        String password = JOptionPane.showInputDialog("Lösenord:");
+
+        client.send(new LoginPacket(username, password, null));
     }
 
     @Override
@@ -187,7 +211,18 @@ public class ChatClientGUI extends JFrame implements ActionListener, ChatListene
     }
 
     @Override
-    public void exceptionReceieved(Exception exception) {}
+    public void loggedIn(ChatClient client, LoginPacket login) {
+        if (login.isSuccesful()) {
+            outputArea.append("Inloggad som " + login.username + ".\n");
+        } else {
+            JOptionPane.showMessageDialog(this, "Inloggning misslyckades: " + login.failReason);
+
+            askLogin();
+        }
+    }
+
+    @Override
+    public void exceptionReceived(Exception exception) {}
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {

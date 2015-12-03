@@ -1,5 +1,9 @@
 package chat;
 
+import chat.packets.LoginPacket;
+import chat.packets.MessagePacket;
+import chat.packets.UserListPacket;
+
 import javax.swing.*;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -18,6 +22,16 @@ public class MultiUserChatServer extends ChatServer implements ChatListener {
 
     private void updateConnected() {
         connected.setText("Connected: " + clients.size());
+    }
+
+    private String[] getUserNames() {
+        String[] names = new String[clients.size()];
+
+        for (int i = 0; i < names.length; i++) {
+            names[i] = clients.get(i).getName();
+        }
+
+        return names;
     }
 
     @Override
@@ -46,12 +60,33 @@ public class MultiUserChatServer extends ChatServer implements ChatListener {
     }
 
     @Override
-    public void messageReceived(String name, String message) {
-        System.out.println("Message received: " + message);
+    public void loggedIn(ChatClient client, LoginPacket login) {
+        if (login.password.equals("test")) {
+            client.send(new LoginPacket(login.username, login.password, null));
+
+
+            for (ChatClient c : clients) {
+                c.send(new UserListPacket(getUserNames()));
+            }
+        } else {
+            client.send(new LoginPacket(login.username, login.password, "Incorrect password."));
+        }
     }
 
     @Override
-    public void exceptionReceieved(Exception exception) {}
+    public void messageReceived(String name, String message) {
+        for (ChatClient client : clients) {
+            if (!client.getName().equals(name)) {
+                client.send(new MessagePacket(name, message));
+            }
+        }
+    }
+
+    @Override
+    public void userListUpdated(UserListPacket packet) {}
+
+    @Override
+    public void exceptionReceived(Exception exception) {}
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Chat Server");

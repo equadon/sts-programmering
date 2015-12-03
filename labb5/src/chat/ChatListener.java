@@ -1,10 +1,17 @@
 package chat;
 
-public interface ChatListener extends OldChatListener {
+import chat.packets.LoginPacket;
+import chat.packets.UserListPacket;
+
+public interface ChatListener {
     void connected(ChatClient client);
     void disconnected(ChatClient client);
 
+    void loggedIn(ChatClient client, LoginPacket login);
+
     void messageReceived(String name, String message);
 
-    void exceptionReceieved(Exception exception);
+    void userListUpdated(UserListPacket packet);
+
+    void exceptionReceived(Exception exception);
 }
