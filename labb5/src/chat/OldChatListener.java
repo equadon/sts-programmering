@@ -1,6 +1,6 @@
 package chat;
 
-public interface ChatListener extends OldChatListener {
+public interface OldChatListener {
     void connected(ChatClient client);
     void disconnected(ChatClient client);
 

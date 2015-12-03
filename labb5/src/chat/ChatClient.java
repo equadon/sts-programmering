@@ -11,14 +11,14 @@ public class ChatClient implements Runnable {
 
     public final String name;
 
-    private final ChatListener listener;
+    private final OldChatListener listener;
     private Socket socket;
     private ObjectOutputStream output;
     private ObjectInputStream input;
 
     private boolean running;
 
-    public ChatClient(ChatListener listener, String name, Socket socket) {
+    public ChatClient(OldChatListener listener, String name, Socket socket) {
         this.listener = listener;
         this.name = name;
         this.socket = socket;
@@ -29,6 +29,8 @@ public class ChatClient implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        listener.connected(this);
     }
 
     public void send(String message) {
@@ -62,7 +64,7 @@ public class ChatClient implements Runnable {
                 sendObject(object);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Client disconnected.");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } finally {
@@ -76,7 +78,7 @@ public class ChatClient implements Runnable {
                 }
             }
 
-            listener.disconnected();
+            listener.disconnected(this);
         }
     }
 

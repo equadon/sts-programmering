@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChatGUI extends JFrame implements ActionListener, OldChatListener {
+public class ChatClientGUI extends JFrame implements ActionListener, ChatListener {
     private static final boolean SELECT_FAVORITE = true;
 
     private final JTextField inputArea;
@@ -18,9 +18,8 @@ public class ChatGUI extends JFrame implements ActionListener, OldChatListener {
     private final JButton sendButton;
 
     private ChatClient client;
-    private SingleClientChatServer server;
 
-    public ChatGUI() {
+    public ChatClientGUI() {
         inputArea = new JTextField();
         inputArea.addActionListener(new AbstractAction() {
             @Override
@@ -49,12 +48,19 @@ public class ChatGUI extends JFrame implements ActionListener, OldChatListener {
 
         JMenuBar menu = new JMenuBar();
         JMenu fileMenu = new JMenu("Arkiv");
+        JMenuItem connectItem = new JMenuItem(new AbstractAction("Anslut") {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                connect();
+            }
+        });
         JMenuItem closeItem = new JMenuItem(new AbstractAction("Stäng") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 closeChat();
             }
         });
+        fileMenu.add(connectItem);
         fileMenu.add(closeItem);
         menu.add(fileMenu);
         setJMenuBar(menu);
@@ -66,52 +72,29 @@ public class ChatGUI extends JFrame implements ActionListener, OldChatListener {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         pack();
         setVisible(true);
-
-        askIfServer();
-    }
-
-    public boolean isServer() {
-        return server != null;
     }
 
     private void closeChat() {
-        if (isServer()) {
-            server.close();
-        } else {
-            client.close();
-        }
+        client.close();
 
         System.exit(0);
     }
 
-    private void askIfServer() {
-        String[] options = {"Server", "Klient"};
-        int answer = JOptionPane.showOptionDialog(this, "Välj klient eller server?", "Välj typ", 0, JOptionPane.QUESTION_MESSAGE, null, options, null);
-
+    private void connect() {
         try {
-            if (answer == 1) {
-                setTitle("Chat - Client");
-                outputArea.append("Ansluter till servern...\n");
-                client = createClient();
-                new Thread(client).start();
-            } else if (answer == 0) {
-                setTitle("Chat - Server");
-                server = createServer();
-                new Thread(server).start();
-            } else {
-                // quit
-            }
+            outputArea.append("Ansluter till servern...\n");
+            client = createClient();
+            new Thread(client).start();
         } catch (IOException e) {
             outputArea.append("Kunde inte ansluta.\n");
         }
     }
 
     private ChatClient createClient() throws IOException {
-        String name = "Fred";
         String address;
         int port;
 
-        if (SELECT_FAVORITE) {
+/*        if (SELECT_FAVORITE) {
             String favorite = getFavorite();
 
             if (favorite == null) {
@@ -119,7 +102,6 @@ public class ChatGUI extends JFrame implements ActionListener, OldChatListener {
                 port = Integer.parseInt(JOptionPane.showInputDialog(this, "Port:", ChatServer.DEFAULT_PORT));
             } else {
                 String[] values = favorite.split(":");
-                name = values[0].trim();
                 address = values[1].trim();
                 port = Integer.parseInt(values[2].trim());
             }
@@ -128,7 +110,8 @@ public class ChatGUI extends JFrame implements ActionListener, OldChatListener {
             port = Integer.parseInt(JOptionPane.showInputDialog(this, "Port:", ChatServer.DEFAULT_PORT));
         }
 
-        return new ChatClient(this, name, new Socket(address, port));
+        return new ChatClient(this, null, new Socket(address, port));*/
+        return new ChatClient(this, null, new Socket("localhost", ChatServer.DEFAULT_PORT));
     }
 
     private String getFavorite() {
@@ -171,12 +154,6 @@ public class ChatGUI extends JFrame implements ActionListener, OldChatListener {
         return null;
     }
 
-    private SingleClientChatServer createServer() throws IOException {
-        int port = Integer.parseInt(JOptionPane.showInputDialog(this, "Port:", ChatServer.DEFAULT_PORT));
-
-        return new SingleClientChatServer(port, this);
-    }
-
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         sendMessage();
@@ -201,20 +178,12 @@ public class ChatGUI extends JFrame implements ActionListener, OldChatListener {
             this.client = client;
         }
 
-        if (isServer()) {
-            outputArea.append("En klient har anslutit.\n");
-        } else {
-            outputArea.append("Ansluten till servern.");
-        }
+        outputArea.append("Ansluten till servern.");
     }
 
     @Override
     public void disconnected(ChatClient client) {
-        if (isServer()) {
-            outputArea.append("En klient har lämnat.\n");
-        } else {
-            outputArea.append("Servern har avslutat.\n");
-        }
+        outputArea.append("Servern har avslutat.\n");
     }
 
     @Override
@@ -224,7 +193,7 @@ public class ChatGUI extends JFrame implements ActionListener, OldChatListener {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new ChatGUI();
+                new ChatClientGUI();
             }
         });
     }
