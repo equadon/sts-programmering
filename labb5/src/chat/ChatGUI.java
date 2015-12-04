@@ -224,7 +224,17 @@ public class ChatGUI extends JFrame implements ActionListener, ChatListener {
     }
 
     @Override
+    public void disconnected(String user) {
+
+    }
+
+    @Override
     public void loggedIn(ChatClient client, LoginPacket packet) {}
+
+    @Override
+    public void loggedIn(String user) {
+
+    }
 
     @Override
     public void exceptionReceived(Exception exception) {}

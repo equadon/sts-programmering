@@ -92,11 +92,11 @@ public class ChatClientGUI extends JFrame implements ActionListener, ChatListene
 
     private void connect() {
         try {
-            outputArea.append("Ansluter till servern...\n");
+            addMessage("Ansluter till servern...");
             client = createClient();
             new Thread(client).start();
         } catch (IOException e) {
-            outputArea.append("Kunde inte ansluta.\n");
+            addMessage("Kunde inte ansluta.");
         }
     }
 
@@ -126,8 +126,9 @@ public class ChatClientGUI extends JFrame implements ActionListener, ChatListene
         }
 
         ChatClient c = new ChatClient(this, null, new Socket(address, port));
-        //ChatClient c = new ChatClient(this, null, new Socket("localhost", ChatServer.DEFAULT_PORT));
         c.setName(name);
+
+        //ChatClient c = new ChatClient(this, null, new Socket("localhost", ChatServer.DEFAULT_PORT));
 
         return c;
     }
@@ -203,6 +204,14 @@ public class ChatClientGUI extends JFrame implements ActionListener, ChatListene
         return null;
     }
 
+    public void addMessage(String author, String message) {
+        outputArea.append(author + ": " + message + "\n");
+    }
+
+    public void addMessage(String message) {
+        outputArea.append(message + "\n");
+    }
+
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         sendMessage();
@@ -210,7 +219,7 @@ public class ChatClientGUI extends JFrame implements ActionListener, ChatListene
 
     private void sendMessage() {
         String message = inputArea.getText();
-        outputArea.append("Jag: " + message + "\n");
+        addMessage("Jag", message);
         inputArea.setText("");
 
         client.send(new MessagePacket(client.getName(), message));
@@ -218,7 +227,7 @@ public class ChatClientGUI extends JFrame implements ActionListener, ChatListene
 
     @Override
     public void messageReceived(String name, String message) {
-        outputArea.append(name + ": " + message + "\n");
+        addMessage(name, message);
     }
 
     @Override
@@ -232,7 +241,7 @@ public class ChatClientGUI extends JFrame implements ActionListener, ChatListene
             this.client = client;
         }
 
-        outputArea.append("Ansluten till servern.\n");
+        addMessage("Ansluten till servern.\n");
 
         askLogin();
     }
@@ -246,18 +255,28 @@ public class ChatClientGUI extends JFrame implements ActionListener, ChatListene
 
     @Override
     public void disconnected(ChatClient client) {
-        outputArea.append("Servern har avslutat.\n");
+        addMessage("Servern har avslutat.");
+    }
+
+    @Override
+    public void disconnected(String user) {
+        addMessage(user + " har loggat ut.");
     }
 
     @Override
     public void loggedIn(ChatClient client, LoginPacket login) {
         if (login.isSuccesful()) {
-            outputArea.append("Inloggad som " + login.username + ".\n");
+            addMessage("Inloggad som " + login.username);
         } else {
             JOptionPane.showMessageDialog(this, "Inloggning misslyckades: " + login.failReason);
 
             askLogin();
         }
+    }
+
+    @Override
+    public void loggedIn(String user) {
+        addMessage(user + " har loggat in.");
     }
 
     @Override

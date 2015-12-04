@@ -1,5 +1,6 @@
 package chat;
 
+import chat.packets.ConnectionPacket;
 import chat.packets.LoginPacket;
 import chat.packets.MessagePacket;
 import chat.packets.UserListPacket;
@@ -55,15 +56,25 @@ public class ChatClient implements Runnable {
         }
     }
 
-    private void sendObject(Object object) {
+    private void handleObject(Object object) {
         if (object instanceof MessagePacket) {
             sendMessage((MessagePacket) object);
         } else if (object instanceof LoginPacket) {
             handleLogin((LoginPacket) object);
         } else if (object instanceof UserListPacket) {
             listener.userListUpdated((UserListPacket) object);
+        } else if (object instanceof ConnectionPacket) {
+            handleNewConnection((ConnectionPacket) object);
         } else {
             System.out.println("Unknown packet: " + object);
+        }
+    }
+
+    private void handleNewConnection(ConnectionPacket packet) {
+        if (packet.loggedIn) {
+            listener.loggedIn(packet.user);
+        } else {
+            listener.disconnected(packet.user);
         }
     }
 
@@ -96,9 +107,8 @@ public class ChatClient implements Runnable {
         try {
             while (running) {
                 Object object = input.readObject();
-                System.out.println("Got password: " + object);
 
-                sendObject(object);
+                handleObject(object);
             }
         } catch (IOException e) {
             //System.out.println("Client disconnected.");

@@ -1,5 +1,6 @@
 package chat;
 
+import chat.packets.ConnectionPacket;
 import chat.packets.LoginPacket;
 import chat.packets.MessagePacket;
 import chat.packets.UserListPacket;
@@ -43,8 +44,9 @@ public class MultiUserChatServer extends ChatServer implements ChatListener {
     public void connected(ChatClient client) {
         System.out.println("Client connected.");
 
-        if (!clients.contains(client))
+        if (!clients.contains(client)) {
             clients.add(client);
+        }
 
         updateConnected();
     }
@@ -53,11 +55,22 @@ public class MultiUserChatServer extends ChatServer implements ChatListener {
     public void disconnected(ChatClient client) {
         System.out.println("Client disconnected.");
 
-        if (clients.contains(client))
+        if (clients.contains(client)) {
             clients.remove(client);
+        }
+
+        for (ChatClient c : clients) {
+            if (c != client) {
+                c.send(new ConnectionPacket(client.getName(), false));
+                c.send(new UserListPacket(getUserNames()));
+            }
+        }
 
         updateConnected();
     }
+
+    @Override
+    public void disconnected(String user) {}
 
     @Override
     public void loggedIn(ChatClient client, LoginPacket login) {
@@ -66,6 +79,10 @@ public class MultiUserChatServer extends ChatServer implements ChatListener {
 
 
             for (ChatClient c : clients) {
+                if (c != client) {
+                    c.send(new ConnectionPacket(login.username, true));
+                }
+
                 c.send(new UserListPacket(getUserNames()));
             }
         } else {
@@ -74,9 +91,12 @@ public class MultiUserChatServer extends ChatServer implements ChatListener {
     }
 
     @Override
+    public void loggedIn(String user) {}
+
+    @Override
     public void messageReceived(String name, String message) {
         for (ChatClient client : clients) {
-            if (!client.getName().equals(name)) {
+            if (client.getName() != null && !client.getName().equals(name)) {
                 client.send(new MessagePacket(name, message));
             }
         }

@@ -1,7 +1,7 @@
 package chat.packets;
 
 public class LoginPacket extends ChatPacket {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3L;
 
     public final String username;
     public final String password;
