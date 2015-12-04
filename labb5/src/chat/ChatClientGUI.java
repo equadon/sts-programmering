@@ -11,7 +11,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ChatClientGUI extends JFrame implements ActionListener, ChatListener {
@@ -205,7 +207,10 @@ public class ChatClientGUI extends JFrame implements ActionListener, ChatListene
     }
 
     public void addMessage(String author, String message) {
-        outputArea.append(author + ": " + message + "\n");
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+        String time = formatter.format(new Date());
+
+        outputArea.append(time + "  " + author + ": " + message + "\n");
     }
 
     public void addMessage(String message) {

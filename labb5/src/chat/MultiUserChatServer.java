@@ -6,19 +6,39 @@ import chat.packets.MessagePacket;
 import chat.packets.UserListPacket;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MultiUserChatServer extends ChatServer implements ChatListener {
     private final JLabel connected;
-    private List<ChatClient> clients;
+    private final JLabel time;
+    private final List<ChatClient> clients;
+    private final Timer timer;
+    private int uptime;
 
-    public MultiUserChatServer(int port, JLabel connected) {
+    public MultiUserChatServer(int port, JLabel connected, JLabel time) {
         super(port);
 
         this.connected = connected;
+        this.time = time;
+
         clients = new ArrayList<>();
+
+        timer = new Timer(1000, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                updateTime();
+            }
+        });
+        timer.start();
+    }
+
+    private void updateTime() {
+        uptime++;
+        time.setText("Uptime: " + uptime + " sec.");
     }
 
     private void updateConnected() {
@@ -113,6 +133,8 @@ public class MultiUserChatServer extends ChatServer implements ChatListener {
         JLabel uptime = new JLabel("Uptime: 0");
         JLabel connected = new JLabel("Connected: 0");
         JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+        panel.setPreferredSize(new Dimension(300, 150));
 
         panel.add(uptime);
         panel.add(connected);
@@ -122,6 +144,6 @@ public class MultiUserChatServer extends ChatServer implements ChatListener {
         frame.pack();
         frame.setVisible(true);
 
-        new Thread(new MultiUserChatServer(DEFAULT_PORT, connected)).start();
+        new Thread(new MultiUserChatServer(DEFAULT_PORT, connected, uptime)).start();
     }
 }
