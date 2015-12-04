@@ -101,27 +101,62 @@ public class ChatClientGUI extends JFrame implements ActionListener, ChatListene
     }
 
     private ChatClient createClient() throws IOException {
-        String address;
-        int port;
+        String name = null;
+        String address = null;
+        int port = ChatServer.DEFAULT_PORT;
 
-/*        if (SELECT_FAVORITE) {
+        if (SELECT_FAVORITE) {
             String favorite = getFavorite();
 
-            if (favorite == null) {
-                address = JOptionPane.showInputDialog(this, "IP Adress:", "130.243.178.229");
-                port = Integer.parseInt(JOptionPane.showInputDialog(this, "Port:", ChatServer.DEFAULT_PORT));
-            } else {
+            if (favorite != null) {
                 String[] values = favorite.split(":");
+                name = values[0].trim();
                 address = values[1].trim();
                 port = Integer.parseInt(values[2].trim());
             }
-        } else {
-            address = JOptionPane.showInputDialog(this, "IP Adress:", "130.243.178.229");
-            port = Integer.parseInt(JOptionPane.showInputDialog(this, "Port:", ChatServer.DEFAULT_PORT));
         }
 
-        return new ChatClient(this, null, new Socket(address, port));*/
-        return new ChatClient(this, null, new Socket("localhost", ChatServer.DEFAULT_PORT));
+        if (name == null || address == null) {
+            name = JOptionPane.showInputDialog(this, "Namn:", "Skapa ny kontakt", JOptionPane.QUESTION_MESSAGE);
+            address = JOptionPane.showInputDialog(this, "IP Adress:", "130.243.178.229");
+            port = Integer.parseInt(JOptionPane.showInputDialog(this, "Port:", ChatServer.DEFAULT_PORT));
+
+            System.out.println(String.format("%s: %s:%d", name, address, port));
+            saveFavorite(String.format("%s: %s:%d", name, address, port));
+        }
+
+        ChatClient c = new ChatClient(this, null, new Socket(address, port));
+        //ChatClient c = new ChatClient(this, null, new Socket("localhost", ChatServer.DEFAULT_PORT));
+        c.setName(name);
+
+        return c;
+    }
+
+    private void saveFavorite(String favorite) {
+        JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle("Spara kontakt till fil");
+        chooser.showDialog(this, "Spara");
+
+        if (chooser.getSelectedFile() != null) {
+            FileWriter writer = null;
+
+            try {
+                writer = new FileWriter(chooser.getSelectedFile(), true);
+                writer.append("\n" + favorite);
+            } catch (IOException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, e.getMessage());
+            } finally {
+                if (writer != null) {
+                    try {
+                        writer.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        JOptionPane.showMessageDialog(this, e.getMessage());
+                    }
+                }
+            }
+        }
     }
 
     private String getFavorite() {
@@ -138,7 +173,8 @@ public class ChatClientGUI extends JFrame implements ActionListener, ChatListene
     private List<String> readFavorites() {
         try {
             JFileChooser chooser = new JFileChooser();
-            chooser.showDialog(this, "Välj favoriter");
+            chooser.setDialogTitle("Välj favorit");
+            chooser.showDialog(this, "Välj");
 
             if (chooser.getSelectedFile() == null) {
                 return null;
@@ -149,7 +185,10 @@ public class ChatClientGUI extends JFrame implements ActionListener, ChatListene
 
             String line = reader.readLine();
             while (line != null) {
-                lines.add(line);
+                if (!line.trim().equals("")) {
+                    lines.add(line);
+                }
+
                 line = reader.readLine();
             }
             reader.close();
