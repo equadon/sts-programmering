@@ -477,7 +477,7 @@ class Board {
 
     Piece select(Board.Position p) {
         Piece result = null;
-        for (int y = 0; y < 5; y++)                     // y runs through selector idx
+        for (int y = 0; y < 6; y++)                     // y runs through selector idx
         {
             Piece piece = initialselectors[y];
             if (piece.shouldShowSelector()               // if the selector is shown
