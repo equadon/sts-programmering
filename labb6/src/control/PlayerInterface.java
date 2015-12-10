@@ -1,16 +1,11 @@
+package control;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
-/**
- * Created by equadon on 2015-12-10.
- */
-class PlayerInterface implements ActionListener
-
-{
+class PlayerInterface implements ActionListener {
     private StartControl startControl;                                    // Who started me and to whom I report termination
 
     private JFrame myFrame;                                   // my Frame
@@ -27,9 +22,9 @@ class PlayerInterface implements ActionListener
 
     private String whiteNick, blackNick;                            //  nick of white and of black resp.
 
-//----------------------------------------------------------------------------------------------------------------------
-// Constructor does most of the work to set things up
-//----------------------------------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------------------
+    // Constructor does most of the work to set things up
+    //----------------------------------------------------------------------------------------------------------------------
 
     PlayerInterface(Player player,         // Who will actually play the game
                     ControlTimer timer,          // and its control timer. These are the ones I should display properly.
@@ -41,8 +36,7 @@ class PlayerInterface implements ActionListener
         this.player = player;                    // begin by remembering parameters
         this.startControl = startControl;
 
-        myFrame = new JFrame("Playing the game of Control" +
-                (player.isLite ? "ite" : ""));
+        myFrame = new JFrame("Playing the game of Control" + (player.isLite ? "ite" : ""));
 
 
         myFrame.getContentPane().setLayout(new BorderLayout());       // with borderlayout manager
@@ -77,10 +71,16 @@ class PlayerInterface implements ActionListener
 
         noids = ((whiteNick.equals("")) & (blackNick.equals("")));        // set noids true iff neither player has a nick
 
-        if (whiteNick.equals("")) whiteNick = "White";                     // default nicks for white and black
-        if (blackNick.equals("")) blackNick = "Black";
+        if (whiteNick.equals("")) {
+            whiteNick = "White";                     // default nicks for white and black
+        }
+        if (blackNick.equals("")) {
+            blackNick = "Black";
+        }
 
-        if (!noids) tops.add(buildIdPanel());     // display the nicks in idPanel unless both empty
+        if (!noids) {
+            tops.add(buildIdPanel());     // display the nicks in idPanel unless both empty
+        }
 
         quitButton.addActionListener(this);                              // I listen for quit button myself
         myFrame.getContentPane().add(tops, BorderLayout.NORTH);
@@ -94,17 +94,17 @@ class PlayerInterface implements ActionListener
 
     }
 
-//------------------------------------------------------------------------
-// Strangely, this is necessary in order to let the player listen for key actions
-//------------------------------------------------------------------------
+    //------------------------------------------------------------------------
+    // Strangely, this is necessary in order to let the player listen for key actions
+    //------------------------------------------------------------------------
 
     private void focus() {
         player.requestFocus();
     }
 
-//------------------------------------------------------------------------
-// Build a panel displaying player nicks and add it to tops
-//------------------------------------------------------------------------
+    //------------------------------------------------------------------------
+    // Build a panel displaying player nicks and add it to tops
+    //------------------------------------------------------------------------
 
     private JPanel buildIdPanel() {
         JPanel idPanel = new JPanel();
@@ -133,9 +133,9 @@ class PlayerInterface implements ActionListener
         return idPanel;
 
     }
-//-----------------------------------------------------------------------
-// When game has ended the display needs change
-//-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    // When game has ended the display needs change
+    //-----------------------------------------------------------------------
 
     void endGame(String reason,               // reason to present to the user
                  String recordReason)         // reason to record on file if game is recorded
@@ -156,7 +156,9 @@ class PlayerInterface implements ActionListener
         tops.add(reasonLabel);
         tops.add(Box.createRigidArea(new Dimension(0, 20)));
 
-        if (!noids) tops.add(buildIdPanel());        // display player nicks
+        if (!noids) {
+            tops.add(buildIdPanel());        // display player nicks
+        }
 
         myFrame.getContentPane().add(tops, BorderLayout.NORTH);   // put on display
 
@@ -167,9 +169,9 @@ class PlayerInterface implements ActionListener
         running = false;
     }
 
-//---------------------------------------------------------------------------------
-// Termination. get rid of the frame and tell my parent
-//---------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------
+    // Termination. get rid of the frame and tell my parent
+    //---------------------------------------------------------------------------------
 
     private void quit() {
         myFrame.dispose();
@@ -177,16 +179,19 @@ class PlayerInterface implements ActionListener
     }
 
 
-//--------------------------------------------------------------------------------
-// I am listening for actions myself
-//---------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------
+    // I am listening for actions myself
+    //---------------------------------------------------------------------------------
 
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == quitButton)    // if quit button is pressed
         {
-            if (running) player.quit();        // if player is running then player has to quit
-            else quit();
+            if (running) {
+                player.quit();        // if player is running then player has to quit
+            } else {
+                quit();
+            }
         }                      // ow I have to quit
     }
 

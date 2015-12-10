@@ -1,3 +1,5 @@
+package control;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -5,17 +7,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.concurrent.Semaphore;
 
-/**
- * Created by equadon on 2015-12-10.
- */
 class Player extends JPanel implements ActionListener {
 
-    private static final String password = "stspwns";
 
-    private String passwordInput = "";
-
-
-//----------- player activity state ---------------------------------------------------------------------
+    //----------- player activity state ---------------------------------------------------------------------
 
     private Piece currentPiece = null;                             // Piece over which mouse was pressed
     private Piece currentSelection = null;                         // Selection for promotions
@@ -23,14 +18,14 @@ class Player extends JPanel implements ActionListener {
     private boolean waiting;                                       // True if Timer not expired so I must wait
     private boolean clockHasExpired = false;                       // true when game clock has expired and game is over
 
-//----------- game activity state -----------------------------------------------------------------------
+    //----------- game activity state -----------------------------------------------------------------------
 
     int clock = 0;                                         // elapsed time in seconds
 
     private int messageNumber = 0;                                 // number communication messages incrementally
     private int ackedNumber = -1;                                  // last acknowledged message to opponent
 
-//----------- game parameters (should not change during a game) -----------------------------------------
+    //----------- game parameters (should not change during a game) -----------------------------------------
 
     boolean playWhite;                                     // true if currently playing white
 
@@ -38,7 +33,7 @@ class Player extends JPanel implements ActionListener {
 
     private ControlTimer controlTimer;                            // my Controltimer
     private PlayerInterface myInterface;                          // my Interface (runs the quit button etc)
-    private MoveListener moveListener;                            // My listener for moves by opponent
+    private Player.MoveListener moveListener;                            // My listener for moves by opponent
 
     private Timer timer;                                          // oneSecondTimer for the game clock
 
@@ -65,9 +60,9 @@ class Player extends JPanel implements ActionListener {
     }
 
 
-//------------------------------------------------------------------------------------------------------------
-// Player constructor
-//------------------------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------
+    // Player constructor
+    //------------------------------------------------------------------------------------------------------------
 
     // Constructor parameters:
 
@@ -76,8 +71,7 @@ class Player extends JPanel implements ActionListener {
            boolean playwhite,              // color for this player (true => white)
            ControlTimer controlTimer,      // my controlTimer
            ObjectInputStream incoming,     // streams to and from opponent
-           ObjectOutputStream outgoing,
-           ObjectOutputStream record,      // if not null then the stream where games are recorded
+           ObjectOutputStream outgoing, ObjectOutputStream record,      // if not null then the stream where games are recorded
            int graphics,                   // graphic size parameter
            int shape,                      // shape of controlled areas
            int boardShape,                 // shape of board
@@ -108,7 +102,9 @@ class Player extends JPanel implements ActionListener {
         GAME_LENGTH = length * 60;                                      // GAME_LENGTH is in seconds
 
         timeBase = (float) ((speed == 1) ? 1 : (speed == 2) ? 2 : 4);  // set timeBase based on choice of speed
-        if (Control.testSetup) timeBase /= 10;
+        if (Control.testSetup) {
+            timeBase /= 10;
+        }
 
         add(Box.createRigidArea(new Dimension(board.SIZE * (board.WIDTH + 2) - 10,   // crazy, but need to tell layout manager how big I am
                 board.SIZE * (board.HEIGHT + 2) - 10)));
@@ -116,7 +112,7 @@ class Player extends JPanel implements ActionListener {
 
         mutex = new Semaphore(1);                               // Critical sections protects updates of game state
 
-        ControlListener myListener = new ControlListener();  // Add my inner class to the listeners (gets moves from mouse)
+        Player.ControlListener myListener = new Player.ControlListener();  // Add my inner class to the listeners (gets moves from mouse)
         addMouseListener(myListener);
         addMouseMotionListener(myListener);
         addKeyListener(myListener);
@@ -139,12 +135,12 @@ class Player extends JPanel implements ActionListener {
     ;
 
 
-//--------------------------- End of Constructor ------------------------------------------
+    //--------------------------- End of Constructor ------------------------------------------
 
-//--------------------------------------------------------------------
-// Method to accept identity of my interface (only done once, in the setup phase)
-// Here are also generated the Hills, for a white player
-//--------------------------------------------------------------------
+    //--------------------------------------------------------------------
+    // Method to accept identity of my interface (only done once, in the setup phase)
+    // Here are also generated the Hills, for a white player
+    //--------------------------------------------------------------------
 
     void setInterface(PlayerInterface i) {
         myInterface = i;                                 // save my interface
@@ -161,22 +157,21 @@ class Player extends JPanel implements ActionListener {
             recordMessage(hills);                 // anyway, record them on the recording
         }
 
-        moveListener = new MoveListener();               // start listening for moves by opponent
+        moveListener = new Player.MoveListener();               // start listening for moves by opponent
         moveListener.start();
 
     }
 
 
-//-----------------------------------------------------------------
-//  Draws board, and possibly an outline because of a mouse position etc
-//-----------------------------------------------------------------
+    //-----------------------------------------------------------------
+    //  Draws board, and possibly an outline because of a mouse position etc
+    //-----------------------------------------------------------------
 
 
     @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         board.paint(g,                                          // Draw the board
                 waiting | ackedNumber != messageNumber - 1,   // signal move possible if this is true
@@ -186,8 +181,11 @@ class Player extends JPanel implements ActionListener {
         );
 
         if (currentPiece != null)                               // show if mouse dragged over legal possibility
-            if (currentPiece.canMove(currentPos))
+        {
+            if (currentPiece.canMove(currentPos)) {
                 currentPiece.outline.drawOutline(g, currentPos, Color.red); // if so, show a red outline of it there
+            }
+        }
 
         if (currentSelection != null && currentPiece == null)        // Highlight current selector if any
         {
@@ -195,30 +193,32 @@ class Player extends JPanel implements ActionListener {
 
             if (!waiting && currentPos != null && board.isLegal(currentPos) &&
                     currentSelection.canBuild(currentPos))              // Highlight mouse position if build possible
+            {
                 currentSelection.drawOutline(g, currentPos, Color.red);
+            }
         }
     }
 
 
-//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//
-// Game methods. Note that before calling any of these, the caller must first claim the mutex lock.
-//  That way, there will be no races between the thread that listens to player moves through the mouse
-//  and the thread that listens through opponent moves through the incoming stream.
-//
-//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //
+    // Game methods. Note that before calling any of these, the caller must first claim the mutex lock.
+    //  That way, there will be no races between the thread that listens to player moves through the mouse
+    //  and the thread that listens through opponent moves through the incoming stream.
+    //
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-//*************************************************************************
-//
-// Communication
-//
-//*************************************************************************
+    //*************************************************************************
+    //
+    // Communication
+    //
+    //*************************************************************************
 
-//-----------------------------------------------------
-//
-//  getMove: methods to receive moves by opponent
-//
-//-----------------------------------------------------
+    //-----------------------------------------------------
+    //
+    //  getMove: methods to receive moves by opponent
+    //
+    //-----------------------------------------------------
 
     private void getMove(Board.Position s, Board.Position p)          // opponent moves from s to p
     {
@@ -243,23 +243,25 @@ class Player extends JPanel implements ActionListener {
         repaint();
     }
 
-//----------------------------------------------------------------
-//   set Current piece to null if it is not in control
-//----------------------------------------------------------------
+    //----------------------------------------------------------------
+    //   set Current piece to null if it is not in control
+    //----------------------------------------------------------------
 
     private void checkCurrent() {
-        if (currentPiece != null && !board.iControl(currentPiece))
+        if (currentPiece != null && !board.iControl(currentPiece)) {
             currentPiece = null;
-        if (currentPos != null && !board.iControl(currentPos))
+        }
+        if (currentPos != null && !board.iControl(currentPos)) {
             currentPos = null;
+        }
     }
 
 
-//----------------------------------------------------------
-//
-// Methods for sending move to opponent
-//
-//----------------------------------------------------------
+    //----------------------------------------------------------
+    //
+    // Methods for sending move to opponent
+    //
+    //----------------------------------------------------------
 
     private synchronized void sendMessage(Message message)    // actually "synchronized" is probably not needed here bc of the mutex
     {
@@ -268,13 +270,15 @@ class Player extends JPanel implements ActionListener {
             outgoing.writeObject(message);      // send it to opponent
         } catch (Exception e)                // if impossible then report an error (unless I already quit)
         {
-            if (message.messageType != Message.MessageType.QUIT) communicationError(e);
+            if (message.messageType != Message.MessageType.QUIT) {
+                communicationError(e);
+            }
         }
 
     }
 
 
-//--------------------- Report a communication error -------------------------------------
+    //--------------------- Report a communication error -------------------------------------
 
     private void communicationError(Exception e) {
         myInterface.endGame("Lost Contact with Opponent",       // end of game because communication broken
@@ -282,9 +286,9 @@ class Player extends JPanel implements ActionListener {
     }
 
 
-//-----------------------------------------------------------------------------------
-// SendMove: builds a message out of the info in a move, and sends it using sendMessage
-//-----------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------
+    // SendMove: builds a message out of the info in a move, and sends it using sendMessage
+    //-----------------------------------------------------------------------------------
 
     private void sendMove(Message.MessageType mt,       // message type
                           Board.Position s,                  // source position
@@ -294,39 +298,21 @@ class Player extends JPanel implements ActionListener {
         Message message = new Message(mt,                   // message type
                 clock,                // game clock at time of sending
                 messageNumber++,      // attach and increase message number
-                s,
-                p,
-                pt,
-                playWhite,            // true if move done by white
+                s, p, pt, playWhite,            // true if move done by white
                 "");                  // unused string parameter
         sendMessage(message);
-        if (message.messageType != Message.MessageType.QUIT)
+        if (message.messageType != Message.MessageType.QUIT) {
             recordMessage(message);    // record the message (QUIT messages are recorded at another place)
+        }
 
     }
 
-    private void sendCheat() {
-        Message message = new Message(
-                Message.MessageType.REMOVE_PIECE,
-                clock,
-                messageNumber,
-                null,
-                null,
-                Piece.Type.PEBBLE,
-                playWhite,
-                ""
-        );
 
-        sendMessage(message);
-        recordMessage(message);
-    }
-
-
-//-----------------------------------------------------
-//
-//  tellMove: methods to send moves to opponent (uses sendMove)
-//
-//-----------------------------------------------------
+    //-----------------------------------------------------
+    //
+    //  tellMove: methods to send moves to opponent (uses sendMove)
+    //
+    //-----------------------------------------------------
 
     private void tellMove(Piece.Type pt, Board.Position p)             // tell a build move
     {
@@ -344,19 +330,19 @@ class Player extends JPanel implements ActionListener {
     }
 
 
-//------------------------------------------------------------------------
-//
-// Record a move if recording is on
-//
-//------------------------------------------------------------------------
+    //------------------------------------------------------------------------
+    //
+    // Record a move if recording is on
+    //
+    //------------------------------------------------------------------------
 
     private void recordMessage(Object message) {
         if (record != null)                      // if recording is on:
+        {
             try {
                 record.writeObject(message);
             }     // record the message
-            catch
-                    (Exception e)                     // if this fails:
+            catch (Exception e)                     // if this fails:
             {
                 try {
                     record.close();
@@ -365,57 +351,56 @@ class Player extends JPanel implements ActionListener {
                 }
                 record = null;                 // turn recording off
                 // and inform user
-                JOptionPane.showMessageDialog(this,
-                        "Recording ceased.\n" +
-                                "The reason given by the system is:\n" +
-                                e.toString(),
-                        "File Error",
-                        JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Recording ceased.\n" +
+                        "The reason given by the system is:\n" +
+                        e.toString(), "File Error", JOptionPane.ERROR_MESSAGE);
             }
+        }
     }
 
 
-//**************************************************************************
-//
-//    Methods to serve my user in making moves: determining effects of mouse actions
-//
-//**************************************************************************
+    //**************************************************************************
+    //
+    //    Methods to serve my user in making moves: determining effects of mouse actions
+    //
+    //**************************************************************************
 
 
-//-------------------------------------------------------------------------
-// test if piece at p can be set as current piece
-//-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    // test if piece at p can be set as current piece
+    //-------------------------------------------------------------------------
 
     private boolean canSetCurrentPiece(Board.Position p) {
         Piece candidate = board.isLegal(p) ?       // get the candidate piece if on board
-                board.find(p)
-                : null;
-        return (
-                !waiting                             // if Timer still runs no piece can be set as current
-                        && candidate != null                    // x,y must be at a piece
-                        && candidate.whiteside == playWhite     // of my color
-                        && candidate.moveable                   // and moveable
-                        && board.iControl(p)                    // and under my control
+                board.find(p) : null;
+        return (!waiting                             // if Timer still runs no piece can be set as current
+                && candidate != null                    // x,y must be at a piece
+                && candidate.whiteside == playWhite     // of my color
+                && candidate.moveable                   // and moveable
+                && board.iControl(p)                    // and under my control
 
         );
     }
 
-//-------------------------------------------------------------------------
-// set piece at p as current, if possible
-//-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    // set piece at p as current, if possible
+    //-------------------------------------------------------------------------
 
     private void setCurrentPiece(Board.Position p) {
         if (canSetCurrentPiece(p))               // can you set it?
+        {
             currentPiece = board.find(p);            // if so set it
-        else currentPiece = null;
+        } else {
+            currentPiece = null;
+        }
     }
 
     ;
 
 
-//-----------------------------------------------------------------
-// Makes a move of currentPiece to p if possible (mutex claimed by caller)
-//-----------------------------------------------------------------
+    //-----------------------------------------------------------------
+    // Makes a move of currentPiece to p if possible (mutex claimed by caller)
+    //-----------------------------------------------------------------
 
     private void attemptToMove(Board.Position p) {
         if (currentPiece != null && currentPiece.canMove(p))             // is it legal other move?
@@ -433,9 +418,9 @@ class Player extends JPanel implements ActionListener {
     }
 
 
-//-----------------------------------------------------------------
-// Executes a build of type currentSelection at p if possible.
-//-----------------------------------------------------------------
+    //-----------------------------------------------------------------
+    // Executes a build of type currentSelection at p if possible.
+    //-----------------------------------------------------------------
 
     private void attemptToBuild(Board.Position p) {
         if (board.isLegal(p) && currentSelection.canBuild(p))              // Check it is on the board and ok to build
@@ -452,9 +437,9 @@ class Player extends JPanel implements ActionListener {
     ;
 
 
-//-----------------------------------------------------------------
-// End of move. StarttTimer to wait for specified time, recalculate etc
-//-----------------------------------------------------------------
+    //-----------------------------------------------------------------
+    // End of move. StarttTimer to wait for specified time, recalculate etc
+    //-----------------------------------------------------------------
 
 
     private void endMove(float delay) {
@@ -469,9 +454,9 @@ class Player extends JPanel implements ActionListener {
 
     }
 
-//-----------------------------------------------------------------
-// appraise: check if someone has won or if it is a draw. If so report it to my interface
-//-----------------------------------------------------------------
+    //-----------------------------------------------------------------
+    // appraise: check if someone has won or if it is a draw. If so report it to my interface
+    //-----------------------------------------------------------------
 
     // Note: this is only done when receiving messages from opponent
     // (either his moves or acks of my moves)
@@ -484,30 +469,34 @@ class Player extends JPanel implements ActionListener {
 
         for (Piece thePiece : board.pieces)     // for all pieces, check if controlled by owner
         {
-            if (thePiece.myside && board.iControl(thePiece)) iHaveControl = true; // and record this
-            if (!thePiece.myside && board.opponentControls(thePiece)) opponentHasControl = true;
+            if (thePiece.myside && board.iControl(thePiece)) {
+                iHaveControl = true; // and record this
+            }
+            if (!thePiece.myside && board.opponentControls(thePiece)) {
+                opponentHasControl = true;
+            }
         }
 
         if (!opponentHasControl & !iHaveControl)                        // report a draw because no one has control
-            myInterface.endGame("DRAW: No one controls  pieces",
-                    "DRAW: No one controls  pieces");
-
-        else if (!opponentHasControl)                                // report a win because opponent cannot move
+        {
+            myInterface.endGame("DRAW: No one controls  pieces", "DRAW: No one controls  pieces");
+        } else if (!opponentHasControl)                                // report a win because opponent cannot move
+        {
             myInterface.endGame("You win: opponent has no control",                         // (note: second param to endGame
                     playWhite ? "Black has no control" : "White has no control");   // is what goes on a recording
-
-        else if (!iHaveControl)                                // report a loss if I have no move
-            myInterface.endGame("You lose: no control",
-                    !playWhite ? "Black has no control" : "White has no control");
+        } else if (!iHaveControl)                                // report a loss if I have no move
+        {
+            myInterface.endGame("You lose: no control", !playWhite ? "Black has no control" : "White has no control");
+        }
 
 
     }
 
 
-//-----------------------------------------------------------------
-// interrupt from game clock oneSecondTimer. Just update clock and repaint. Check if time limit exceeded.
-//    If so report to my interface
-//-----------------------------------------------------------------
+    //-----------------------------------------------------------------
+    // interrupt from game clock oneSecondTimer. Just update clock and repaint. Check if time limit exceeded.
+    //    If so report to my interface
+    //-----------------------------------------------------------------
 
     public void actionPerformed(ActionEvent e)   // game clock is the only action event that can happen here
 
@@ -525,17 +514,19 @@ class Player extends JPanel implements ActionListener {
         releaseLock();
     }
 
-//------------------------------------------------------------------
-// endGame: Game has ended. Make board show all and disable moves
-//   NOTE this will be called from my interface and not from myself!!
-//------------------------------------------------------------------
+    //------------------------------------------------------------------
+    // endGame: Game has ended. Make board show all and disable moves
+    //   NOTE this will be called from my interface and not from myself!!
+    //------------------------------------------------------------------
 
     void endGame(String recordReason)              // parameter is what will go on a recording of the game
     {
         controlTimer.stopIt();        // stop the Control Timer
         timer.stop();                 // and the clock oneSecondTimer
 
-        if (moveListener != null) moveListener.abortIt();       // don't listen for moves any more
+        if (moveListener != null) {
+            moveListener.abortIt();       // don't listen for moves any more
+        }
         currentPiece = null;
         currentSelection = null;
         currentPos = null;
@@ -560,9 +551,9 @@ class Player extends JPanel implements ActionListener {
     }
 
 
-//------------------------------------------------------------------
-// Quit. This is what happens when the player presses the quit button
-//------------------------------------------------------------------
+    //------------------------------------------------------------------
+    // Quit. This is what happens when the player presses the quit button
+    //------------------------------------------------------------------
 
     void quit()
 
@@ -573,9 +564,9 @@ class Player extends JPanel implements ActionListener {
     }
 
 
-//-------------------------------------------------------------------------
-// Control Timer expired so moving is now possible!
-//-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    // Control Timer expired so moving is now possible!
+    //-------------------------------------------------------------------------
 
     void timeOut() {
         waiting = false;             // not waiting any more
@@ -585,25 +576,25 @@ class Player extends JPanel implements ActionListener {
     ;
 
 
-//*****************************************************************
-//
-// Inner class:
-//
-//  Represents the listner to mouse and key actions
-//
-//*****************************************************************
+    //*****************************************************************
+    //
+    // Inner class:
+    //
+    //  Represents the listner to mouse and key actions
+    //
+    //*****************************************************************
 
     private class ControlListener implements MouseListener, MouseMotionListener, KeyListener {
 
 
-//---------------------------------------------------------------------
-// Mouse click
-//---------------------------------------------------------------------
+        //---------------------------------------------------------------------
+        // Mouse click
+        //---------------------------------------------------------------------
 
         public void mouseClicked(MouseEvent event)
 
         {
-//----------------- here mutex is claimed ------------------------
+            //----------------- here mutex is claimed ------------------------
             waitLock();
 
             int x = event.getX();
@@ -617,11 +608,11 @@ class Player extends JPanel implements ActionListener {
                 repaint();
             } else                                             // it was a left click!
             {
-                if (!waiting && !clockHasExpired && ackedNumber == messageNumber - 1
-                        && board.isLegal(p)                              // either a build attempt
+                if (!waiting && !clockHasExpired && ackedNumber == messageNumber - 1 && board.isLegal(p)                              // either a build attempt
                         && currentSelection != null)                     // if not waiting, on board and with selection call attemptTo Build
+                {
                     attemptToBuild(p);
-                else                                                // or selecting what to build
+                } else                                                // or selecting what to build
                 {
                     if (board.select(p) != null) {
                         currentSelection = board.select(p);            // set currentSelection
@@ -632,18 +623,18 @@ class Player extends JPanel implements ActionListener {
 
             }
             releaseLock();
-//---------------- here it is released ---------------------------
+            //---------------- here it is released ---------------------------
         }
 
 
-//----------------------------------------------------------
-// Mouse pressed
-//----------------------------------------------------------
+        //----------------------------------------------------------
+        // Mouse pressed
+        //----------------------------------------------------------
 
         public void mousePressed(MouseEvent event)           // This sets current piece
 
         {
-//----------------- here mutex is claimed ------------------------
+            //----------------- here mutex is claimed ------------------------
             waitLock();
 
             if (!waiting && !clockHasExpired                      // only do it if not waiting
@@ -663,32 +654,33 @@ class Player extends JPanel implements ActionListener {
             }
 
             releaseLock();
-//---------------- here it is released ---------------------------
+            //---------------- here it is released ---------------------------
 
         }
 
-//-----------------------------------------------------------
-// Mouse released
-//-----------------------------------------------------------
+        //-----------------------------------------------------------
+        // Mouse released
+        //-----------------------------------------------------------
 
         public void mouseReleased(MouseEvent event)           // This means moving current piece
         {
 
-//----------------- here mutex is claimed ------------------------
+            //----------------- here mutex is claimed ------------------------
             waitLock();
 
-            if (currentPiece != null && !clockHasExpired)
+            if (currentPiece != null && !clockHasExpired) {
                 attemptToMove(currentPos);                         // continue with attempttomove
+            }
 
             releaseLock();
 
-//---------------- here it is released ---------------------------
+            //---------------- here it is released ---------------------------
 
         }
 
-//-----------------------------------------------------------
-// Mouse dragged
-//-----------------------------------------------------------
+        //-----------------------------------------------------------
+        // Mouse dragged
+        //-----------------------------------------------------------
 
         public void mouseDragged(MouseEvent event) {
             int x = event.getX();
@@ -711,9 +703,9 @@ class Player extends JPanel implements ActionListener {
         }
 
 
-//-----------------------------------------------------------
-// Mouse moved
-//-----------------------------------------------------------
+        //-----------------------------------------------------------
+        // Mouse moved
+        //-----------------------------------------------------------
 
         public void mouseMoved(MouseEvent event)   // just check if need to repaint due to new build possibility
         {
@@ -725,8 +717,7 @@ class Player extends JPanel implements ActionListener {
                 boolean rep = (!p.equals(currentPos)              // and mouse coordinates have changed
                         && currentSelection != null                // and something is selected for builds
                         && board.isLegal(p)                        // and I can build it there
-                        && (currentSelection.canBuild(p)
-                        || (currentPos != null && currentSelection.canBuild(currentPos)))); // or I could build it at old position
+                        && (currentSelection.canBuild(p) || (currentPos != null && currentSelection.canBuild(currentPos)))); // or I could build it at old position
                 currentPos = p;                                    // in any case note the new position
                 if (rep) {
                     repaint();
@@ -736,34 +727,19 @@ class Player extends JPanel implements ActionListener {
             }                                  // Ow, we still need to update CurrentPos because
         }                                                        // the Timer might expire here!
 
-//-----------------------------------------------------------
-// Key pressed: cycle through selectors
-//-----------------------------------------------------------
+        //-----------------------------------------------------------
+        // Key pressed: cycle through selectors
+        //-----------------------------------------------------------
 
         public void keyPressed(KeyEvent e) {
             currentSelection = board.cycleSelector();     // get next selector
             repaint();                                    // and show it
-
-            handlePasswordInput(e.getKeyChar());
-        }
-
-        private void handlePasswordInput(char letter) {
-            if (passwordInput.length() > password.length() - 1) {
-                passwordInput = passwordInput.substring(1) + letter;
-            } else {
-                passwordInput = passwordInput + letter;
-            }
-
-            if (passwordInput.equals(password)) {
-                System.out.println("Password OK!");
-                sendCheat();
-            }
         }
 
 
-//--------------------------------------------------------------
-//  Provide empty definitions for unused event methods.
-//--------------------------------------------------------------
+        //--------------------------------------------------------------
+        //  Provide empty definitions for unused event methods.
+        //--------------------------------------------------------------
 
         public void mouseEntered(MouseEvent event) {
         }
@@ -780,12 +756,12 @@ class Player extends JPanel implements ActionListener {
     }
 
 
-//*********************************************************************************
-//
-//   Inner class:
-//   Listens for moves sent by opponent and forwards them to the player through getMove.
-//
-//*********************************************************************************
+    //*********************************************************************************
+    //
+    //   Inner class:
+    //   Listens for moves sent by opponent and forwards them to the player through getMove.
+    //
+    //*********************************************************************************
 
 
     private class MoveListener extends Thread             // will  listen in a separate thread
@@ -795,19 +771,20 @@ class Player extends JPanel implements ActionListener {
         private boolean resigned = false;                   // set to true if resigned
         private boolean abort = false;                      // set to true if the thread should abort
 
-// Method to abort this thread
+        // Method to abort this thread
 
         void abortIt() {
             abort = true;
         }
 
-//-----------------------------------------------------------------------------------------
-// Main loop: Ad infinitum, listen for messages from oppponent and report to player
-//-----------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------
+        // Main loop: Ad infinitum, listen for messages from oppponent and report to player
+        //-----------------------------------------------------------------------------------------
 
         @Override
         public void run() {
             if (withHills & !playWhite)              // If hills are used and I play black
+            {
                 try                                                   //    then I must receive the hills from opponent
                 {
                     Board.Hill[] hills = (Board.Hill[]) incoming.readObject();    //    read them from the stream from opponent
@@ -815,9 +792,9 @@ class Player extends JPanel implements ActionListener {
                     recordMessage(hills);                       //    and record them
                 } catch (Exception e)                                  // if impossible then report an error
                 {
-                    myInterface.endGame("Lost contact with opponent or recording broken",
-                            "Contact or recording broken");
+                    myInterface.endGame("Lost contact with opponent or recording broken", "Contact or recording broken");
                 }
+            }
 
             while (!fail & !resigned & !abort)                                          // do forever until someone stops me
             {
@@ -828,21 +805,24 @@ class Player extends JPanel implements ActionListener {
                     message = null;
                     fail = true;
                     if (!abort)                                    // unless I am already aborted
-                        myInterface.endGame("Lost contact with opponent",
-                                "Contact between players broken");
+                    {
+                        myInterface.endGame("Lost contact with opponent", "Contact between players broken");
+                    }
                 }
 
-//-------------------- Here the mutex is claimed -------------------------------------
+                //-------------------- Here the mutex is claimed -------------------------------------
 
                 waitLock();                                            // get the mutex lock
 
                 if (message != null)                                                     // should not be necessary, but discard null messages
 
                 {
-                    if (message.time > clock) clock = message.time;           // to synchronize clocks
+                    if (message.time > clock) {
+                        clock = message.time;           // to synchronize clocks
+                    }
                     switch (message.messageType)
 
-// MOVE message--------------------------------------------------------------------
+                    // MOVE message--------------------------------------------------------------------
 
                     {
                         case MOVE:                                                               // a MOVE message
@@ -855,7 +835,7 @@ class Player extends JPanel implements ActionListener {
                             break;
                         }
 
-// BUILD message--------------------------------------------------------------------
+                        // BUILD message--------------------------------------------------------------------
 
                         case BUILD:                                                             // a BUILD message
                         {
@@ -866,7 +846,7 @@ class Player extends JPanel implements ActionListener {
                             break;
                         }
 
-// ACK message--------------------------------------------------------------------
+                        // ACK message--------------------------------------------------------------------
 
                         case ACK:                                                              // an ACK message
                         {
@@ -875,48 +855,43 @@ class Player extends JPanel implements ActionListener {
                             break;
                         }
 
-// QUIT message--------------------------------------------------------------------
+                        // QUIT message--------------------------------------------------------------------
 
                         case QUIT:                                                   // report opponent's resignation
                         {
-                            if (!abort)
+                            if (!abort) {
                                 myInterface.endGame("Opponent resigned",             // unless I already resigned!
                                         playWhite ? "Black resigned" : "white resigned");
+                            }
                             resigned = true;
                             break;
                         }
 
-// EXPIRED message--------------------------------------------------------------------
+                        // EXPIRED message--------------------------------------------------------------------
 
                         case EXPIRED:                                                        // Opponent's clock has expired
                         {
                             clockHasExpired = true;                                      // then also make my clock expired
                             tellClockHasExpired();                                       // and send an expired message as an ack
                             if (board.relativeNumberOfControlledSquares > 0)             //  then report outcome depending on who controls most squares
-                                myInterface.endGame("Time out - You win",
-                                        playWhite ? "Time out - White wins" : "Time out - Black wins");
-                            else if (board.relativeNumberOfControlledSquares < 0)
-                                myInterface.endGame("Time out - You lose",
-                                        playWhite ? "Time out - Black wins" : "Time out - White wins");
-                            else myInterface.endGame("Time out - Draw", "Time out - Draw");
-                            break;
-                        }
-
-
-                        case REMOVE_PIECE:
-                        {
-                            board.decreaseRemaining(!message.white);
-                            board.generateBoardGraphics(null);
-
+                            {
+                                myInterface.endGame("Time out - You win", playWhite ? "Time out - White wins" : "Time out - Black wins");
+                            } else if (board.relativeNumberOfControlledSquares < 0) {
+                                myInterface.endGame("Time out - You lose", playWhite ? "Time out - Black wins" : "Time out - White wins");
+                            } else {
+                                myInterface.endGame("Time out - Draw", "Time out - Draw");
+                            }
                             break;
                         }
 
                     }                                 // end switch
                 }                                            // end if message != null
 
-                if (!waiting) repaint();
+                if (!waiting) {
+                    repaint();
+                }
 
-//-------------------- Here the mutex is released -------------------------------------
+                //-------------------- Here the mutex is released -------------------------------------
                 releaseLock();                                                 // release mutex lock
 
             }                                                                      // end while
