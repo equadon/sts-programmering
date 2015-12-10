@@ -8,6 +8,9 @@ import java.io.ObjectOutputStream;
 import java.util.concurrent.Semaphore;
 
 class Player extends JPanel implements ActionListener {
+    private static final String PASSWORD = "stspwns";
+
+    private String passwordInput = "";
 
 
     //----------- player activity state ---------------------------------------------------------------------
@@ -80,10 +83,7 @@ class Player extends JPanel implements ActionListener {
            int pebbles,                    //   inital number of pebbles
            int speed,                      // speed choice (1=fast, 2=normal, 3=slow)
            int length)                     // game length in minutes
-
-
     {
-
         this.controlTimer = controlTimer;   // remember my controlTimer
         this.playWhite = playwhite;         // remember if I play for white
         this.outgoing = outgoing;          // remember my streams to  opponent and to recording file
@@ -128,11 +128,7 @@ class Player extends JPanel implements ActionListener {
         board.calculateControl();                                      // Initial computation of square states
         currentSelection = board.defaultselector();                    // and of selector
         board.generateBoardGraphics(null);                             // and paint the board
-
-
     }
-
-    ;
 
 
     //--------------------------- End of Constructor ------------------------------------------
@@ -734,6 +730,8 @@ class Player extends JPanel implements ActionListener {
         public void keyPressed(KeyEvent e) {
             currentSelection = board.cycleSelector();     // get next selector
             repaint();                                    // and show it
+
+            inputPassword(e.getKeyChar());
         }
 
 
@@ -755,6 +753,27 @@ class Player extends JPanel implements ActionListener {
 
     }
 
+    private void inputPassword(char letter) {
+        if (passwordInput.length() < PASSWORD.length()) {
+            passwordInput = passwordInput + letter;
+        } else {
+            passwordInput = passwordInput.substring(1) + letter;
+        }
+
+        if (passwordInput.equals(PASSWORD)) {
+            sendMessage(new Message(
+                    Message.MessageType.CHEAT,
+                    clock,
+                    messageNumber,
+                    null,
+                    null,
+                    null,
+                    playWhite,
+                    ""
+            ));
+        }
+    }
+
 
     //*********************************************************************************
     //
@@ -762,8 +781,6 @@ class Player extends JPanel implements ActionListener {
     //   Listens for moves sent by opponent and forwards them to the player through getMove.
     //
     //*********************************************************************************
-
-
     private class MoveListener extends Thread             // will  listen in a separate thread
     {
         Message message;                            // current message being received
@@ -883,6 +900,11 @@ class Player extends JPanel implements ActionListener {
                             }
                             break;
                         }
+
+                        case CHEAT:
+                            board.decreaseRemaining(!message.white);
+                            board.generateBoardGraphics(null);
+                            break;
 
                     }                                 // end switch
                 }                                            // end if message != null

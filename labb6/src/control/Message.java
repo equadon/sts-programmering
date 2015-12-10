@@ -3,7 +3,7 @@ package control;
 import java.io.Serializable;
 
 class Message implements Serializable {
-    enum MessageType {ACK, MOVE, BUILD, QUIT, EXPIRED}
+    enum MessageType {ACK, MOVE, BUILD, QUIT, EXPIRED, CHEAT}
 
     ;   // The different types of messages
 
