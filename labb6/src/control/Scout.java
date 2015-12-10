@@ -32,4 +32,12 @@ public class Scout extends HeavyPiece {
 
         return false;
     }
+
+    @Override
+    boolean canBuild(Board.Position pos) {
+        boolean res;
+        Piece inhabitant = board.find(pos);
+        res = board.near(Type.BOUNCER, pos) && inhabitant != null && inhabitant.pieceType == Type.PEBBLE;
+        return super.canBuild(pos) && res;
+    }
 }
