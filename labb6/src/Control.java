@@ -19,8 +19,7 @@ import java.util.Random;
 import java.util.concurrent.*;
 
 public class Control
-
- {
+{
 
      static final String VERSION_NUMBER = "6.3";              // version number
      static final boolean testSetup = true;                  // If true, start a test session

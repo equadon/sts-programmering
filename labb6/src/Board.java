@@ -499,7 +499,8 @@ class Board
   //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
   final Piece  newPiece(Piece.Type pt, boolean w, boolean my, Position p)
-        {Piece res = Piece.newPiece(pt,w,my,p,this);
+        {
+            Piece res = Piece.newPiece(pt,w,my,p,this);
           if (isLegal(p))
               addPiece(res);      // put it on the board, if on a legal position
          return res;
