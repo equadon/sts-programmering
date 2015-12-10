@@ -51,7 +51,7 @@ abstract class Piece
   final static private Color BLACK_OPPONENT = new Color (130,80,80);
 
   enum Type
-      {PEBBLE(0), RUBBLE(1), KEEP(2), BOUNCER(3), QUORUM(4), NIMBLER(5);          // The six kinds of pieces
+      {PEBBLE(0), RUBBLE(1), KEEP(2), BOUNCER(3), QUORUM(4), NIMBLER(5), SCOUT(6);          // The six kinds of pieces
        int index;                                                       // each kind has an integer index
        Type(int idx) {
            index = idx;}
@@ -68,6 +68,7 @@ abstract class Piece
            case BOUNCER: res= new Bouncer(w, my, p, b); break;
            case NIMBLER: res= new Nimbler(w, my, p, b); break;
            case KEEP:    res= new Keep(   w, my, p, b); break;
+           case SCOUT:   res= new Scout(w, my, p, b); break;
           }
        res.pieceType = pt;
        return res;

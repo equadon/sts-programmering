@@ -66,10 +66,10 @@ class Board
   private  int whiteremaining;                   // Number of remaining Pebbles
   private  int blackremaining;
 
-  private int [] piecesOnBoard = new int[6];     // stores how many of each type of piece I have on board
+  private int [] piecesOnBoard = new int[7];     // stores how many of each type of piece I have on board
 
     private void initPiecesOnBoard ()                         // Resets number of all pieces. Used by calculateControl
-            {for (int i=0; i<6; i++) piecesOnBoard[i]=0;
+            {for (int i=0; i<7; i++) piecesOnBoard[i]=0;
     }
 
     private void incrementPieceOnBoard(Piece.Type pt) {         // To increment the number of a piece type
@@ -299,7 +299,7 @@ class Board
       newPiece (Piece.Type.PEBBLE, true, iPlayWhite,  topLeft);                          // initial white piece
       newPiece (Piece.Type.PEBBLE, false,!iPlayWhite, bottomRight);                      // initial black piece
 
-      initialselectors = new Piece[5];                       // set up selector pieces
+      initialselectors = new Piece[6];                       // set up selector pieces
       int selectorPosX = SIZE/2;                            // x-coordinate of selector pieces
 
       initialselectors[0] =  newPiece (Piece.Type.PEBBLE,true,true, new Position(selectorPosX,2*SIZE));
@@ -307,6 +307,7 @@ class Board
       initialselectors[2] =  newPiece (Piece.Type.NIMBLER,true,true ,new Position(selectorPosX,4*SIZE));
       initialselectors[3] =  newPiece (Piece.Type.QUORUM,true,true ,new Position(selectorPosX,5*SIZE));
       initialselectors[4] =  newPiece (Piece.Type.BOUNCER,true,true ,new Position(selectorPosX,6*SIZE));
+      initialselectors[5] =  newPiece (Piece.Type.SCOUT,true,true ,new Position(selectorPosX,7*SIZE));
 
       myPebble   = (Pebble)initialselectors[0];     // For drawing remaining pebbles use the pebble selector!
 
