@@ -12,6 +12,7 @@ public interface ChatListener {
     void loggedIn(String user);
 
     void messageReceived(String name, String message);
+    void whisperReceived(String name, String message, String recipient);
 
     void userListUpdated(UserListPacket packet);
 

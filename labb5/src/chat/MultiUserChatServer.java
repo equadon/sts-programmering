@@ -1,9 +1,6 @@
 package chat;
 
-import chat.packets.ConnectionPacket;
-import chat.packets.LoginPacket;
-import chat.packets.MessagePacket;
-import chat.packets.UserListPacket;
+import chat.packets.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -118,6 +115,15 @@ public class MultiUserChatServer extends ChatServer implements ChatListener {
         for (ChatClient client : clients) {
             if (client.getName() != null && !client.getName().equals(name)) {
                 client.send(new MessagePacket(name, message));
+            }
+        }
+    }
+
+    @Override
+    public void whisperReceived(String name, String message, String recipient) {
+        for (ChatClient client : clients) {
+            if (client.getName() != null && client.getName().equals(recipient)) {
+                client.send(new WhisperPacket(name, message, recipient));
             }
         }
     }

@@ -1,9 +1,6 @@
 package chat;
 
-import chat.packets.ConnectionPacket;
-import chat.packets.LoginPacket;
-import chat.packets.MessagePacket;
-import chat.packets.UserListPacket;
+import chat.packets.*;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -40,6 +37,10 @@ public class ChatClient implements Runnable {
         listener.connected(this);
     }
 
+    public boolean isLoggedIn() {
+        return loggedIn;
+    }
+
     public String getName() {
         return name;
     }
@@ -57,7 +58,9 @@ public class ChatClient implements Runnable {
     }
 
     private void handleObject(Object object) {
-        if (object instanceof MessagePacket) {
+        if (object instanceof WhisperPacket) {
+            handleWhisper((WhisperPacket) object);
+        } else if (object instanceof MessagePacket) {
             sendMessage((MessagePacket) object);
         } else if (object instanceof LoginPacket) {
             handleLogin((LoginPacket) object);
@@ -68,6 +71,11 @@ public class ChatClient implements Runnable {
         } else {
             System.out.println("Unknown packet: " + object);
         }
+    }
+
+    private void handleWhisper(WhisperPacket packet) {
+        System.out.println(packet);
+        listener.whisperReceived(packet.user, packet.message, packet.recipient);
     }
 
     private void handleNewConnection(ConnectionPacket packet) {

@@ -3,12 +3,15 @@ package chat;
 import chat.packets.LoginPacket;
 import chat.packets.MessagePacket;
 import chat.packets.UserListPacket;
+import chat.packets.WhisperPacket;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.*;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
@@ -16,6 +19,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * STS Chat Project - Fred Isaksson, Niklas Persson
+ */
 public class ChatClientGUI extends JFrame implements ActionListener, ChatListener {
     private static final boolean SELECT_FAVORITE = true;
 
@@ -77,6 +83,15 @@ public class ChatClientGUI extends JFrame implements ActionListener, ChatListene
         menu.add(fileMenu);
         setJMenuBar(menu);
 
+        userList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
+                    whisper(userList.getSelectedValue());
+                }
+            }
+        });
+
         setPreferredSize(new Dimension(400, 300));
 
         setTitle("Chat");
@@ -84,6 +99,21 @@ public class ChatClientGUI extends JFrame implements ActionListener, ChatListene
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         pack();
         setVisible(true);
+    }
+
+    public boolean isLoggedIn() {
+        return client != null && client.isLoggedIn();
+    }
+
+    private void whisper(String recipient) {
+        if (!isLoggedIn()) {
+            addMessage("Inte inloggad, kunde inte skicka meddelandet.");
+            return;
+        }
+
+        String message = JOptionPane.showInputDialog(this, "Meddelande:", "Privatmeddelande till " + recipient, JOptionPane.QUESTION_MESSAGE);
+
+        client.send(new WhisperPacket(client.getName(), message, recipient));
     }
 
     private void closeChat() {
@@ -223,6 +253,11 @@ public class ChatClientGUI extends JFrame implements ActionListener, ChatListene
     }
 
     private void sendMessage() {
+        if (!isLoggedIn()) {
+            addMessage("Inte inloggad, kunde inte skicka meddelandet.");
+            return;
+        }
+
         String message = inputArea.getText();
         addMessage("Jag", message);
         inputArea.setText("");
@@ -233,6 +268,11 @@ public class ChatClientGUI extends JFrame implements ActionListener, ChatListene
     @Override
     public void messageReceived(String name, String message) {
         addMessage(name, message);
+    }
+
+    @Override
+    public void whisperReceived(String name, String message, String recipient) {
+        addMessage("(whisper) " + name, message);
     }
 
     @Override
@@ -271,6 +311,7 @@ public class ChatClientGUI extends JFrame implements ActionListener, ChatListene
     @Override
     public void loggedIn(ChatClient client, LoginPacket login) {
         if (login.isSuccesful()) {
+            setTitle("Chat - " + login.username);
             addMessage("Inloggad som " + login.username);
         } else {
             JOptionPane.showMessageDialog(this, "Inloggning misslyckades: " + login.failReason);

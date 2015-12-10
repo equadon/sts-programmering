@@ -199,6 +199,11 @@ public class ChatGUI extends JFrame implements ActionListener, ChatListener {
     }
 
     @Override
+    public void whisperReceived(String name, String message, String recipient) {
+
+    }
+
+    @Override
     public void userListUpdated(UserListPacket packet) {}
 
     @Override
