@@ -23,4 +23,13 @@ public class Scout extends HeavyPiece {
                 3
         ));
     }
+
+    @Override
+    boolean canMove(Board.Position p) {
+        if (p != null && board.canMoveTo(p)) {             // Can only move to highlighted area
+            return !p.equals(pos);                         // but not to the same position!
+        }
+
+        return false;
+    }
 }
