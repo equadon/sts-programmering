@@ -17,7 +17,11 @@ class Car extends Vehicle {
 
         try {
             saveState();
-            frontWheelDirection = Direction.rotate(direction, frontWheelAngle);
+
+            if (canSteer()) {
+                frontWheelDirection = Direction.rotate(direction, frontWheelAngle);
+            }
+
             Coord frontAxisMove = Coord.mul(velocity, frontWheelDirection);
             frontAxisPos = Coord.add(frontAxisPos, frontAxisMove);
             move();

@@ -9,6 +9,6 @@ class Warmup extends Level {
         theTrailer = newTrailer(RIGHT, theCar);
         name = "Warming up";
 
-        obstacles.add(new IceObstacle(700, 300, 200, 150));
+        obstacles.add(new IceObstacle(650, 300, 150, 100));
     }
 }
