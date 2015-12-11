@@ -2,9 +2,9 @@ package tow;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 abstract class Level {
-
     String name;
     ArrayList<Obstacle> obstacles;
     ArrayList<Goal> goals;

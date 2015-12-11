@@ -6,7 +6,7 @@ import java.awt.geom.Ellipse2D;
 
 public class IceObstacle extends Obstacle {
     IceObstacle(float x, float y, float width, float height) {
-        super(new Area(new Ellipse2D.Float(x, y, width, height)), new Color(10, 186, 191));
+        super(new Area(new Ellipse2D.Float(x, y, width, height)), new Color(159, 236, 234));
     }
 
     @Override
