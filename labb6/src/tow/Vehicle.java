@@ -40,6 +40,8 @@ abstract class Vehicle {
 
     Shape appearance;
 
+    private boolean steering;
+
     Vehicle(Coord frontAxisPos, double lengthBetweenAxes, Direction direction, double frontLength, double rearLength, double width, Color color, Level lev) {
 
         this.frontAxisPos = frontAxisPos;
@@ -51,11 +53,33 @@ abstract class Vehicle {
         this.direction = direction;
         this.level = lev;
 
+        steering = true;
+
         HOOK_SIZE = 5 * GameArea.scale;
         wheelWidth = 5 * GameArea.scale;
         halfWheelLength = 10 * GameArea.scale;
 
         setPositions();
+    }
+
+    public boolean canSteer() {
+        return steering;
+    }
+
+    public void enableSteering() {
+        if (canSteer())
+            return;
+
+        steering = true;
+        System.out.println("Steering: Enabled");
+    }
+
+    public void disableSteering() {
+        if (!canSteer())
+            return;
+
+        steering = false;
+        System.out.println("Steering: Disabled");
     }
 
     final void setPositions() {

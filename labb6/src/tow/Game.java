@@ -94,6 +94,8 @@ class Game extends JFrame {
     }
 
     private void playSound(Clip clip) {
+        if (!Tow.enableSound)
+            return;
 
         if (clip != null) {
             if (clip.isRunning()) {
